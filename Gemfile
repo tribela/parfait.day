@@ -157,3 +157,5 @@ gem 'connection_pool', require: false
 gem 'xorcist', '~> 1.1'
 
 gem 'hcaptcha', '~> 7.1'
+
+gem "prometheus-client", "~> 2.1"
