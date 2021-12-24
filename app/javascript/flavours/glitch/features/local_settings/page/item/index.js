@@ -21,6 +21,7 @@ export default class LocalSettingsPageItem extends React.PureComponent {
     })),
     settings: ImmutablePropTypes.map.isRequired,
     placeholder: PropTypes.string,
+    showWhen: PropTypes.bool,
   };
 
   handleChange = e => {
@@ -33,8 +34,12 @@ export default class LocalSettingsPageItem extends React.PureComponent {
 
   render () {
     const { handleChange } = this;
-    const { settings, item, id, options, children, dependsOn, dependsOnNot, placeholder } = this.props;
+    const { settings, item, id, options, children, dependsOn, dependsOnNot, placeholder, showWhen } = this.props;
     let enabled = true;
+
+    if (showWhen === false) {
+      return (<></>);
+    }
 
     if (dependsOn) {
       for (let i = 0; i < dependsOn.length; i++) {

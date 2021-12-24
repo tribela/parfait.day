@@ -56,6 +56,8 @@ import { HotKeys } from 'react-hotkeys';
 import { me } from 'flavours/glitch/util/initial_state';
 import { closeOnboarding, INTRODUCTION_VERSION } from 'flavours/glitch/actions/onboarding';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
+import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
+import { showAlert } from 'flavours/glitch/actions/alerts';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
@@ -114,6 +116,7 @@ const keyMap = {
   toggleCollapse: 'shift+x',
   toggleSensitive: 'h',
   openMedia: 'e',
+  konamiCommand: 'up up down down left right left right b a enter',
 };
 
 class SwitchingColumnsArea extends React.PureComponent {
@@ -378,6 +381,11 @@ class UI extends React.Component {
     }
   }
 
+  handleKonamiCommand = () => {
+    this.props.dispatch(changeLocalSetting(['unlock_hidden_feature'], true));
+    this.props.dispatch(showAlert('Qdon', 'Unlocked hidden feature!'));
+  }
+
   componentWillMount () {
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
     document.addEventListener('dragenter', this.handleDragEnter, false);
@@ -615,6 +623,7 @@ class UI extends React.Component {
       goToBlocked: this.handleHotkeyGoToBlocked,
       goToMuted: this.handleHotkeyGoToMuted,
       goToRequests: this.handleHotkeyGoToRequests,
+      konamiCommand: this.handleKonamiCommand,
     };
 
     return (

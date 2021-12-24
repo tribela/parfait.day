@@ -14,6 +14,8 @@ import SearchResultsContainer from './containers/search_results_container';
 import { me, mascot } from 'flavours/glitch/util/initial_state';
 import { cycleElefriendCompose } from 'flavours/glitch/actions/compose';
 import HeaderContainer from './containers/header_container';
+import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
+import { showAlert } from 'flavours/glitch/actions/alerts';
 
 const messages = defineMessages({
   compose: { id: 'navigation_bar.compose', defaultMessage: 'Compose new toot' },
@@ -24,9 +26,35 @@ const mapStateToProps = (state, ownProps) => ({
   showSearch: ownProps.multiColumn ? state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']) : ownProps.isSearchPage,
 });
 
+const touchMascotHandler = (() => {
+  let mascotTouchTimestamps = [];
+  let unlocked = false;
+  const handler = (dispatch) => {
+    const timestamp = +new Date();
+    mascotTouchTimestamps.push(timestamp);
+    mascotTouchTimestamps = mascotTouchTimestamps.slice(-10);
+    if (mascotTouchTimestamps.length === 10 && timestamp - mascotTouchTimestamps[0] <= 5000)  {
+      if (!unlocked) {
+        dispatch(changeLocalSetting(['unlock_hidden_feature'], true));
+        dispatch(showAlert('Qdon', 'Unlocked hidden feature!'));
+        unlocked = true;
+      } else {
+        dispatch(showAlert('Qdon', 'You Already have unlocked hidden feature!'));
+      }
+      mascotTouchTimestamps = [];
+    }
+  };
+
+  return handler;
+})();
+
 const mapDispatchToProps = (dispatch, { intl }) => ({
   onClickElefriend () {
     dispatch(cycleElefriendCompose());
+  },
+
+  onTouchMascot () {
+    dispatch(touchMascotHandler);
   },
 
   onMount () {
@@ -47,6 +75,7 @@ class Compose extends React.PureComponent {
     isSearchPage: PropTypes.bool,
     elefriend: PropTypes.number,
     onClickElefriend: PropTypes.func,
+    onTouchMascot: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     intl: PropTypes.object.isRequired,
@@ -74,6 +103,7 @@ class Compose extends React.PureComponent {
       intl,
       multiColumn,
       onClickElefriend,
+      onTouchMascot,
       isSearchPage,
       showSearch,
     } = this.props;
@@ -90,9 +120,8 @@ class Compose extends React.PureComponent {
             <NavigationContainer />
 
             <ComposeFormContainer />
-
             <div className='drawer__inner__mastodon'>
-              {mascot ? <img alt='' draggable='false' src={mascot} /> : <button className='mastodon' onClick={onClickElefriend} />}
+              {mascot ? <img alt='' draggable='false' src={mascot} onTouchStart={onTouchMascot} /> : <button className='mastodon' onClick={onClickElefriend} onTouchStart={onTouchMascot} />}
             </div>
           </div>}
 

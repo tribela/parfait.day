@@ -206,6 +206,7 @@ class LocalSettingsPage extends React.PureComponent {
           item={['show_content_type_choice']}
           id='mastodon-settings--show_content_type_choice'
           onChange={onChange}
+          showWhen={settings.get('unlock_hidden_feature') === true}
         >
           <FormattedMessage id='settings.show_content_type_choice' defaultMessage='Show content-type choice when authoring toots' />
         </LocalSettingsPageItem>
