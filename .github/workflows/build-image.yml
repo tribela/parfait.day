@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'main'
+      - 'qdon-glitch-beta'
+      - 'qdon-glitch'
     tags:
       - '*'
   pull_request:
@@ -30,9 +31,8 @@ jobs:
           flavor: |
             latest=true
           tags: |
-            type=edge,branch=main
-            type=match,pattern=v(.*),group=0
-            type=ref,event=pr
+            type=ref,event=branch
+            type=edge,branch=qdon-glitch-beta
       - uses: docker/build-push-action@v2
         with:
           context: .
