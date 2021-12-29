@@ -42,7 +42,8 @@ class MediaAttachment < ApplicationRecord
   VIDEO_LIMIT = (ENV['MAX_VIDEO_SIZE'] || 40.megabytes).to_i
 
   MAX_VIDEO_MATRIX_LIMIT = 2_304_000 # 1920x1200px
-  MAX_VIDEO_FRAME_RATE   = 60
+  MAX_VIDEO_INPUT_MATRIX_LIMIT = (ENV['MAX_VIDEO_INPUT_MATRIX_LIMIT'] || MAX_VIDEO_MATRIX_LIMIT).to_i
+  MAX_VIDEO_FRAME_RATE = 60
 
   IMAGE_FILE_EXTENSIONS = %w(.jpg .jpeg .png .gif .webp).freeze
   VIDEO_FILE_EXTENSIONS = %w(.webm .mp4 .m4v .mov).freeze
@@ -87,7 +88,7 @@ class MediaAttachment < ApplicationRecord
         'loglevel' => 'fatal',
         'movflags' => 'faststart',
         'pix_fmt' => 'yuv420p',
-        'vf' => 'scale=\'trunc(iw/2)*2:trunc(ih/2)*2\'',
+        'vf' => "scale='trunc(min(#{MAX_VIDEO_MATRIX_LIMIT}, iw*ih) / ih / 2)*2:-2':force_original_aspect_ratio=decrease",
         'vsync' => 'cfr',
         'c:v' => 'h264',
         'maxrate' => '1300K',
@@ -329,7 +330,7 @@ class MediaAttachment < ApplicationRecord
     return unless movie.valid?
 
     raise Mastodon::StreamValidationError, 'Video has no video stream' if movie.width.nil? || movie.frame_rate.nil?
-    raise Mastodon::DimensionsValidationError, "#{movie.width}x#{movie.height} videos are not supported" if movie.width * movie.height > MAX_VIDEO_MATRIX_LIMIT
+    raise Mastodon::DimensionsValidationError, "#{movie.width}x#{movie.height} videos are not supported" if movie.width * movie.height > MAX_VIDEO_INPUT_MATRIX_LIMIT
     raise Mastodon::DimensionsValidationError, "#{movie.frame_rate.floor}fps videos are not supported" if movie.frame_rate.floor > MAX_VIDEO_FRAME_RATE
   end
 
