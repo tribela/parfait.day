@@ -55,6 +55,7 @@ import {
 } from './util/async-components';
 import { me } from '../../initial_state';
 import { closeOnboarding, INTRODUCTION_VERSION } from 'mastodon/actions/onboarding';
+import { showAlert } from 'flavours/glitch/actions/alerts';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
@@ -509,12 +510,7 @@ class UI extends React.PureComponent {
   }
 
   handleHiddenCommand = () => {
-    // eslint-disable-next-line no-console
-    console.log(`
-⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢤⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣤⠀⠀⠀⠤⠀⠤⣤
-⣿⠼⠃⢹⡞⠙⣾⠽⠆⠺⢯⣅⠺⢯⣅⠀⠀⠀⣾⢹⡇⣾⢹⡎⢧⣧⡏⣷⢹⡆⠀⠀⠀⢹⡏⠁⣾⢹⡆⢹⡞⠙⠀⠀⠀⣺⢽⡆⠀⠀⠈⢧⣧⡇⣿⢹⡆⠉⣿⠀⠀⣿⠀⣾⠽⠆
-⠉⠁⠀⠉⠉⠀⠈⠉⠁⠉⠉⠁⠉⠉⠁⠀⠀⠀⠈⠉⠉⠈⠉⠀⠈⠈⠀⠉⠈⠁⠀⠀⠀⠉⠉⠁⠈⠉⠀⠉⠉⠀⠀⠀⠀⠉⠉⠉⠀⠀⠀⠈⠈⠀⠉⠈⠁⠉⠉⠉⠉⠉⠉⠈⠉⠁
-`.trim());
+    this.props.dispatch(showAlert(undefined, 'ちょっと、↑にためて下さい。'));
   }
 
   render () {
