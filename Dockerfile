@@ -1,9 +1,23 @@
-FROM ubuntu:20.04 as build-dep
+FROM ubuntu:20.04 as basic-dep
 
 # Use bash for the shell
 SHELL ["/bin/bash", "-c"]
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
+# Install build stage deps
+RUN echo "Etc/UTC" > /etc/localtime && \
+	apt-get update && \
+	apt-get install -y --no-install-recommends \
+	bison build-essential ca-certificates wget python git \
+	libyaml-dev libgdbm-dev libreadline-dev libjemalloc-dev \
+	libicu-dev libidn11-dev libpq-dev \
+	libprotobuf-dev protobuf-compiler shared-mime-info \
+	libncurses5-dev libffi-dev zlib1g-dev libssl-dev && \
+	rm -rf /var/lib/apt/lists/*
+
+ENV PATH="/opt/ruby/bin:/opt/node/bin:/opt/mastodon/bin:${PATH}"
+
+FROM basic-dep as node-dep
 # Install Node v16 (LTS)
 ENV NODE_VER="16.14.2"
 RUN ARCH= && \
@@ -25,7 +39,9 @@ RUN ARCH= && \
 	tar xf node-v$NODE_VER-linux-$ARCH.tar.gz && \
 	rm node-v$NODE_VER-linux-$ARCH.tar.gz && \
 	mv node-v$NODE_VER-linux-$ARCH /opt/node
+RUN npm install -g yarn
 
+FROM basic-dep as ruby-dep
 # Install Ruby 3.0
 ENV RUBY_VER="3.0.3"
 RUN apt-get update && \
@@ -43,15 +59,13 @@ RUN apt-get update && \
 	make -j"$(nproc)" > /dev/null && \
 	make install && \
 	rm -rf ../ruby-$RUBY_VER.tar.gz ../ruby-$RUBY_VER
+RUN gem install bundler
 
-ENV PATH="${PATH}:/opt/ruby/bin:/opt/node/bin"
 
-RUN npm install -g npm@latest && \
-	npm install -g yarn && \
-	gem install bundler && \
-	apt-get update && \
-	apt-get install -y --no-install-recommends git libicu-dev libidn11-dev \
-	libpq-dev shared-mime-info
+FROM basic-dep as build-dep
+# Copy over all the langs needed
+COPY --from=node-dep /opt/node /opt/node
+COPY --from=ruby-dep /opt/ruby /opt/ruby
 
 COPY Gemfile* package.json yarn.lock /opt/mastodon/
 
