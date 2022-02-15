@@ -158,4 +158,7 @@ gem 'xorcist', '~> 1.1'
 
 gem 'hcaptcha', '~> 7.1'
 
-gem "prometheus-client", "~> 2.1"
+gem 'prometheus-client', '~> 2.1'
+
+gem 'sentry-ruby', '~> 5.1'
+gem 'sentry-rails', '~> 5.1'
