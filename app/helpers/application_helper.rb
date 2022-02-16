@@ -52,6 +52,10 @@ module ApplicationHelper
     Setting.registrations_mode == 'none'
   end
 
+  def korean_captcha_enabled?
+    Setting.korean_captcha_enabled
+  end
+
   def available_sign_up_path
     if closed_registrations? || omniauth_only?
       'https://joinmastodon.org/#getting-started'

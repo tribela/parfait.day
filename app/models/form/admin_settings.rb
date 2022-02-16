@@ -42,6 +42,9 @@ class Form::AdminSettings
     outgoing_spoilers
     require_invite_text
     captcha_enabled
+    korean_captcha_enabled
+    korean_captcha_question
+    korean_captcha_answer
   ).freeze
 
   BOOLEAN_KEYS = %i(
@@ -62,6 +65,7 @@ class Form::AdminSettings
     noindex
     require_invite_text
     captcha_enabled
+    korean_captcha_enabled
   ).freeze
 
   UPLOAD_KEYS = %i(

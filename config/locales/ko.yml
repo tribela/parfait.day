@@ -725,6 +725,15 @@ ko:
       timeline_preview:
         desc_html: 랜딩 페이지에 공개 타임라인을 표시합니다
         title: 타임라인 프리뷰
+      korean_captcha_enabled:
+        title: 한국인 캡차 활성화
+        desc_html: 한국인만 풀 수 있는 캡차를 풀어야 가입이 됩니다
+      korean_captcha_question:
+        title: 질문
+        desc_html: 한국인만 풀 수 있는 질문을 설정하세요
+      korean_captcha_answer:
+        title: 정답
+        desc_html: 한국인만 풀 수 있는 질문에 대한 정답입니다
       title: 사이트 설정
       trendable_by_default:
         desc_html: 이전에 거부되지 않은 해시태그들에 영향을 미칩니다
@@ -947,6 +956,7 @@ ko:
       redirecting_to: 계정이 %{acct}로 리다이렉트 중이기 때문에 비활성 상태입니다.
       view_strikes: 내 계정에 대한 과거 중재 기록 보기
     too_fast: 너무 빠르게 양식이 제출되었습니다, 다시 시도하세요.
+    korean_captcha_fail: 답이 틀렸습니다.
     trouble_logging_in: 로그인 하는데 문제가 있나요?
     use_security_key: 보안 키 사용
   authorize_follow:

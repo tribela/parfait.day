@@ -97,11 +97,12 @@ class User < ApplicationRecord
   validates :agreement, acceptance: { allow_nil: false, accept: [true, 'true', '1'] }, on: :create
 
   # Honeypot/anti-spam fields
-  attr_accessor :registration_form_time, :website, :confirm_password
+  attr_accessor :registration_form_time, :website, :confirm_password, :korean_captcha
 
   validates_with RegistrationFormTimeValidator, on: :create
   validates :website, absence: true, on: :create
   validates :confirm_password, absence: true, on: :create
+  validates_with KoreanCaptchaValidator, on: :create, if: :validate_korean_captcha?
 
   scope :recent, -> { order(id: :desc) }
   scope :pending, -> { where(approved: false) }
@@ -473,6 +474,10 @@ class User < ApplicationRecord
 
   def validate_email_dns?
     email_changed? && !external? && !(Rails.env.test? || Rails.env.development?)
+  end
+
+  def validate_korean_captcha?
+    Setting.korean_captcha_enabled
   end
 
   def invite_text_required?
