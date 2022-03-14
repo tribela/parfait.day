@@ -284,7 +284,7 @@ class ComposerOptions extends ImmutablePureComponent {
           onModalOpen={onModalOpen}
           value={privacy}
         />
-        {showContentTypeChoice && (
+        {(showContentTypeChoice && unlockedHiddenFeature) && (
           <Dropdown
             disabled={disabled}
             icon={(contentTypeItems[contentType.split('/')[1]] || {}).icon}
