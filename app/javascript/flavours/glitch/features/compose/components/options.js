@@ -16,6 +16,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 
 //  Utils.
 import Motion from 'flavours/glitch/util/optional_motion';
+import Settings from 'flavours/glitch/util/settings';
 import { pollLimits } from 'flavours/glitch/util/initial_state';
 
 //  Messages.
@@ -225,6 +226,8 @@ class ComposerOptions extends ImmutablePureComponent {
       },
     };
 
+    const unlockedHiddenFeature = new Settings().get('mastodon-settings')?.unlock_hidden_feature ?? false;
+
     //  The result.
     return (
       <div className='composer--options'>
@@ -310,7 +313,7 @@ class ComposerOptions extends ImmutablePureComponent {
           active={advancedOptions && advancedOptions.some(value => !!value)}
           disabled={disabled || isEditing}
           icon='ellipsis-h'
-          items={advancedOptions ? [
+          items={advancedOptions && unlockedHiddenFeature ? [
             {
               meta: formatMessage(messages.local_only_long),
               name: 'do_not_federate',
