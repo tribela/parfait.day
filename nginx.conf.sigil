@@ -26,7 +26,6 @@ server {
   {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
   access_log  /var/log/nginx/{{ $.APP }}-access.log;
   error_log   /var/log/nginx/{{ $.APP }}-error.log;
-  location /.well-known/acme-challenge/ { allow all; }
   location / { return 301 https://$host:{{ $.PROXY_SSL_PORT }}$request_uri; }
 }
 {{ else if eq $scheme "https"}}
