@@ -11,7 +11,7 @@ RUN echo "Etc/UTC" > /etc/localtime && \
 	bison build-essential ca-certificates wget python git \
 	libyaml-dev libgdbm-dev libreadline-dev libjemalloc-dev \
 	libicu-dev libidn11-dev libpq-dev \
-	libprotobuf-dev protobuf-compiler shared-mime-info \
+	shared-mime-info \
 	libncurses5-dev libffi-dev zlib1g-dev libssl-dev && \
 	rm -rf /var/lib/apt/lists/*
 
