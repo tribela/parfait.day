@@ -52,6 +52,10 @@ module ApplicationHelper
     Setting.registrations_mode == 'none'
   end
 
+  def hcaptcha_enabled?
+    ENV['HCAPTCHA_SECRET_KEY'].present? && ENV['HCAPTCHA_SITE_KEY'].present? && Setting.captcha_enabled
+  end
+
   def korean_captcha_enabled?
     Setting.korean_captcha_enabled
   end
