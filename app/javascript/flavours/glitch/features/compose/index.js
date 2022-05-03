@@ -18,7 +18,7 @@ import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import { showAlert } from 'flavours/glitch/actions/alerts';
 
 const messages = defineMessages({
-  compose: { id: 'navigation_bar.compose', defaultMessage: 'Compose new toot' },
+  compose: { id: 'navigation_bar.compose', defaultMessage: 'Compose new post' },
 });
 
 const mapStateToProps = (state, ownProps) => ({
