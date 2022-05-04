@@ -66,6 +66,7 @@ const mapDispatchToProps = (dispatch, { id }) => ({
 });
 
 const removeExtraLineBreaks = str => str.replace(/\n\n/g, '******')
+  .replace(/(?<=[가-힣]) (?=[가-힣])/g, '')
   .replace(/\n/g, ' ')
   .replace(/\*\*\*\*\*\*/g, '\n\n');
 
