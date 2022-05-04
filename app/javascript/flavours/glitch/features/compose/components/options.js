@@ -313,12 +313,12 @@ class ComposerOptions extends ImmutablePureComponent {
           active={advancedOptions && advancedOptions.some(value => !!value)}
           disabled={disabled || isEditing}
           icon='ellipsis-h'
-          items={advancedOptions && unlockedHiddenFeature ? [
-            {
+          items={advancedOptions ? [
+            ...( unlockedHiddenFeature ? [{
               meta: formatMessage(messages.local_only_long),
               name: 'do_not_federate',
               text: formatMessage(messages.local_only_short),
-            },
+            }] : [] ),
             {
               meta: formatMessage(messages.threaded_mode_long),
               name: 'threaded_mode',
