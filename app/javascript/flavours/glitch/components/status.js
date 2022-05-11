@@ -586,7 +586,7 @@ class Status extends ImmutablePureComponent {
       media.push(<PictureInPicturePlaceholder width={this.props.cachedMediaWidth} />);
       mediaIcons.push('video-camera');
     } else if (attachments.size > 0) {
-      if (muted || attachments.some(item => item.get('type') === 'unknown')) {
+      if (muted || attachments.every(item => item.get('type') === 'unknown')) {
         media.push(
           <AttachmentList
             compact
