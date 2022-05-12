@@ -83,6 +83,7 @@ class MediaAttachment < ApplicationRecord
   IMAGE_STYLES_REMOTE = IMAGE_STYLES.deep_merge({
     original: {
       format: 'webp',
+      convert_options: '-define webp:lossless=true',
     }.freeze,
     small: {
       format: 'webp',
