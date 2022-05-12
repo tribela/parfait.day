@@ -80,6 +80,15 @@ class MediaAttachment < ApplicationRecord
     }.freeze,
   }.freeze
 
+  IMAGE_STYLES_REMOTE = IMAGE_STYLES.deep_merge({
+    original: {
+      format: 'webp',
+    }.freeze,
+    small: {
+      format: 'webp',
+    }.freeze,
+  }).freeze
+
   VIDEO_FORMAT = {
     format: 'mp4',
     content_type: 'video/mp4',
@@ -280,7 +289,7 @@ class MediaAttachment < ApplicationRecord
       if attachment.instance.file_content_type == 'image/gif' || VIDEO_CONVERTIBLE_MIME_TYPES.include?(attachment.instance.file_content_type)
         VIDEO_CONVERTED_STYLES
       elsif IMAGE_MIME_TYPES.include?(attachment.instance.file_content_type)
-        IMAGE_STYLES
+        attachment.instance.remote_url.present? ? IMAGE_STYLES_REMOTE : IMAGE_STYLES
       elsif VIDEO_MIME_TYPES.include?(attachment.instance.file_content_type)
         VIDEO_STYLES
       else
