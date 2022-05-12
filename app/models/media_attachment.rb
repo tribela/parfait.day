@@ -76,6 +76,7 @@ class MediaAttachment < ApplicationRecord
       pixels: 160_000, # 400x400px
       file_geometry_parser: FastGeometryParser,
       blurhash: BLURHASH_OPTIONS,
+      format: 'webp',
     }.freeze,
   }.freeze
 
