@@ -8,7 +8,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 RUN echo "Etc/UTC" > /etc/localtime && \
 	apt-get update && \
 	apt-get install -y --no-install-recommends \
-	bison build-essential ca-certificates wget python git \
+	bison build-essential ca-certificates wget python3 git \
 	libyaml-dev libgdbm-dev libreadline-dev libjemalloc-dev \
 	libicu-dev libidn11-dev libpq-dev \
 	shared-mime-info \
@@ -33,7 +33,7 @@ RUN ARCH= && \
   esac && \
     echo "Etc/UTC" > /etc/localtime && \
 	apt-get update && \
-	apt-get install -y --no-install-recommends ca-certificates wget python apt-utils && \
+	apt-get install -y --no-install-recommends apt-utils && \
 	cd ~ && \
 	wget -q https://nodejs.org/download/release/v$NODE_VER/node-v$NODE_VER-linux-$ARCH.tar.gz && \
 	tar xf node-v$NODE_VER-linux-$ARCH.tar.gz && \
