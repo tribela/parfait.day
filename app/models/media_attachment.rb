@@ -70,6 +70,7 @@ class MediaAttachment < ApplicationRecord
     original: {
       pixels: 2_073_600, # 1920x1080px
       file_geometry_parser: FastGeometryParser,
+      quality: 90,
     }.freeze,
 
     small: {
@@ -83,6 +84,7 @@ class MediaAttachment < ApplicationRecord
   IMAGE_STYLES_REMOTE = IMAGE_STYLES.deep_merge({
     original: {
       format: 'webp',
+      quality: nil,
     }.freeze,
     small: {
       format: 'webp',
@@ -173,7 +175,7 @@ class MediaAttachment < ApplicationRecord
   }.freeze
 
   GLOBAL_CONVERT_OPTIONS = {
-    all: '-quality 90 -strip +set modify-date +set create-date',
+    all: '-strip +set modify-date +set create-date',
   }.freeze
 
   belongs_to :account,          inverse_of: :media_attachments, optional: true
