@@ -24,7 +24,7 @@ if ENV['SENTRY_DSN']
         when /metrics/
           0.0
         else
-          0.01
+          0.005
         end
       else
         0.0
