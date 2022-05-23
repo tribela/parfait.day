@@ -65,10 +65,17 @@ const mapDispatchToProps = (dispatch, { id }) => ({
 
 });
 
-const removeExtraLineBreaks = str => str.replace(/\n\n/g, '******')
-  .replace(/(?<=[가-힣]) (?=[가-힣])/g, '')
-  .replace(/\n/g, ' ')
-  .replace(/\*\*\*\*\*\*/g, '\n\n');
+const removeExtraLineBreaks = str => {
+  str = str.replace(/\n\n/g, '******');
+  try {
+    str = str.replace(new RegExp('(?<=[가-힣]) (?=[가-힣])', 'g'), '');
+  } catch {
+    // Safari will fall
+  }
+  return str.replace(/\n/g, ' ')
+    .replace(/\*\*\*\*\*\*/g, '\n\n');
+};
+
 
 class ImageLoader extends React.PureComponent {
 
