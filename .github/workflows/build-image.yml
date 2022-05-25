@@ -28,9 +28,11 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/mastodon
           flavor: |
-            latest=true
+            latest=auto
           tags: |
             type=ref,event=branch
+            type=raw,value=beta,enable=${{ github.ref == format('refs/heads/{0}', 'qdon-glitch-beta') }}
+            type=raw,value=latest,enable={{is_default_branch}}
             type=edge,branch=qdon-glitch-beta
       - uses: docker/build-push-action@v2
         with:
