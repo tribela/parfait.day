@@ -6,40 +6,47 @@ map $http_upgrade $connection_upgrade {
   ''      close;
 }
 
-{{ range $port_map := .PROXY_PORT_MAP | split " " }}
-{{ $port_map_list := $port_map | split ":" }}
-{{ $scheme := index $port_map_list 0 }}
-{{ $listen_port := index $port_map_list 1 }}
-
 {{ $proxy_cache_settings := `
     proxy_cache {{ $cache_name }};
-    proxy_cache_valid 200 10m;
+    proxy_cache_valid 200 7d;
     proxy_cache_valid 410 24h;
     proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
     add_header X-Cached $upstream_cache_status;
    ` | replace `{{ $cache_name }}` $cache_name }}
 
-{{ if eq $scheme "http" }}
+{{ range $port_map := .PROXY_PORT_MAP | split " " }}
+{{   $port_map_list := $port_map | split ":" }}
+{{   $scheme := index $port_map_list 0 }}
+{{   $listen_port := index $port_map_list 1 }}
+
+{{   if eq $scheme "http" }}
 server {
-  listen      [::]:{{ $listen_port }};
-  listen      {{ $listen_port }};
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{ end }}{{ $listen_port }};
   {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
-  access_log  /var/log/nginx/{{ $.APP }}-access.log;
-  error_log   /var/log/nginx/{{ $.APP }}-error.log;
-  location / { return 301 https://$host:{{ $.PROXY_SSL_PORT }}$request_uri; }
+  access_log  {{ $.NGINX_ACCESS_LOG_PATH }}{{ if and ($.NGINX_ACCESS_LOG_FORMAT) (ne $.NGINX_ACCESS_LOG_PATH "off") }} {{ $.NGINX_ACCESS_LOG_FORMAT }}{{ end }};
+  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
+    {{ if (and (eq $listen_port "80") ($.SSL_INUSE)) }}
+  include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
+  location / {
+    return 301 https://$host:{{ $.PROXY_SSL_PORT }}$request_uri;
+  }
+{{     else }}
+{{     end }}
 }
-{{ else if eq $scheme "https"}}
+{{   else if eq $scheme "https"}}
 server {
-  listen      [::]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ else if eq $.SPDY_SUPPORTED "true" }}spdy{{ end }};
-  listen      {{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ else if eq $.SPDY_SUPPORTED "true" }}spdy{{ end }};
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ else if eq $.SPDY_SUPPORTED "true" }}spdy{{ end }};
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ else if eq $.SPDY_SUPPORTED "true" }}spdy{{ end }};
+
   {{ if $.SSL_SERVER_NAME }}server_name {{ $.SSL_SERVER_NAME }}; {{ end }}
   {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
-  access_log  /var/log/nginx/{{ $.APP }}-access.log;
-  error_log   /var/log/nginx/{{ $.APP }}-error.log;
+  access_log  {{ $.NGINX_ACCESS_LOG_PATH }}{{ if and ($.NGINX_ACCESS_LOG_FORMAT) (ne $.NGINX_ACCESS_LOG_PATH "off") }} {{ $.NGINX_ACCESS_LOG_FORMAT }}{{ end }};
+  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
 
   ssl_certificate     {{ $.APP_SSL_PATH }}/server.crt;
   ssl_certificate_key {{ $.APP_SSL_PATH }}/server.key;
-  ssl_protocols       TLSv1.2 TLSv1.3;
+  ssl_protocols             TLSv1.2 {{ if eq $.TLS13_SUPPORTED "true" }}TLSv1.3{{ end }};
   ssl_prefer_server_ciphers on;
 
   keepalive_timeout   70;
@@ -53,32 +60,41 @@ server {
   gzip_http_version 1.1;
   gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml image/x-icon;
 
-  client_max_body_size 100M;
+  proxy_read_timeout {{ $.PROXY_READ_TIMEOUT }};
+  proxy_buffer_size {{ $.PROXY_BUFFER_SIZE }};
+  proxy_buffering {{ $.PROXY_BUFFERING }};
+  proxy_buffers {{ $.PROXY_BUFFERS }};
+  proxy_busy_buffers_size {{ $.PROXY_BUSY_BUFFERS_SIZE }};
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection $connection_upgrade;
+  proxy_set_header Host $host;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Port {{ $.PROXY_X_FORWARDED_PORT }}
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header X-Request-Start $msec;
+  {{ if $.PROXY_X_FORWARDED_SSL }}proxy_set_header X-Forwarded-Ssl {{ $.PROXY_X_FORWARDED_SSL }};{{ end }}
+
+  client_max_body_size {{ if $.CLIENT_MAX_BODY_SIZE }}{{ $.CLIENT_MAX_BODY_SIZE }}{{ else }}100M{{ end }};
 
   add_header Strict-Transport-Security "max-age=31536000";
 
-  proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto $scheme;
   proxy_set_header Proxy "";
   proxy_pass_header Server;
 
   proxy_buffering on;
   proxy_redirect off;
   proxy_http_version 1.1;
-  proxy_set_header Upgrade $http_upgrade;
-  proxy_set_header Connection $connection_upgrade;
 
   tcp_nodelay on;
 
 
   {{ if eq "true" (var "S3_ENABLED") }}
-  {{ if var "S3_ALIAS_HOST" }}
+    {{ if var "S3_ALIAS_HOST" }}
   rewrite ^/system/(.*)$ https://{{ var "S3_ALIAS_HOST" }}/$1 permanent;
-  {{ else }}
+    {{ else }}
   rewrite ^/system/(.*)$ {{ var "S3_PROTOCOL" }}://{{ var "S3_HOSTNAME" }}/{{ var "S3_BUCKET" }}/$1 permanent;
-  {{ end }}
+    {{ end }}
   {{ end }}
 
   location / {
@@ -108,7 +124,7 @@ server {
     proxy_pass http://{{ $.APP }}-web;
   }
 
-{{ if $.DOKKU_APP_STREAMING_LISTENERS }}
+  {{ if $.DOKKU_APP_STREAMING_LISTENERS }}
   location /api/v1/streaming {
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
@@ -125,29 +141,30 @@ server {
 
     tcp_nodelay on;
   }
-{{ end }}
+  {{ end }}
 
   include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
 
   error_page 500 501 502 503 504 /500.html;
 }
-{{ end }}{{ end }}
+{{   end }}
+{{ end }}
 
 {{ if $.DOKKU_APP_WEB_LISTENERS }}
 
-{{ range $upstream_port := $.PROXY_UPSTREAM_PORTS | split " " }}
+{{   range $upstream_port := $.PROXY_UPSTREAM_PORTS | split " " }}
 upstream {{ $.APP }}-web {
-{{ range $listeners := $.DOKKU_APP_WEB_LISTENERS | split " " }}
+{{     range $listeners := $.DOKKU_APP_WEB_LISTENERS | split " " }}
   server {{ $listeners }};
-{{ end }}
+{{     end }}
 }
-{{ end }}
+{{   end }}
 {{ end }}
 
 {{ if $.DOKKU_APP_STREAMING_LISTENERS }}
 upstream {{ $.APP }}-streaming {
-{{ range $listeners := $.DOKKU_APP_STREAMING_LISTENERS | split " " }}
+{{   range $listeners := $.DOKKU_APP_STREAMING_LISTENERS | split " " }}
   server {{ $listeners }};
 }
-{{ end }}
+{{   end }}
 {{ end }}
