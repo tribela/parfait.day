@@ -19,25 +19,14 @@ map $http_upgrade $connection_upgrade {
 {{   $scheme := index $port_map_list 0 }}
 {{   $listen_port := index $port_map_list 1 }}
 
-{{   if eq $scheme "http" }}
-server {
-  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
-  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{ end }}{{ $listen_port }};
-  {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
-  access_log  {{ $.NGINX_ACCESS_LOG_PATH }}{{ if and ($.NGINX_ACCESS_LOG_FORMAT) (ne $.NGINX_ACCESS_LOG_PATH "off") }} {{ $.NGINX_ACCESS_LOG_FORMAT }}{{ end }};
-  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
-    {{ if (and (eq $listen_port "80") ($.SSL_INUSE)) }}
-  include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
-  location / {
-    return 301 https://$host:{{ $.PROXY_SSL_PORT }}$request_uri;
-  }
-{{     else }}
-{{     end }}
-}
-{{   else if eq $scheme "https"}}
+{{   if eq $scheme "https" }}
 server {
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ else if eq $.SPDY_SUPPORTED "true" }}spdy{{ end }};
   listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ else if eq $.SPDY_SUPPORTED "true" }}spdy{{ end }};
+  {{ if var "ONION_ADDRESS" }}
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ or $.PROXY_PORT 80 }};
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{ end }}{{ or $.PROXY_PORT 80 }};
+  {{ end }}
 
   {{ if $.SSL_SERVER_NAME }}server_name {{ $.SSL_SERVER_NAME }}; {{ end }}
   {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
@@ -69,7 +58,7 @@ server {
   proxy_set_header Connection $connection_upgrade;
   proxy_set_header Host $host;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Port {{ $.PROXY_X_FORWARDED_PORT }}
+  proxy_set_header X-Forwarded-Port {{ $.PROXY_X_FORWARDED_PORT }};
   proxy_set_header X-Forwarded-Proto $scheme;
   proxy_set_header X-Request-Start $msec;
   {{ if $.PROXY_X_FORWARDED_SSL }}proxy_set_header X-Forwarded-Ssl {{ $.PROXY_X_FORWARDED_SSL }};{{ end }}
@@ -77,12 +66,12 @@ server {
   client_max_body_size {{ if $.CLIENT_MAX_BODY_SIZE }}{{ $.CLIENT_MAX_BODY_SIZE }}{{ else }}100M{{ end }};
 
   add_header Strict-Transport-Security "max-age=31536000";
+  {{ if var "ONION_ADDRESS" }}add_header Onion-Location http://{{ var "ONION_ADDRESS" }}$request_uri;{{ end }}
 
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header Proxy "";
   proxy_pass_header Server;
 
-  proxy_buffering on;
   proxy_redirect off;
   proxy_http_version 1.1;
 
@@ -101,6 +90,7 @@ server {
     {{ if eq $.HTTP2_PUSH_SUPPORTED "true" }}http2_push_preload on; {{ end }}
     {{ $proxy_cache_settings }}
     proxy_pass http://{{ $.APP }}-web;
+    {{ if var "ONION_ADDRESS" }}add_header Onion-Location http://{{ var "ONION_ADDRESS" }}$request_uri;{{ end }}
   }
 
   location /gallery {
@@ -146,6 +136,21 @@ server {
   include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
 
   error_page 500 501 502 503 504 /500.html;
+}
+{{   else if and (eq $scheme "http") (not (var "ONION_ADDRESS")) }}
+server {
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{ end }}{{ $listen_port }};
+  {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
+  access_log  {{ $.NGINX_ACCESS_LOG_PATH }}{{ if and ($.NGINX_ACCESS_LOG_FORMAT) (ne $.NGINX_ACCESS_LOG_PATH "off") }} {{ $.NGINX_ACCESS_LOG_FORMAT }}{{ end }};
+  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
+{{     if (and (eq $listen_port "80") ($.SSL_INUSE)) }}
+  include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
+  location / {
+    return 301 https://$host:{{ $.PROXY_SSL_PORT }}$request_uri;
+  }
+{{     else }}
+{{     end }}
 }
 {{   end }}
 {{ end }}
