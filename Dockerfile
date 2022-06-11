@@ -1,3 +1,4 @@
+# syntax = docker/dockerfile:1.4
 FROM ubuntu:20.04 as basic-dep
 
 # Use bash for the shell
@@ -125,8 +126,14 @@ ENV BIND="0.0.0.0"
 USER mastodon
 
 # Precompile assets
-RUN cd ~ && \
+RUN --mount=type=cache,target=/opt/mastodon/node_modules/.cache,uid=$UID,gid=$GID \
+	--mount=type=cache,target=/opt/mastodon/tmp,uid=$UID,gid=$GID \
+	--mount=type=cache,target=/opt/mastodon/public/packs-cache,uid=$UID,gid=$GID \
+	cd ~ && \
+	cp -aT public/packs-cache/ public/packs/ && \
 	OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile && \
+	OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:clean && \
+	cp -aT public/packs/ public/packs-cache/ && \
 	yarn cache clean
 
 # Set the work dir and the container entry point
