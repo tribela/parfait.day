@@ -13,7 +13,7 @@ gem 'thor', '~> 1.2'
 gem 'rack', '~> 2.2.3'
 
 gem 'hamlit-rails', '~> 0.2'
-gem 'pg', '~> 1.3'
+gem 'pg', '~> 1.4'
 gem 'makara', '~> 0.5'
 gem 'pghero', '~> 2.8'
 gem 'dotenv-rails', '~> 2.7'
@@ -26,7 +26,7 @@ gem 'blurhash', '~> 0.1'
 
 gem 'active_model_serializers', '~> 0.10'
 gem 'addressable', '~> 2.8'
-gem 'bootsnap', '~> 1.11.1', require: false
+gem 'bootsnap', '~> 1.12.0', require: false
 gem 'browser'
 gem 'charlock_holmes', '~> 0.7.7'
 gem 'chewy', '~> 7.2'
@@ -53,7 +53,7 @@ gem 'fastimage'
 gem 'hiredis', '~> 0.6'
 gem 'redis-namespace', '~> 1.8'
 gem 'htmlentities', '~> 4.3'
-gem 'http', '~> 5.0'
+gem 'http', '~> 5.1'
 gem 'http_accept_language', '~> 2.1'
 gem 'httplog', '~> 1.5.0'
 gem 'idn-ruby', require: 'idn'
@@ -101,7 +101,7 @@ gem 'rdf-normalize', '~> 0.5'
 gem 'redcarpet', '~> 3.5'
 
 group :development, :test do
-  gem 'fabrication', '~> 2.28'
+  gem 'fabrication', '~> 2.29'
   gem 'fuubar', '~> 2.5'
   gem 'i18n-tasks', '~> 1.0', require: false
   gem 'pry-byebug', '~> 3.9'
@@ -135,7 +135,7 @@ group :development do
   gem 'letter_opener_web', '~> 2.0'
   gem 'memory_profiler'
   gem 'rubocop', '~> 1.30', require: false
-  gem 'rubocop-rails', '~> 2.14', require: false
+  gem 'rubocop-rails', '~> 2.15', require: false
   gem 'brakeman', '~> 5.2', require: false
   gem 'bundler-audit', '~> 0.9', require: false
 
@@ -157,6 +157,7 @@ gem 'connection_pool', require: false
 gem 'xorcist', '~> 1.1'
 
 gem 'hcaptcha', '~> 7.1'
+gem 'cocoon', '~> 1.2'
 
 gem 'prometheus-client', '~> 2.1'
 

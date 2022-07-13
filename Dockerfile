@@ -20,7 +20,7 @@ ENV PATH="/opt/ruby/bin:/opt/node/bin:/opt/mastodon/bin:${PATH}"
 
 FROM basic-dep as node-dep
 # Install Node v16 (LTS)
-ENV NODE_VER="16.14.2"
+ENV NODE_VER="16.15.1"
 RUN ARCH= && \
     dpkgArch="$(dpkg --print-architecture)" && \
   case "${dpkgArch##*-}" in \
