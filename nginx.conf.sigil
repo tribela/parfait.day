@@ -26,6 +26,7 @@ server {
   {{ if var "ONION_ADDRESS" }}
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ or $.PROXY_PORT 80 }};
   listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{ end }}{{ or $.PROXY_PORT 80 }};
+  server_name {{ var "ONION_ADDRESS" }};
   {{ end }}
 
   {{ if $.SSL_SERVER_NAME }}server_name {{ $.SSL_SERVER_NAME }}; {{ end }}
