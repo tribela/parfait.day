@@ -1,7 +1,6 @@
 // Fix button on modal dialog background color
 .modal-root {
   .button {
-
     &:hover {
       background-color: lighten($ui-highlight-color, 5%);
     }
@@ -10,7 +9,6 @@
     &:focus {
       background-color: darken($ui-highlight-color, 5%);
     }
-
   }
 }
 
@@ -43,21 +41,32 @@ a.status-link {
 }
 
 html {
-  scrollbar-color: $ui-secondary-color rgba($ui-base-color, 0.1);
+  // scrollbar-color: $ui-secondary-color rgba($ui-base-color, 0.1);
+  scrollbar-width: thin;
 }
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  scrollbar-width: thin;
+::-webkit-scrollbar {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-width: thin;
+  background: transparent;
+
+  &:vertical { /* stylelint-disable-line selector-pseudo-class-no-unknown */
+    border-right: 1px solid $ui-secondary-color;
+  }
+
+  &:horizontal { /* stylelint-disable-line selector-pseudo-class-no-unknown */
+    border-bottom: 1px solid $ui-secondary-color;
+  }
+
+  &:hover {
+    border-width: thick;
+    background: transparent;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: rgba($ui-base-color, 0.1);
 }
