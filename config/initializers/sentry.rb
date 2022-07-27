@@ -32,9 +32,6 @@ if ENV['SENTRY_DSN']
     end
 
     config.rails.report_rescued_exceptions = false
-
-    if ENV['ALTERNATE_DOMAINS']
-      config.environment = 'beta'
-    end
+    config.environment = ENV['SENTRY_ENVIRONMENT'] if ENV['ALTERNATE_DOMAINS']
   end
 end
