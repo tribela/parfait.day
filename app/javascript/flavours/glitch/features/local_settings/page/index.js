@@ -29,6 +29,7 @@ const messages = defineMessages({
   rewrite_mentions_username: { id: 'settings.rewrite_mentions_username', defaultMessage:  'Rewrite with username' },
   pop_in_left: { id: 'settings.pop_in_left', defaultMessage: 'Left' },
   pop_in_right: { id: 'settings.pop_in_right', defaultMessage:  'Right' },
+  translate: { id: 'settings.translate', defaultMessage: 'Translation' },
 });
 
 export default @injectIntl
@@ -155,6 +156,18 @@ class LocalSettingsPage extends React.PureComponent {
             onChange={onChange}
           >
             <FormattedMessage id='settings.status_icons_visibility' defaultMessage='Toot privacy indicator' />
+          </LocalSettingsPageItem>
+        </section>
+        <section>
+          <h2><FormattedMessage id='settings.actionbar_opts' defaultMessage='Actionbar options' /></h2>
+          <LocalSettingsPageItem
+            settings={settings}
+            item={['actionbar', 'translate']}
+            id='mastodon-settings--actionbar-translate'
+            onChange={onChange}
+            showWhen={settings.get('unlock_hidden_feature') === true}
+          >
+            <FormattedMessage id='settings.translate' defaultMessage='Translation' />
           </LocalSettingsPageItem>
         </section>
         <section>

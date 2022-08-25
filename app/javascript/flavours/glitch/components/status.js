@@ -17,6 +17,7 @@ import classNames from 'classnames';
 import { autoUnfoldCW } from 'flavours/glitch/util/content_warning';
 import PollContainer from 'flavours/glitch/containers/poll_container';
 import { displayMedia } from 'flavours/glitch/util/initial_state';
+import { translate } from 'flavours/glitch/util/translate';
 import PictureInPicturePlaceholder from 'flavours/glitch/components/picture_in_picture_placeholder';
 
 // We use the component (and not the container) since we do not want
@@ -112,6 +113,8 @@ class Status extends ImmutablePureComponent {
     revealBehindCW: undefined,
     showCard: false,
     forceFilter: undefined,
+    translatedStatus: undefined,
+    isTranslated: false,
   }
 
   // Avoid checking props that are functions (and whose equality will always
@@ -134,6 +137,8 @@ class Status extends ImmutablePureComponent {
     'isCollapsed',
     'showMedia',
     'forceFilter',
+    'translatedStatus',
+    'isTranslated',
   ]
 
   //  If our settings have changed to disable collapsed statuses, then we
@@ -464,6 +469,27 @@ class Status extends ImmutablePureComponent {
     this.setState({ forceFilter: true });
   }
 
+  handleTranslate = async () => {
+    // TODO: Make translate endpoint configurable
+
+    const { isTranslated } = this.state;
+    if (isTranslated) {
+      this.setState({ isTranslated: false });
+      return;
+    }
+
+    let { translatedStatus } = this.state;
+
+    if (translatedStatus) {
+      this.setState({ isTranslated: true });
+      return;
+    }
+
+    translatedStatus = await translate(this.props.status, this.props.intl.locale);
+
+    this.setState({ isTranslated: true, translatedStatus });
+  }
+
   handleRef = c => {
     this.node = c;
   }
@@ -506,7 +532,7 @@ class Status extends ImmutablePureComponent {
       usingPiP,
       ...other
     } = this.props;
-    const { isCollapsed, forceFilter } = this.state;
+    const { isCollapsed, forceFilter, translatedStatus, isTranslated } = this.state;
     let background = null;
     let attachments = null;
 
@@ -552,7 +578,7 @@ class Status extends ImmutablePureComponent {
         <HotKeys handlers={handlers}>
           <div ref={this.handleRef} className='status focusable' tabIndex='0'>
             <span>{status.getIn(['account', 'display_name']) || status.getIn(['account', 'username'])}</span>
-            <span>{status.get('content')}</span>
+            <span>{ isTranslated ? translatedStatus?.get('content') : status.get('content')}</span>
           </div>
         </HotKeys>
       );
@@ -775,6 +801,7 @@ class Status extends ImmutablePureComponent {
           </header>
           <StatusContent
             status={status}
+            translatedStatus={isTranslated ? translatedStatus : null}
             media={contentMedia}
             extraMedia={extraMedia}
             mediaIcons={contentMediaIcons}
@@ -792,6 +819,9 @@ class Status extends ImmutablePureComponent {
               account={status.get('account')}
               showReplyCount={settings.get('show_reply_count')}
               onFilter={matchedFilters ? this.handleFilterClick : null}
+              onTranslate={this.handleTranslate}
+              isTranslated={isTranslated}
+              settings={settings}
               {...other}
             />
           ) : null}

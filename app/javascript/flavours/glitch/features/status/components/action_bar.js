@@ -35,6 +35,7 @@ const messages = defineMessages({
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   admin_status: { id: 'status.admin_status', defaultMessage: 'Open this status in the moderation interface' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to status' },
+  translate: { id: 'status.translate', defaultMessage: 'Translate' },
 });
 
 export default @injectIntl
@@ -61,6 +62,8 @@ class ActionBar extends React.PureComponent {
     onReport: PropTypes.func,
     onPin: PropTypes.func,
     onEmbed: PropTypes.func,
+    onTranslate: PropTypes.func,
+    isTranslated: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
 
@@ -151,12 +154,16 @@ class ActionBar extends React.PureComponent {
   }
 
   render () {
-    const { status, intl } = this.props;
+    const { status, intl, onTranslate, isTranslated } = this.props;
 
     const publicStatus       = ['public', 'unlisted'].includes(status.get('visibility'));
     const pinnableStatus     = ['public', 'unlisted', 'private'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
     const writtenByMe        = status.getIn(['account', 'id']) === me;
+
+    const { settings } = this.props;
+    const unlockedHiddenFeature = settings.get('unlock_hidden_feature', false);
+    const actionbarTranslate = settings.getIn(['actionbar', 'translate'], false);
 
     let menu = [];
 
@@ -205,6 +212,13 @@ class ActionBar extends React.PureComponent {
       <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.share)} icon='share-alt' onClick={this.handleShare} /></div>
     );
 
+    // TODO?: only if differ from current locale
+    const translateButton = (unlockedHiddenFeature && actionbarTranslate) && (
+      <div className='detailed-status__button'>
+        <IconButton className='status__action-bar-button translate-icon' animate active={isTranslated} title={intl.formatMessage(messages.translate)} icon='language' onClick={onTranslate} />
+      </div>
+    );
+
     const reblogPrivate = status.getIn(['account', 'id']) === me && status.get('visibility') === 'private';
 
     let reblogTitle;
@@ -225,6 +239,7 @@ class ActionBar extends React.PureComponent {
         <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} /></div>
         {shareButton}
         <div className='detailed-status__button'><IconButton className='bookmark-icon' active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} /></div>
+        {translateButton}
 
         <div className='detailed-status__action-bar-dropdown'>
           <DropdownMenuContainer size={18} icon='ellipsis-h' items={menu} direction='left' title={intl.formatMessage(messages.more)} />
