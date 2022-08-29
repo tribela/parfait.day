@@ -20,7 +20,7 @@ ENV PATH="/opt/ruby/bin:/opt/node/bin:/opt/mastodon/bin:${PATH}"
 
 FROM basic-dep as node-dep
 # Install Node v16 (LTS)
-ENV NODE_VER="16.15.1"
+ENV NODE_VER="16.16.0"
 RUN ARCH= && \
     dpkgArch="$(dpkg --print-architecture)" && \
   case "${dpkgArch##*-}" in \
@@ -44,7 +44,7 @@ RUN npm install -g yarn
 
 FROM basic-dep as ruby-dep
 # Install Ruby 3.0
-ENV RUBY_VER="3.0.3"
+ENV RUBY_VER="3.0.4"
 RUN apt-get update && \
   apt-get install -y --no-install-recommends build-essential \
     bison libyaml-dev libgdbm-dev libreadline-dev libjemalloc-dev \

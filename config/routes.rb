@@ -182,7 +182,14 @@ Rails.application.routes.draw do
   resources :tags,   only: [:show]
   resources :emojis, only: [:show]
   resources :invites, only: [:index, :create, :destroy]
-  resources :filters, except: [:show]
+  resources :filters, except: [:show] do
+    resources :statuses, only: [:index], controller: 'filters/statuses' do
+      collection do
+        post :batch
+      end
+    end
+  end
+
   resource :relationships, only: [:show, :update]
   resource :statuses_cleanup, controller: :statuses_cleanup, only: [:show, :update]
 
@@ -472,12 +479,14 @@ Rails.application.routes.draw do
       resources :trends,       only: [:index], controller: 'trends/tags'
       resources :filters,      only: [:index, :create, :show, :update, :destroy] do
         resources :keywords, only: [:index, :create], controller: 'filters/keywords'
+        resources :statuses, only: [:index, :create], controller: 'filters/statuses'
       end
       resources :endorsements, only: [:index]
       resources :markers,      only: [:index, :create]
 
       namespace :filters do
         resources :keywords, only: [:show, :update, :destroy]
+        resources :statuses, only: [:show, :destroy]
       end
 
       namespace :apps do
@@ -608,6 +617,8 @@ Rails.application.routes.draw do
 
         resources :domain_allows, only: [:index, :show, :create, :destroy]
         resources :domain_blocks, only: [:index, :show, :update, :create, :destroy]
+        resources :email_domain_blocks, only: [:index, :show, :create, :destroy]
+        resources :ip_blocks, only: [:index, :show, :update, :create, :destroy]
 
         namespace :trends do
           resources :tags, only: [:index]
@@ -618,6 +629,12 @@ Rails.application.routes.draw do
         post :measures, to: 'measures#create'
         post :dimensions, to: 'dimensions#create'
         post :retention, to: 'retention#create'
+
+        resources :canonical_email_blocks, only: [:index, :create, :show, :destroy] do
+          collection do
+            post :test
+          end
+        end
       end
     end
 
