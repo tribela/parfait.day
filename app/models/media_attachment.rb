@@ -106,7 +106,7 @@ class MediaAttachment < ApplicationRecord
         'loglevel' => 'fatal',
         'movflags' => 'faststart',
         'pix_fmt' => 'yuv420p',
-        'vf' => "scale='trunc(min(#{MAX_VIDEO_MATRIX_LIMIT}, iw*ih) / ih / 2)*2:-2':force_original_aspect_ratio=decrease",
+        'vf' => "scale='trunc(min(#{MAX_VIDEO_MATRIX_LIMIT}, iw*ih) / ih / 2)*2:-2'",
         'vsync' => 'cfr',
         'c:v' => 'h264',
         'maxrate' => '1300K',
