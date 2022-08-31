@@ -192,7 +192,6 @@ const messages = {
   'status.is_poll': '이 글은 설문입니다',
   'status.local_only': '당신의 서버에서만 보입니다',
   'status.sensitive_toggle': '클릭해서 보기',
-  'status.show_filter_reason': '(이유 보기)',
   'status.translate': '번역',
   'status.uncollapse': '펼치기',
   'upload_modal.applying': '적용중…',
