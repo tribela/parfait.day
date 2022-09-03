@@ -77,7 +77,7 @@ RUN cd /opt/mastodon && \
 	bundle install -j"$(nproc)" && \
 	yarn install --pure-lockfile
 
-FROM ubuntu:20.04
+FROM ubuntu:20.04 as main
 
 # Copy over all the langs needed for runtime
 COPY --from=build-dep /opt/node /opt/node
@@ -111,7 +111,6 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/*
 
 # Copy over mastodon source, and dependencies from building, and set permissions
-COPY --chown=mastodon:mastodon . /opt/mastodon
 COPY --from=build-dep --chown=mastodon:mastodon /opt/mastodon /opt/mastodon
 
 # Run mastodon services in prod mode
@@ -125,6 +124,10 @@ ENV BIND="0.0.0.0"
 # Set the run user
 USER mastodon
 
+
+FROM main as webpack
+
+COPY --chown=mastodon:mastodon . /opt/mastodon
 # Precompile assets
 RUN --mount=type=cache,target=/opt/mastodon/node_modules/.cache,uid=$UID,gid=$GID \
 	--mount=type=cache,target=/opt/mastodon/tmp,uid=$UID,gid=$GID \
@@ -134,7 +137,11 @@ RUN --mount=type=cache,target=/opt/mastodon/node_modules/.cache,uid=$UID,gid=$GI
 	OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile && \
 	OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:clean && \
 	cp -aT public/packs/ public/packs-cache/ && \
-	yarn cache clean
+	yarn cache clean && \
+	rm -rf app/javascript/fonts/
+
+FROM main as final
+COPY --from=webpack --chown=mastodon:mastodon /opt/mastodon/ /opt/mastodon/
 
 # Set the work dir and the container entry point
 WORKDIR /opt/mastodon
