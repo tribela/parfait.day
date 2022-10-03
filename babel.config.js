@@ -18,6 +18,7 @@ module.exports = (api) => {
     ],
     plugins: [
       ['@babel/proposal-decorators', { legacy: true }],
+      ['@babel/plugin-proposal-nullish-coalescing-operator'],
       ['react-intl', { messagesDir: './build/messages' }],
       'preval',
     ],
