@@ -162,6 +162,10 @@ class ActionBar extends React.PureComponent {
 
     let menu = [];
 
+    const { settings } = this.props;
+
+    const unlockedHiddenFeature = settings.get('unlocked_hidden_features', false);
+
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
       menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
