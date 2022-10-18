@@ -3,7 +3,7 @@
 module Admin
   class RelaysController < BaseController
     before_action :set_relay, except: [:index, :new, :create]
-    before_action :require_signatures_enabled!, only: [:new, :create, :enable]
+    # before_action :require_signatures_enabled!, only: [:new, :create, :enable]
 
     def index
       authorize :relay, :update?
