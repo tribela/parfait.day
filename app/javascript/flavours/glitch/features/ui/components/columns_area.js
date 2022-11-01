@@ -52,6 +52,7 @@ export default class ColumnsArea extends ImmutablePureComponent {
     children: PropTypes.node,
     navbarUnder: PropTypes.bool,
     openSettings: PropTypes.func,
+    onTouchAbout: PropTypes.func,
   };
 
   // Corresponds to (max-width: $no-gap-breakpoint + 285px - 1px) in SCSS
@@ -136,7 +137,7 @@ export default class ColumnsArea extends ImmutablePureComponent {
   }
 
   render () {
-    const { columns, children, singleColumn, navbarUnder, openSettings } = this.props;
+    const { columns, children, singleColumn, navbarUnder, openSettings, onTouchAbout } = this.props;
     const { renderComposePanel } = this.state;
 
     if (singleColumn) {
@@ -155,7 +156,7 @@ export default class ColumnsArea extends ImmutablePureComponent {
 
           <div className='columns-area__panels__pane columns-area__panels__pane--start columns-area__panels__pane--navigational'>
             <div className='columns-area__panels__pane__inner'>
-              <NavigationPanel onOpenSettings={openSettings} />
+              <NavigationPanel onOpenSettings={openSettings} onTouchAbout={onTouchAbout} />
             </div>
           </div>
         </div>

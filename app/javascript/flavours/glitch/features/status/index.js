@@ -675,7 +675,6 @@ class Status extends ImmutablePureComponent {
                 <ActionBar
                   key={`action-bar-${status.get('id')}`}
                   status={status}
-                  settings={settings}
                   onReply={this.handleReplyClick}
                   onFavourite={this.handleFavouriteClick}
                   onReblog={this.handleReblogClick}

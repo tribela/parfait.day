@@ -47,7 +47,6 @@ class ActionBar extends React.PureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
-    settings: ImmutablePropTypes.map.isRequired,
     onReply: PropTypes.func.isRequired,
     onReblog: PropTypes.func.isRequired,
     onFavourite: PropTypes.func.isRequired,
@@ -161,10 +160,6 @@ class ActionBar extends React.PureComponent {
     const writtenByMe        = status.getIn(['account', 'id']) === me;
 
     let menu = [];
-
-    const { settings } = this.props;
-
-    const unlockedHiddenFeature = settings.get('unlocked_hidden_features', false);
 
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });

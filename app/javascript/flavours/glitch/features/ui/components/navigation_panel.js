@@ -41,7 +41,7 @@ class NavigationPanel extends React.Component {
   };
 
   render() {
-    const { intl, onOpenSettings } = this.props;
+    const { intl, onOpenSettings, onTouchAbout } = this.props;
     const { signedIn } = this.context.identity;
 
     return (
@@ -92,7 +92,7 @@ class NavigationPanel extends React.Component {
 
         <div className='navigation-panel__legal'>
           <hr />
-          <ColumnLink transparent to='/about' icon='ellipsis-h' text={intl.formatMessage(messages.about)} />
+          <ColumnLink transparent to='/about' icon='ellipsis-h' text={intl.formatMessage(messages.about)} onTouchStart={onTouchAbout} />
         </div>
 
         <NavigationPortal />
