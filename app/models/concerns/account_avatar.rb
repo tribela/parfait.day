@@ -25,7 +25,7 @@ module AccountAvatar
   end
 
   def avatar_original_url
-    avatar.url(:original)
+    avatar_file_name.nil? && domain.nil? ? '/avatars/original/missing_qdon.png' : avatar.url(:original)
   end
 
   def avatar_static_url
