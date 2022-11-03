@@ -16,9 +16,9 @@ import LanguageDropdown from '../containers/language_dropdown_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
 //  Utils.
-import Motion from 'flavours/glitch/util/optional_motion';
-import Settings from 'flavours/glitch/util/settings';
-import { pollLimits } from 'flavours/glitch/util/initial_state';
+import Motion from '../../ui/util/optional_motion';
+import Settings from 'flavours/glitch/settings';
+import { pollLimits } from 'flavours/glitch/initial_state';
 
 //  Messages.
 const messages = defineMessages({

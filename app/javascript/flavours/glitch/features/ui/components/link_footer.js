@@ -3,9 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { limitedFederationMode, version, repository, source_url } from 'flavours/glitch/util/initial_state';
-import { signOutLink, securityLink } from 'flavours/glitch/util/backend_links';
-import { logOut } from 'flavours/glitch/util/log_out';
+import { version, repository, source_url, profile_directory as profileDirectory } from 'flavours/glitch/initial_state';
+import { logOut } from 'flavours/glitch/utils/log_out';
 import { openModal } from 'flavours/glitch/actions/modal';
 import { PERMISSION_INVITE_USERS } from 'flavours/glitch/permissions';
 
@@ -48,17 +47,35 @@ class LinkFooter extends React.PureComponent {
   }
 
   render () {
+    const { signedIn, permissions } = this.context.identity;
+    const items = [];
+
+    items.push(<a key='apps' href='https://joinmastodon.org/apps' target='_blank'><FormattedMessage id='navigation_bar.apps' defaultMessage='Get the app' /></a>);
+    items.push(<Link key='about' to='/about'><FormattedMessage id='navigation_bar.info' defaultMessage='About' /></Link>);
+    items.push(<a key='mastodon' href='https://joinmastodon.org' target='_blank'><FormattedMessage id='getting_started.what_is_mastodon' defaultMessage='About Mastodon' /></a>);
+    items.push(<a key='docs' href='https://docs.joinmastodon.org' target='_blank'><FormattedMessage id='getting_started.documentation' defaultMessage='Documentation' /></a>);
+    items.push(<Link key='privacy-policy' to='/privacy-policy'><FormattedMessage id='getting_started.privacy_policy' defaultMessage='Privacy Policy' /></Link>);
+    items.push(<Link key='hotkeys' to='/keyboard-shortcuts'><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></Link>);
+
+    if (profileDirectory) {
+      items.push(<Link key='directory' to='/directory'><FormattedMessage id='getting_started.directory' defaultMessage='Directory' /></Link>);
+    }
+
+    if (signedIn) {
+      if ((permissions & PERMISSION_INVITE_USERS) === PERMISSION_INVITE_USERS) {
+        items.push(<a key='invites' href='/invites' target='_blank'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a>);
+      }
+
+      items.push(<a key='security' href='/auth/edit'><FormattedMessage id='getting_started.security' defaultMessage='Security' /></a>);
+      items.push(<a key='logout' href='/auth/sign_out' onClick={this.handleLogoutClick}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></a>);
+    }
+
     return (
       <div className='getting-started__footer'>
         <ul>
-          {((this.context.identity.permissions & PERMISSION_INVITE_USERS) === PERMISSION_INVITE_USERS) && <li><a href='/invites' target='_blank'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}
-          {!!securityLink && <li><a href='/auth/edit'><FormattedMessage id='getting_started.security' defaultMessage='Security' /></a> · </li>}
-          {!limitedFederationMode && <li><a href='/about/more' target='_blank'><FormattedMessage id='navigation_bar.info' defaultMessage='About this server' /></a> · </li>}
-          <li><a href='https://joinmastodon.org/apps' target='_blank'><FormattedMessage id='navigation_bar.apps' defaultMessage='Mobile apps' /></a> · </li>
-          <li><a href='/terms' target='_blank'><FormattedMessage id='getting_started.terms' defaultMessage='Terms of service' /></a> · </li>
-          <li><a href='/settings/applications' target='_blank'><FormattedMessage id='getting_started.developers' defaultMessage='Developers' /></a> · </li>
-          <li><a href='https://docs.joinmastodon.org' target='_blank'><FormattedMessage id='getting_started.documentation' defaultMessage='Documentation' /></a> · </li>
-          <li><a href={signOutLink} onClick={this.handleLogoutClick}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></a></li>
+          {items.map((item, index, array) => (
+            <li>{item} { index === array.length - 1 ? null : ' · ' }</li>
+          ))}
         </ul>
 
         <p>

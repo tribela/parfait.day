@@ -1,88 +1,26 @@
 ---
 eo:
   about:
-    about_hashtag_html: Ĉi tiuj estas la publikaj mesaĝoj markitaj per <strong>#%{hashtag}</strong>. Vi povas interagi kun ili se vi havas konton ie ajn en la fediverse.
     about_mastodon_html: 'Mastodon estas socia retejo de la estonteco: sen reklamo, sen kompania gvato, etika dezajno kaj malcentraligo! Vi regu viajn datumojn kun Mastodon!'
-    about_this: Pri
-    active_count_after: aktivaj
-    active_footnote: Monate Aktivaj Uzantoj (MAU)
-    administered_by: 'Administrata de:'
-    api: API
-    apps: Poŝtelefonaj aplikaĵoj
-    apps_platforms: Uzu Mastodon de iOS, Android, kaj aliaj substratoj
-    browse_directory: Esplori la profilujon kaj filtri en interesoj
-    browse_local_posts: Vidi vivantan fluon de publikaj mesaĝoj al Mastodon
-    browse_public_posts: Vidi vivantan fluon de publikaj mesaĝoj al Mastodon
-    contact: Kontakto
     contact_missing: Ne ŝargita
     contact_unavailable: Ne disponebla
-    continue_to_web: Daŭrigi al la retaplikaĵo
-    discover_users: Malkovri uzantojn
-    documentation: Dokumentado
-    federation_hint_html: Per konto ĉe %{instance}, vi povos sekvi homojn ĉe iu ajn Mastodon nodo kaj preter.
-    get_apps: Provu telefonan aplikaĵon
     hosted_on: "%{domain} estas nodo de Mastodon"
-    instance_actor_flash: 'Ĉi tiu konto estas virtuala agento uzata por reprezenti la servilon mem kaj neniu individua uzanto. Ĝi estas uzata por celoj de la federaĵo, kaj devas ne esti brokita, krom se vi ne volas bloki la tutan servilon, tiuokaze vi devas uzi blokadon de domajno.
-
-      '
-    learn_more: Lerni pli
-    logged_in_as_html: Vi nun salutis kiel %{username}.
-    logout_before_registering: Vi jam salutis.
-    privacy_policy: Politiko de privateco
-    rules: Reguloj de la servilo
-    see_whats_happening: Vidi kio okazas
-    server_stats: 'Statistikoj de la servilo:'
-    source_code: Fontkodo
-    status_count_after:
-      one: mesaĝo
-      other: mesaĝoj
-    status_count_before: Kie skribiĝis
-    tagline: Malcentrigita socia retejo
-    terms: Kondiĉoj de la servo
-    unavailable_content: Moderigitaj serviloj
-    unavailable_content_description:
-      domain: Servilo
-      reason: Motivo
-      rejecting_media: 'La aŭdovidaj dosieroj de ĉi tiuj serviloj ne estos prilaboritaj aŭ stokitaj, kaj neniu bildeto estos montrita, do necesas klaki permane por vidi la originalan afiŝon:'
-      rejecting_media_title: Filtritaj aŭdovidaĵoj
-      silenced: 'La mesaĝoj de tiuj serviloj estos kaŝitaj de publikaj templinio kaj konversacioj, kaj la interagoj de la uzantoj donas neniun sciigon, ĝis vi sekvos ilin:'
-      silenced_title: Limigitaj serviloj
-      suspended: 'Neniu datumo de ĉi tiuj serviloj estos prilaboritaj, stokitaj, aŭ interŝanĝitaj, neeble fari interagon aŭ komunikon kun la uzantoj de ĉi tiuj serviloj:'
-      suspended_title: Suspenditaj serviloj
-    user_count_after:
-      one: uzanto
-      other: uzantoj
-    user_count_before: Hejmo de
-    what_is_mastodon: Kio estas Mastodon?
   accounts:
-    choices_html: 'Proponoj de %{name}:'
     follow: Sekvi
     followers:
       one: Sekvanto
       other: Sekvantoj
     following: Sekvatoj
     instance_actor_flash: Ĉi tiu konto estas virtuala agento uzata por reprezenti la servilon mem kaj neniu individua uzanto. Ĝi estas uzata por celoj de la federaĵo kaj devas ne esti suspendita.
-    joined: Aliĝis je %{date}
     last_active: laste aktiva
     link_verified_on: Proprieto de ĉi tiu ligilo estis kontrolita je %{date}
-    media: Aŭdovidaĵoj
-    moved_html: "%{name} moviĝis al %{new_profile_link}:"
-    network_hidden: Tiu informo ne estas disponebla
     nothing_here: Estas nenio ĉi tie!
-    people_followed_by: Sekvatoj de %{name}
-    people_who_follow: Sekvantoj de %{name}
     pin_errors:
       following: Vi devas sekvi la homon, kiun vi volas proponi
     posts:
       one: Mesaĝo
       other: Mesaĝoj
     posts_tab_heading: Mesaĝoj
-    posts_with_replies: Mesaĝoj kaj respondoj
-    roles:
-      bot: Roboto
-      group: Grupo
-    unavailable: Profilo ne disponebla
-    unfollow: Ne plu sekvi
   admin:
     account_actions:
       action: Plenumi agon
@@ -261,7 +199,6 @@ eo:
         create_ip_block_html: "%{name} kreis regulon por IP %{target}"
         demote_user_html: "%{name} degradis uzanton %{target}"
         destroy_announcement_html: "%{name} forigis anoncon %{target}"
-        destroy_custom_emoji_html: "%{name} neniigis la emoĝion %{target}"
         destroy_domain_allow_html: "%{name} forigis domajnon %{target} el la blanka listo"
         destroy_domain_block_html: "%{name} malblokis domajnon %{target}"
         destroy_email_domain_block_html: "%{name} malblokis retpoŝtan domajnon %{target}"
@@ -280,7 +217,6 @@ eo:
         suspend_account_html: "%{name} suspendis la konton de %{target}"
         unsuspend_account_html: "%{name} reaktivigis la konton de %{target}"
         update_announcement_html: "%{name} ĝisdatigis anoncon %{target}"
-      deleted_status: "(forigita mesaĝo)"
       empty: Neniu protokolo trovita.
       filter_by_action: Filtri per ago
       filter_by_user: Filtri per uzanto
@@ -530,79 +466,15 @@ eo:
       edit: Redakti la regulon
       title: Reguloj de la servilo
     settings:
-      activity_api_enabled:
-        desc_html: Sumo de lokaj mesaĝoj, aktivaj uzantoj, kaj novaj registriĝoj laŭsemajne
-        title: Publikigi kunmetitajn statistikojn pri la uzanta agado
-      bootstrap_timeline_accounts:
-        desc_html: Disigi plurajn uzantnomojn per komo. Funkcios nur por lokaj neŝlositaj kontoj. Kiam malplena, la dekomenca valoro estas ĉiuj lokaj administrantoj.
-        title: Dekomencaj sekvadoj por novaj uzantoj
-      contact_information:
-        email: Publika retadreso
-        username: Kontakta uzantnomo
-      custom_css:
-        desc_html: Ŝanĝi la aspekton per CSS ŝargita en ĉiu pago
-        title: Propra CSS
       domain_blocks:
         all: Al ciuj
         disabled: Al neniu
-        title: Vidi domajna blokado
         users: Al salutintaj lokaj uzantoj
-      domain_blocks_rationale:
-        title: Montri la kialon
-      hero:
-        desc_html: Montrata en la ĉefpaĝo. Almenaŭ 600x100px rekomendita. Kiam ne agordita, la bildeto de la servilo estos uzata
-        title: Kapbildo
-      mascot:
-        desc_html: Montrata en pluraj paĝoj. Rekomendataj estas almenaŭ 293x205px. Se ĉi tio ne estas agordita, la defaŭlta maskoto uziĝas
-        title: Maskota bildo
-      peers_api_enabled:
-        desc_html: Nomoj de domajnoj, kiujn ĉi tiu servilo renkontis en la federauniverso
-        title: Publikigi liston de malkovritaj serviloj
-      preview_sensitive_media:
-        desc_html: La antaŭmontroj de ligilo al la aliaj retejoj montros bildeton eĉ se la aŭdovidaĵo estas markita kiel tikla
-        title: Montri tiklajn aŭdovidaĵojn en la antaŭvidoj de OpenGraph
-      profile_directory:
-        desc_html: Permesi al uzantoj esti troveblaj
-        title: Ebligi la profilujon
-      registrations:
-        closed_message:
-          desc_html: Montrita sur la hejma paĝo kiam registriĝoj estas fermitaj. Vi povas uzi HTML-etikedojn
-          title: Mesaĝo pri fermitaj registriĝoj
-        deletion:
-          desc_html: Permesi al iu ajn forigi propran konton
-          title: Permesi forigi konton
       registrations_mode:
         modes:
           approved: Bezonas aprobi por aliĝi
           none: Neniu povas aliĝi
           open: Iu povas aliĝi
-        title: Reĝimo de registriĝo
-      show_known_fediverse_at_about_page:
-        desc_html: Kiam ŝaltita, ĝi montros mesaĝojn de la tuta konata fediverse antaŭvide. Aliokaze, ĝi montros nur lokajn mesaĝojn.
-        title: Inkluzivi frataran enhavon en la neaŭtentigita publika antaŭmontro de templinio
-      site_description:
-        desc_html: Enkonduka alineo en la ĉefpaĝo. Priskribu la unikaĵojn de ĉi tiu nodo de Mastodon, kaj ĉiujn aliajn gravaĵojn. Vi povas uzi HTML-etikedojn, kiel <code>&lt;a&gt;</code> kaj <code>&lt;em&gt;</code>.
-        title: Priskribo de la servilo
-      site_description_extended:
-        desc_html: Bona loko por viaj sintenaj reguloj, aliaj reguloj, gvidlinioj kaj aliaj aferoj, kiuj apartigas vian serilon. Vi povas uzi HTML-etikedojn
-        title: Propraj detalaj informoj
-      site_short_description:
-        desc_html: Afiŝita en la flankpanelo kaj metadatumaj etikedoj. Priskribu kio estas Mastodon, kaj kio specialas en ĉi tiu nodo, per unu alineo. Se malplena, la priskribo de la servilo estos uzata.
-        title: Mallonga priskribo de la servilo
-      site_terms:
-        desc_html: Vi povas skribi vian propran privatecan politikon, viajn uzkondiĉojn aŭ aliajn leĝaĵojn. Vi povas uzi HTML-etikedojn
-        title: Propraj kondiĉoj de la servo
-      site_title: Nomo de la servilo
-      thumbnail:
-        desc_html: Uzata por antaŭvidoj per OpenGraph kaj per API. 1200x630px rekomendita
-        title: Bildeto de la servilo
-      timeline_preview:
-        desc_html: Montri publikan templinion en komenca paĝo
-        title: Permesi la neaŭtentigitan aliron al la publika templinio
-      title: Retejaj agordoj
-      trends:
-        desc_html: Publike montri antaŭe kontrolitajn kradvortojn, kiuj nune furoras
-        title: Furoraj kradvortoj
     site_uploads:
       delete: Forigi elŝutitan dosieron
       destroyed_msg: Reteja alŝuto sukcese forigita!
@@ -711,10 +583,7 @@ eo:
     warning: Estu tre atenta kun ĉi tiu datumo. Neniam diskonigu ĝin al iu ajn!
     your_token: Via alira ĵetono
   auth:
-    apply_for_account: Peti inviton
     change_password: Pasvorto
-    checkbox_agreement_html: Mi samopinii al la <a href="%{rules_path}" target="_blank">Servo reguloj</a> kaj <a href="%{terms_path}" target="_blank">kondiĉo al servadon</a>
-    checkbox_agreement_without_rules_html: Mi konsenti la <a href="%{terms_path}" target="_blank">reguloj de servado</a>
     delete_account: Forigi konton
     delete_account_html: Se vi deziras forigi vian konton, vi povas <a href="%{path}">fari tion ĉi tie</a>. Vi bezonos konfirmi vian peton.
     description:
@@ -746,7 +615,6 @@ eo:
     status:
       account_status: Statuso de la konto
     too_fast: Formularo sendita tro rapide, klopodu denove.
-    trouble_logging_in: Ĝeni ensaluti?
     use_security_key: Uzi sekurecan ŝlosilon
   authorize_follow:
     already_following: Vi jam sekvas tiun konton
@@ -797,10 +665,6 @@ eo:
       more_details_html: Por pli da detaloj, vidi la <a href="%{terms_path}">privatecan politikon</a>.
       username_available: Via uzantnomo iĝos denove disponebla
       username_unavailable: Via uzantnomo restos nedisponebla
-  directories:
-    directory: Profilujo
-    explanation: Malkovru uzantojn per iliaj interesoj
-    explore_mastodon: Esplori %{title}
   disputes:
     strikes:
       created_at: Datita
@@ -876,9 +740,6 @@ eo:
       save: Konservi novan filtrilon
       title: Aldoni novan filtrilon
   footer:
-    developers: Programistoj
-    more: Pli…
-    resources: Rimedoj
     trending_now: Nunaj furoraĵoj
   generic:
     all: Ĉio
@@ -909,7 +770,6 @@ eo:
       following: Listo de sekvatoj
       muting: Listo de silentigitoj
     upload: Alŝuti
-  in_memoriam_html: Memore
   invites:
     delete: Malaktivigi
     expired: Eksvalida
@@ -969,17 +829,6 @@ eo:
   moderation:
     title: Moderigado
   notification_mailer:
-    digest:
-      action: Vidi ĉiujn sciigojn
-      body: Jen eta resumo de la mesaĝoj, kiujn vi mistrafis ekde via lasta vizito en %{since}
-      mention: "%{name} menciis vin en:"
-      new_followers_summary:
-        one: Ankaŭ, vi ekhavis novan sekvanton en via foresto! Jej!
-        other: Ankaŭ, vi ekhavis %{count} novajn sekvantojn en via foresto! Mirinde!
-      subject:
-        one: "1 nova sciigo ekde via lasta vizito 🐘"
-        other: "%{count} novaj sciigoj ekde via lasta vizito 🐘"
-      title: En via foresto…
     favourite:
       body: "%{name} stelumis vian mesaĝon:"
       subject: "%{name} stelumis vian mesaĝon"
@@ -1070,22 +919,7 @@ eo:
     remove_selected_follows: Ne plu sekvi elektitajn uzantojn
     status: Statuso de la konto
   remote_follow:
-    acct: Enmetu vian uzantnomo@domajno de kie vi volas agi
     missing_resource: La bezonata URL de plusendado por via konto ne estis trovita
-    no_account_html: Ĉu vi ne havas konton? Vi povas <a href='%{sign_up_path}' target='_blank'>registriĝi tie</a>
-    proceed: Daŭrigi por eksekvi
-    prompt: 'Vi eksekvos:'
-    reason_html: "<strong>Kial necesas ĉi tiu paŝo?</strong><code>%{instance}</code> povus ne esti la servilo, kie vi registriĝis, do ni unue bezonas alidirekti vin al via hejma servilo."
-  remote_interaction:
-    favourite:
-      proceed: Konfirmi la stelumon
-      prompt: 'Vi volas aldoni ĉi tiun mesaĝon al viaj preferaĵoj:'
-    reblog:
-      proceed: Procedi pri la suprenigo
-      prompt: 'Vi deziras suprenigi ĉi tiun mesaĝon:'
-    reply:
-      proceed: Konfirmi la respondon
-      prompt: 'Vi volas respondi al ĉi tiu mesaĝo:'
   rss:
     content_warning: 'Averto pri enhavo:'
   scheduled_statuses:
@@ -1225,8 +1059,6 @@ eo:
     sensitive_content: Tikla enhavo
   tags:
     does_not_match_previous_name: ne kongruas kun la antaŭa nomo
-  terms:
-    title: Uzkondiĉoj kaj privateca politiko de %{instance}
   themes:
     contrast: Mastodon (Forta kontrasto)
     default: Mastodon (Malluma)
@@ -1271,20 +1103,11 @@ eo:
         suspend: Konto suspendita
     welcome:
       edit_profile_action: Agordi profilon
-      edit_profile_step: Vi povas personecigi vian profilon en alŝuto de rolfiguro, paĝokapa bildo, en ŝanĝo de via vidiga nomo kaj pli. Se vi volas ekzameni novajn sekvantojn antaŭ ol permesi al ili aboni vin, vi povas agordi vian konton kiel privata.
       explanation: Jen kelkaj konsiloj por helpi vin komenci
       final_action: Ekmesaĝi
-      final_step: 'Ekmesaĝu! Eĉ sen sekvantoj, viaj publikaj mesaĝoj povas esti vidataj de aliaj, ekzemple en la loka templinio kaj en la kradvortoj. Eble vi ŝatus prezenti vin per la kradvorto #introductions.'
       full_handle: Via kompleta uzantnomo
       full_handle_hint: Jen kion vi dirus al viaj amikoj, por ke ili mesaĝu aŭ sekvu vin de alia servilo.
-      review_preferences_action: Ŝanĝi preferojn
-      review_preferences_step: Estu certa ke vi agordis viajn preferojn, kiel kiujn retmesaĝojn vi ŝatus ricevi, aŭ kiun dekomencan privatecan nivelon vi ŝatus ke viaj mesaĝoj havu. Se tio ne ĝenas vin, vi povas ebligi aŭtomatan ekigon de GIF-oj.
       subject: Bonvenon en Mastodon
-      tip_federated_timeline: La fratara templinio estas rekta montro de la reto de Mastodon. Sed ĝi inkluzivas nur personojn kiujn viaj najbaroj abonas, do ĝi ne estas kompleta.
-      tip_following: Vi dekomence sekvas la administrantojn de via servilo. Por trovi pli da interesaj homoj, rigardu la lokan kaj frataran templiniojn.
-      tip_local_timeline: La loka templinio estas rekta montro de personoj ĉe %{instance}. Ĉi tiuj estas viaj senperaj najbaroj!
-      tip_mobile_webapp: Se via telefona retumilo proponas al vi aldoni Mastodon al via hejma ekrano, vi povas ricevi puŝsciigojn. Tio multmaniere funkcias kiel operaciuma aplikaĵo!
-      tips: Konsiloj
       title: Bonvenon, %{name}!
   users:
     follow_limit_reached: Vi ne povas sekvi pli ol %{limit} homo(j)

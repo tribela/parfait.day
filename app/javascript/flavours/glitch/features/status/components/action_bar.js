@@ -4,8 +4,8 @@ import IconButton from 'flavours/glitch/components/icon_button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from 'flavours/glitch/containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
-import { me } from 'flavours/glitch/util/initial_state';
-import { accountAdminLink, statusAdminLink } from 'flavours/glitch/util/backend_links';
+import { me } from 'flavours/glitch/initial_state';
+import { accountAdminLink, statusAdminLink } from 'flavours/glitch/utils/backend_links';
 import classNames from 'classnames';
 import { PERMISSION_MANAGE_USERS } from 'flavours/glitch/permissions';
 
@@ -156,6 +156,7 @@ class ActionBar extends React.PureComponent {
 
   render () {
     const { status, intl, onTranslate, isTranslated } = this.props;
+    const { signedIn, permissions } = this.context.identity;
 
     const publicStatus       = ['public', 'unlisted'].includes(status.get('visibility'));
     const pinnableStatus     = ['public', 'unlisted', 'private'].includes(status.get('visibility'));
@@ -182,7 +183,7 @@ class ActionBar extends React.PureComponent {
 
       menu.push({ text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation), action: this.handleConversationMuteClick });
       menu.push(null);
-      // menu.push({ text: intl.formatMessage(messages.edit), action: this.handleEditClick });
+      menu.push({ text: intl.formatMessage(messages.edit), action: this.handleEditClick });
       menu.push({ text: intl.formatMessage(messages.delete), action: this.handleDeleteClick });
       menu.push({ text: intl.formatMessage(messages.redraft), action: this.handleRedraftClick });
     } else {
@@ -192,7 +193,7 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
-      if ((this.context.identity.permissions & PERMISSION_MANAGE_USERS) === PERMISSION_MANAGE_USERS && (accountAdminLink || statusAdminLink)) {
+      if ((permissions & PERMISSION_MANAGE_USERS) === PERMISSION_MANAGE_USERS && (accountAdminLink || statusAdminLink)) {
         menu.push(null);
         if (accountAdminLink !== undefined) {
           menu.push({
@@ -216,7 +217,7 @@ class ActionBar extends React.PureComponent {
     // TODO?: only if differ from current locale
     const translateButton = (unlockedHiddenFeature && actionbarTranslate) && (
       <div className='detailed-status__button'>
-        <IconButton className='status__action-bar-button translate-icon' animate active={isTranslated} title={intl.formatMessage(messages.translate)} icon='language' onClick={onTranslate} />
+        <IconButton className='status__action-bar-button translate-icon' animate active={isTranslated} disabled={!signedIn} title={intl.formatMessage(messages.translate)} icon='language' onClick={onTranslate} />
       </div>
     );
 
@@ -239,7 +240,7 @@ class ActionBar extends React.PureComponent {
         <div className='detailed-status__button'><IconButton className={classNames({ reblogPrivate })} disabled={!publicStatus && !reblogPrivate} active={status.get('reblogged')} title={reblogTitle} icon='retweet' onClick={this.handleReblogClick} /></div>
         <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} /></div>
         {shareButton}
-        <div className='detailed-status__button'><IconButton className='bookmark-icon' active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} /></div>
+        <div className='detailed-status__button'><IconButton className='bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} /></div>
         {translateButton}
 
         <div className='detailed-status__action-bar-dropdown'>

@@ -21,7 +21,11 @@ import {
   ListAdder,
   CompareHistoryModal,
   FilterModal,
+  InteractionModal,
+  SubscribedLanguagesModal,
+  ClosedRegistrationsModal,
 } from 'mastodon/features/ui/util/async-components';
+import { Helmet } from 'react-helmet';
 
 const MODAL_COMPONENTS = {
   'MEDIA': () => Promise.resolve({ default: MediaModal }),
@@ -39,6 +43,9 @@ const MODAL_COMPONENTS = {
   'LIST_ADDER': ListAdder,
   'COMPARE_HISTORY': CompareHistoryModal,
   'FILTER': FilterModal,
+  'SUBSCRIBED_LANGUAGES': SubscribedLanguagesModal,
+  'INTERACTION': InteractionModal,
+  'CLOSED_REGISTRATIONS': ClosedRegistrationsModal,
 };
 
 export default class ModalRoot extends React.PureComponent {
@@ -107,9 +114,15 @@ export default class ModalRoot extends React.PureComponent {
     return (
       <Base backgroundColor={backgroundColor} onClose={this.handleClose} ignoreFocus={ignoreFocus}>
         {visible && (
-          <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} error={this.renderError} renderDelay={200}>
-            {(SpecificComponent) => <SpecificComponent {...props} onChangeBackgroundColor={this.setBackgroundColor} onClose={this.handleClose} ref={this.setModalRef} />}
-          </BundleContainer>
+          <>
+            <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} error={this.renderError} renderDelay={200}>
+              {(SpecificComponent) => <SpecificComponent {...props} onChangeBackgroundColor={this.setBackgroundColor} onClose={this.handleClose} ref={this.setModalRef} />}
+            </BundleContainer>
+
+            <Helmet>
+              <meta name='robots' content='noindex' />
+            </Helmet>
+          </>
         )}
       </Base>
     );

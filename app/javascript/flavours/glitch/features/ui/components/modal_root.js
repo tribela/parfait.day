@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getScrollbarWidth } from 'flavours/glitch/util/scrollbar';
+import { getScrollbarWidth } from 'flavours/glitch/utils/scrollbar';
 import Base from 'flavours/glitch/components/modal_root';
 import BundleContainer from '../containers/bundle_container';
 import BundleModalError from './bundle_modal_error';
@@ -27,7 +27,11 @@ import {
   PinnedAccountsEditor,
   CompareHistoryModal,
   FilterModal,
-} from 'flavours/glitch/util/async-components';
+  InteractionModal,
+  SubscribedLanguagesModal,
+  ClosedRegistrationsModal,
+} from 'flavours/glitch/features/ui/util/async-components';
+import { Helmet } from 'react-helmet';
 
 const MODAL_COMPONENTS = {
   'MEDIA': () => Promise.resolve({ default: MediaModal }),
@@ -51,6 +55,9 @@ const MODAL_COMPONENTS = {
   'PINNED_ACCOUNTS_EDITOR': PinnedAccountsEditor,
   'COMPARE_HISTORY': CompareHistoryModal,
   'FILTER': FilterModal,
+  'SUBSCRIBED_LANGUAGES': SubscribedLanguagesModal,
+  'INTERACTION': InteractionModal,
+  'CLOSED_REGISTRATIONS': ClosedRegistrationsModal,
 };
 
 export default class ModalRoot extends React.PureComponent {
@@ -115,9 +122,15 @@ export default class ModalRoot extends React.PureComponent {
     return (
       <Base backgroundColor={backgroundColor} onClose={this.handleClose} noEsc={props ? props.noEsc : false} ignoreFocus={ignoreFocus}>
         {visible && (
-          <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} error={this.renderError} renderDelay={200}>
-            {(SpecificComponent) => <SpecificComponent {...props} onChangeBackgroundColor={this.setBackgroundColor} onClose={this.handleClose} ref={this.setModalRef} />}
-          </BundleContainer>
+          <>
+            <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} error={this.renderError} renderDelay={200}>
+              {(SpecificComponent) => <SpecificComponent {...props} onChangeBackgroundColor={this.setBackgroundColor} onClose={this.handleClose} ref={this.setModalRef} />}
+            </BundleContainer>
+
+            <Helmet>
+              <meta name='robots' content='noindex' />
+            </Helmet>
+          </>
         )}
       </Base>
     );

@@ -8,14 +8,16 @@ import { mountCompose, unmountCompose } from 'flavours/glitch/actions/compose';
 import { injectIntl, defineMessages } from 'react-intl';
 import classNames from 'classnames';
 import SearchContainer from './containers/search_container';
-import Motion from 'flavours/glitch/util/optional_motion';
+import Motion from '../ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import SearchResultsContainer from './containers/search_results_container';
-import { me, mascot } from 'flavours/glitch/util/initial_state';
+import { me, mascot } from 'flavours/glitch/initial_state';
 import { cycleElefriendCompose } from 'flavours/glitch/actions/compose';
 import HeaderContainer from './containers/header_container';
 import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import { showAlert } from 'flavours/glitch/actions/alerts';
+import Column from 'flavours/glitch/components/column';
+import { Helmet } from 'react-helmet';
 
 const messages = defineMessages({
   compose: { id: 'navigation_bar.compose', defaultMessage: 'Compose new post' },
@@ -23,7 +25,7 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, ownProps) => ({
   elefriend: state.getIn(['compose', 'elefriend']),
-  showSearch: ownProps.multiColumn ? state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']) : ownProps.isSearchPage,
+  showSearch: ownProps.multiColumn ? state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']) : false,
 });
 
 const touchMascotHandler = (() => {
@@ -72,7 +74,6 @@ class Compose extends React.PureComponent {
   static propTypes = {
     multiColumn: PropTypes.bool,
     showSearch: PropTypes.bool,
-    isSearchPage: PropTypes.bool,
     elefriend: PropTypes.number,
     onClickElefriend: PropTypes.func,
     onTouchMascot: PropTypes.func,
@@ -82,19 +83,11 @@ class Compose extends React.PureComponent {
   };
 
   componentDidMount () {
-    const { isSearchPage } = this.props;
-
-    if (!isSearchPage) {
-      this.props.onMount();
-    }
+    this.props.onMount();
   }
 
   componentWillUnmount () {
-    const { isSearchPage } = this.props;
-
-    if (!isSearchPage) {
-      this.props.onUnmount();
-    }
+    this.props.onUnmount();
   }
 
   render () {
@@ -104,36 +97,49 @@ class Compose extends React.PureComponent {
       multiColumn,
       onClickElefriend,
       onTouchMascot,
-      isSearchPage,
       showSearch,
     } = this.props;
     const computedClass = classNames('drawer', `mbstobon-${elefriend}`);
 
-    return (
-      <div className={computedClass} role='region' aria-label={intl.formatMessage(messages.compose)}>
-        {multiColumn && <HeaderContainer />}
+    if (multiColumn) {
+      return (
+        <div className={computedClass} role='region' aria-label={intl.formatMessage(messages.compose)}>
+          <HeaderContainer />
 
-        {(multiColumn || isSearchPage) && <SearchContainer />}
+          {multiColumn && <SearchContainer />}
 
-        <div className='drawer__pager'>
-          {!isSearchPage && <div className='drawer__inner'>
-            <NavigationContainer />
+          <div className='drawer__pager'>
+            <div className='drawer__inner'>
+              <NavigationContainer />
 
-            <ComposeFormContainer />
-            <div className='drawer__inner__mastodon'>
-              {mascot ? <img alt='' draggable='false' src={mascot} onTouchStart={onTouchMascot} /> : <button className='mastodon' onClick={onClickElefriend} onTouchStart={onTouchMascot} />}
-            </div>
-          </div>}
+              <ComposeFormContainer />
 
-          <Motion defaultStyle={{ x: isSearchPage ? 0 : -100 }} style={{ x: spring(showSearch || isSearchPage ? 0 : -100, { stiffness: 210, damping: 20 }) }}>
-            {({ x }) => (
-              <div className='drawer__inner darker' style={{ transform: `translateX(${x}%)`, visibility: x === -100 ? 'hidden' : 'visible' }}>
-                <SearchResultsContainer />
+              <div className='drawer__inner__mastodon'>
+                {mascot ? <img alt='' draggable='false' src={mascot} onTouchStart={onTouchMascot} /> : <button className='mastodon' onClick={onClickElefriend} onTouchStart={onTouchMascot} />}
               </div>
-            )}
-          </Motion>
+            </div>
+
+            <Motion defaultStyle={{ x: -100 }} style={{ x: spring(showSearch ? 0 : -100, { stiffness: 210, damping: 20 }) }}>
+              {({ x }) => (
+                <div className='drawer__inner darker' style={{ transform: `translateX(${x}%)`, visibility: x === -100 ? 'hidden' : 'visible' }}>
+                  <SearchResultsContainer />
+                </div>
+              )}
+            </Motion>
+          </div>
         </div>
-      </div>
+      );
+    }
+
+    return (
+      <Column>
+        <NavigationContainer />
+        <ComposeFormContainer />
+
+        <Helmet>
+          <meta name='robots' content='noindex' />
+        </Helmet>
+      </Column>
     );
   }
 
