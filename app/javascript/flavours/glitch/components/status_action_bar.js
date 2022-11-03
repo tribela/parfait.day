@@ -42,7 +42,6 @@ const messages = defineMessages({
   hide: { id: 'status.hide', defaultMessage: 'Hide toot' },
   edited: { id: 'status.edited', defaultMessage: 'Edited {date}' },
   filter: { id: 'status.filter', defaultMessage: 'Filter this post' },
-  translate: { id: 'status.translate', defaultMessage: 'Translate' },
 });
 
 export default @injectIntl
@@ -55,7 +54,6 @@ class StatusActionBar extends ImmutablePureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
-    settings: ImmutablePropTypes.map.isRequired,
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
     onReblog: PropTypes.func,
@@ -71,8 +69,6 @@ class StatusActionBar extends ImmutablePureComponent {
     onBookmark: PropTypes.func,
     onFilter: PropTypes.func,
     onAddFilter: PropTypes.func,
-    onTranslate: PropTypes.func,
-    isTranslated: PropTypes.bool,
     onInteractionModal: PropTypes.func,
     withDismiss: PropTypes.bool,
     withCounters: PropTypes.bool,
@@ -84,12 +80,10 @@ class StatusActionBar extends ImmutablePureComponent {
   // Avoid checking props that are functions (and whose equality will always
   // evaluate to false. See react-immutable-pure-component for usage.
   updateOnProps = [
-    'settings',
     'status',
     'showReplyCount',
     'withCounters',
     'withDismiss',
-    'isTranslated',
   ]
 
   handleReplyClick = () => {
@@ -215,17 +209,13 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   render () {
-    const { status, intl, withDismiss, withCounters, showReplyCount, scrollKey, onTranslate, isTranslated } = this.props;
+    const { status, intl, withDismiss, withCounters, showReplyCount, scrollKey } = this.props;
 
     const anonymousAccess    = !me;
     const mutingConversation = status.get('muted');
     const publicStatus       = ['public', 'unlisted'].includes(status.get('visibility'));
     const pinnableStatus     = ['public', 'unlisted', 'private'].includes(status.get('visibility'));
     const writtenByMe        = status.getIn(['account', 'id']) === me;
-
-    let { settings } = this.props;
-    const unlockedHiddenFeature = settings.get('unlock_hidden_feature', false);
-    const actionbarTranslate = settings.getIn(['actionbar', 'translate'], false);
 
     let menu = [];
     let reblogIcon = 'retweet';
@@ -298,11 +288,6 @@ class StatusActionBar extends ImmutablePureComponent {
       <IconButton className='status__action-bar-button' title={intl.formatMessage(messages.share)} icon='share-alt' onClick={this.handleShareClick} />
     );
 
-    // TODO?: only if differ from current locale
-    const translateButton = (unlockedHiddenFeature && actionbarTranslate) && (
-      <IconButton className='status__action-bar-button translate-icon' animate active={isTranslated} title={intl.formatMessage(messages.translate)} icon='language' onClick={onTranslate} />
-    );
-
     const reblogPrivate = status.getIn(['account', 'id']) === me && status.get('visibility') === 'private';
 
     let reblogTitle = '';
@@ -336,8 +321,6 @@ class StatusActionBar extends ImmutablePureComponent {
         <IconButton className='status__action-bar-button bookmark-icon' disabled={anonymousAccess} active={status.get('bookmarked')} pressed={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} />
 
         {filterButton}
-
-        {translateButton}
 
         <div className='status__action-bar-dropdown'>
           <DropdownMenuContainer

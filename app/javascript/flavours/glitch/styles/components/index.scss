@@ -368,10 +368,6 @@
   color: $red-bookmark;
 }
 
-.icon-button.translate-icon.active {
-  color: $blue-translate;
-}
-
 .no-reduce-motion .icon-button.star-icon {
   &.activate {
     & > .fa-star {
@@ -382,20 +378,6 @@
   &.deactivate {
     & > .fa-star {
       animation: spring-rotate-out 1s linear;
-    }
-  }
-}
-
-.no-reduce-motion .icon-button.translate-icon {
-  &.active {
-    & > .fa-language {
-      animation: spring-rotate-horizontal-in 1s linear;
-    }
-  }
-
-  &.deactivate {
-    & > .fa-language {
-      animation: spring-rotate-horizontal-out 1s linear;
     }
   }
 }
@@ -1452,50 +1434,6 @@ button.icon-button.active i.fa-retweet {
 
   100% {
     transform: rotate(0deg);
-  }
-}
-
-@keyframes spring-rotate-horizontal-in {
-  0% {
-    transform: perspective(200px) rotateY(0deg);
-  }
-
-  30% {
-    transform: perspective(200px) rotateY(15deg);
-  }
-
-  60% {
-    transform: perspective(200px) rotateY(-43.27deg);
-  }
-
-  90% {
-    transform: perspective(200px) rotateY(124.8deg);
-  }
-
-  100% {
-    transform: perspective(200px) rotateY(-360deg);
-  }
-}
-
-@keyframes spring-rotate-horizontal-out {
-  0% {
-    transform: perspective(200px) rotateY(-360deg);
-  }
-
-  30% {
-    transform: perspective(200px) rotateY(124.8deg);
-  }
-
-  60% {
-    transform: perspective(200px) rotateY(-43.27deg);
-  }
-
-  90% {
-    transform: perspective(200px) rotateY(15deg);
-  }
-
-  100% {
-    transform: perspective(200px) rotateY(0deg);
   }
 }
 

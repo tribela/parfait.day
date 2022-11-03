@@ -114,7 +114,7 @@ class DetailedStatus extends ImmutablePureComponent {
 
   render () {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
-    const { expanded, onToggleHidden, settings, usingPiP, translatedStatus, intl } = this.props;
+    const { expanded, onToggleHidden, settings, usingPiP, intl } = this.props;
     const outerStyle = { boxSizing: 'border-box' };
     const { compact } = this.props;
 
@@ -299,7 +299,6 @@ class DetailedStatus extends ImmutablePureComponent {
 
           <StatusContent
             status={status}
-            translatedStatus={translatedStatus}
             media={contentMedia}
             extraMedia={extraMedia}
             mediaIcons={contentMediaIcons}

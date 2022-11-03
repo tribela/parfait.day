@@ -77,7 +77,6 @@ export default class StatusContent extends React.PureComponent {
     onUpdate: PropTypes.func,
     tagLinks: PropTypes.bool,
     rewriteMentions: PropTypes.string,
-    translatedStatus: ImmutablePropTypes.map,
   };
 
   static defaultProps = {
@@ -264,13 +263,12 @@ export default class StatusContent extends React.PureComponent {
       disabled,
       tagLinks,
       rewriteMentions,
-      translatedStatus,
     } = this.props;
 
     const hidden = this.props.onExpandedToggle ? !this.props.expanded : this.state.hidden;
 
-    const content = { __html: translatedStatus?.get('contentHtml') ?? status.get('contentHtml') };
-    const spoilerContent = { __html: translatedStatus?.get('spoiler_text') ?? status.get('spoilerHtml') };
+    const content = { __html: status.get('contentHtml') };
+    const spoilerContent = { __html: status.get('spoilerHtml') };
     const lang = status.get('language');
     const classNames = classnames('status__content', {
       'status__content--with-action': parseClick && !disabled,

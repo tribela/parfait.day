@@ -51,7 +51,6 @@ import { HotKeys } from 'react-hotkeys';
 import { boostModal, favouriteModal, deleteModal } from 'flavours/glitch/initial_state';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { autoUnfoldCW } from 'flavours/glitch/utils/content_warning';
-import { translate } from 'flavours/glitch/utils/translate';
 import { textForScreenReader, defaultMediaVisibility } from 'flavours/glitch/components/status';
 import Icon from 'flavours/glitch/components/icon';
 import { Helmet } from 'react-helmet';
@@ -200,8 +199,6 @@ class Status extends ImmutablePureComponent {
     loadedStatusId: undefined,
     showMedia: undefined,
     revealBehindCW: undefined,
-    translatedStatus: undefined,
-    isTranslated: false,
   };
 
   componentDidMount () {
@@ -546,27 +543,6 @@ class Status extends ImmutablePureComponent {
     this.column.scrollTop();
   }
 
-  handleTranslate = async () => {
-    // TODO: Make translate endpoint configurable
-
-    const { isTranslated } = this.state;
-    if (isTranslated) {
-      this.setState({ isTranslated: false });
-      return;
-    }
-
-    let { translatedStatus } = this.state;
-
-    if (translatedStatus) {
-      this.setState({ isTranslated: true });
-      return;
-    }
-
-    translatedStatus = await translate(this.props.status, this.props.intl.locale);
-
-    this.setState({ isTranslated: true, translatedStatus });
-  }
-
   renderChildren (list) {
     return list.map(id => (
       <StatusContainer
@@ -617,7 +593,7 @@ class Status extends ImmutablePureComponent {
   render () {
     let ancestors, descendants;
     const { isLoading, status, settings, ancestorsIds, descendantsIds, intl, domain, multiColumn, usingPiP } = this.props;
-    const { fullscreen, translatedStatus, isTranslated } = this.state;
+    const { fullscreen } = this.state;
 
     if (isLoading) {
       return (
@@ -685,7 +661,6 @@ class Status extends ImmutablePureComponent {
                 <DetailedStatus
                   key={`details-${status.get('id')}`}
                   status={status}
-                  translatedStatus={isTranslated ? translatedStatus : null}
                   settings={settings}
                   onOpenVideo={this.handleOpenVideo}
                   onOpenMedia={this.handleOpenMedia}
@@ -715,8 +690,6 @@ class Status extends ImmutablePureComponent {
                   onReport={this.handleReport}
                   onPin={this.handlePin}
                   onEmbed={this.handleEmbed}
-                  onTranslate={this.handleTranslate}
-                  isTranslated={isTranslated}
                 />
               </div>
             </HotKeys>
