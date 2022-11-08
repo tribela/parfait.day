@@ -1,10 +1,11 @@
 ---
 :concurrency: 5
 :queues:
-  - [default, 6]
-  - [push, 4]
-  - [mailers, 2]
-  - [pull]
+  - [default, 60]
+  - [push, 40]
+  - [mailers, 20]
+  - [pull, 10]
+  - [low_delivery]
   - [scheduler]
 :scheduler:
   :listened_queues_only: true
