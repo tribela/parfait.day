@@ -36,17 +36,12 @@ body.rtl {
     margin-left: 5px;
   }
 
-  .composer .compose--counter-wrapper {
+  .compose-form .character-counter__wrapper {
     margin-right: 0;
     margin-left: 4px;
   }
 
-  .composer--publisher {
-    text-align: left;
-  }
-
-  .boost-modal__status-time,
-  .favourite-modal__status-time {
+  .boost-modal__status-time {
     float: left;
   }
 
