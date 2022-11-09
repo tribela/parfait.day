@@ -31,7 +31,11 @@ class HomeFeed < Feed
       end
 
       remaining_limit = limit - statuses.size
-      max_id = statuses.last.id unless statuses.empty?
+
+      # Early return if it seems like there are no followings
+      return statuses if statuses.empty?
+
+      max_id = statuses.last.id
       statuses + from_database(remaining_limit, max_id, since_id, min_id)
     end
   end
@@ -39,6 +43,9 @@ class HomeFeed < Feed
   protected
 
   def from_database(limit, max_id, since_id, min_id)
+    # return if redis feed is not full
+    return [] if redis.zcount(key, '(0', '(+inf') < limit
+
     tag_followings = TagFollow.where(account: @account).select(:tag_id)
     scope = Status.where(account: @account.following)
     scope = scope.left_outer_joins(:mentions, :tags)
