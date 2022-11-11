@@ -44,7 +44,7 @@ class HomeFeed < Feed
 
   def from_database(limit, max_id, since_id, min_id)
     # return if redis feed is not full
-    return [] if redis.zcount(key, '(0', '(+inf') < limit
+    return [] if redis.zcount(key, '(0', '(+inf') < (FeedManager::MAX_ITEMS / 2)
 
     tag_followings = TagFollow.where(account: @account).select(:tag_id)
     scope = Status.where(account: @account.following)
