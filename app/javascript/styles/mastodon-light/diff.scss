@@ -78,7 +78,7 @@ html {
 .column-header__back-button,
 .column-header__button,
 .column-header__button.active,
-.account__header__bar {
+.account__header {
   background: $white;
 }
 
@@ -268,7 +268,8 @@ html {
 .status__content .status__content__spoiler-link {
   background: $ui-base-color;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background: lighten($ui-base-color, 4%);
   }
 }
