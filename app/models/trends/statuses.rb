@@ -4,9 +4,9 @@ class Trends::Statuses < Trends::Base
   PREFIX = 'trending_statuses'
 
   self.default_options = {
-    threshold: 4,
+    threshold: 5,
     review_threshold: 3,
-    score_halflife: 12.hours.freeze,
+    score_halflife: 6.hours.freeze,
     decay_threshold: 0.3,
   }
 
