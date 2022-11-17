@@ -103,6 +103,11 @@ server {
     }
   }
 
+  location ~/(canary|gpg) {
+    root /var/www;
+    try_files $uri $uri.html =404;
+  }
+
   location ~/(emoji|packs|system/accounts/avatars|system/site_uploads|system/media_attachments/files) {
     add_header Cache-Control "public, max-age=31536000, immutable";
     {{ $proxy_cache_settings }}
