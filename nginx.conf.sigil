@@ -176,6 +176,6 @@ upstream {{ $.APP }}-web {
 upstream {{ $.APP }}-streaming {
 {{   range $listeners := $.DOKKU_APP_STREAMING_LISTENERS | split " " }}
   server {{ $listeners }};
-}
 {{   end }}
+}
 {{ end }}
