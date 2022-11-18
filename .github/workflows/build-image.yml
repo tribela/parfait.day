@@ -5,8 +5,6 @@ on:
     branches:
       - 'qdon-glitch-beta'
       - 'qdon-glitch'
-    tags:
-      - '*'
   pull_request:
     paths:
       - .github/workflows/build-image.yml
@@ -40,6 +38,7 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           context: .
+          builder: ${{ steps.buildx.outputs.name }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=registry,ref=qdon/glitch:edge
