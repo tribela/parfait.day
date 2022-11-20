@@ -31,6 +31,11 @@
   background: $white;
 }
 
+// Change submit button
+.simple_form button[type="submit"] {
+  background: darken($ui-primary-color, 10%);
+}
+
 a.status-link {
   color: $skyblue;
 }
