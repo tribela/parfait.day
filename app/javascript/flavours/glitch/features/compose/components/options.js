@@ -10,8 +10,8 @@ import { connect } from 'react-redux';
 //  Components.
 import IconButton from 'flavours/glitch/components/icon_button';
 import TextIconButton from './text_icon_button';
-import Dropdown from './dropdown';
-import PrivacyDropdown from './privacy_dropdown';
+import DropdownContainer from '../containers/dropdown_container';
+import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import LanguageDropdown from '../containers/language_dropdown_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
@@ -127,15 +127,11 @@ class ComposerOptions extends ImmutablePureComponent {
     hasPoll: PropTypes.bool,
     intl: PropTypes.object.isRequired,
     onChangeAdvancedOption: PropTypes.func,
-    onChangeVisibility: PropTypes.func,
     onChangeContentType: PropTypes.func,
     onTogglePoll: PropTypes.func,
     onDoodleOpen: PropTypes.func,
-    onModalClose: PropTypes.func,
-    onModalOpen: PropTypes.func,
     onToggleSpoiler: PropTypes.func,
     onUpload: PropTypes.func,
-    privacy: PropTypes.string,
     contentType: PropTypes.string,
     resetFileKey: PropTypes.number,
     spoiler: PropTypes.bool,
@@ -196,12 +192,8 @@ class ComposerOptions extends ImmutablePureComponent {
       hasPoll,
       onChangeAdvancedOption,
       onChangeContentType,
-      onChangeVisibility,
       onTogglePoll,
-      onModalClose,
-      onModalOpen,
       onToggleSpoiler,
-      privacy,
       resetFileKey,
       spoiler,
       showContentTypeChoice,
@@ -242,7 +234,7 @@ class ComposerOptions extends ImmutablePureComponent {
           multiple
           style={{ display: 'none' }}
         />
-        <Dropdown
+        <DropdownContainer
           disabled={disabled || !allowMedia}
           icon='paperclip'
           items={[
@@ -258,8 +250,6 @@ class ComposerOptions extends ImmutablePureComponent {
             },
           ]}
           onChange={this.handleClickAttach}
-          onModalClose={onModalClose}
-          onModalOpen={onModalOpen}
           title={formatMessage(messages.attach)}
         />
         {!!pollLimits && (
@@ -278,15 +268,9 @@ class ComposerOptions extends ImmutablePureComponent {
           />
         )}
         <hr />
-        <PrivacyDropdown
-          disabled={disabled || isEditing}
-          onChange={onChangeVisibility}
-          onModalClose={onModalClose}
-          onModalOpen={onModalOpen}
-          value={privacy}
-        />
+        <PrivacyDropdownContainer disabled={disabled || isEditing} />
         {(showContentTypeChoice && unlockedHiddenFeature) && (
-          <Dropdown
+          <DropdownContainer
             disabled={disabled}
             icon={(contentTypeItems[contentType.split('/')[1]] || {}).icon}
             items={[
@@ -295,8 +279,6 @@ class ComposerOptions extends ImmutablePureComponent {
               contentTypeItems.markdown,
             ]}
             onChange={onChangeContentType}
-            onModalClose={onModalClose}
-            onModalOpen={onModalOpen}
             title={formatMessage(messages.content_type)}
             value={contentType}
           />
@@ -311,7 +293,7 @@ class ComposerOptions extends ImmutablePureComponent {
           />
         )}
         <LanguageDropdown />
-        <Dropdown
+        <DropdownContainer
           disabled={disabled || isEditing}
           icon='ellipsis-h'
           items={advancedOptions ? [
@@ -328,8 +310,6 @@ class ComposerOptions extends ImmutablePureComponent {
           ] : null}
           onChange={onChangeAdvancedOption}
           renderItemContents={this.renderToggleItemContents}
-          onModalClose={onModalClose}
-          onModalOpen={onModalOpen}
           title={formatMessage(messages.advanced_options_icon_title)}
           closeOnChange={false}
         />
