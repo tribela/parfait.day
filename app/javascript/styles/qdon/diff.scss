@@ -32,7 +32,7 @@
 }
 
 // Change submit button
-.simple_form button[type="submit"] {
+.simple_form button[type="submit"]:not(.negative) {
   background: darken($ui-primary-color, 10%);
 }
 
