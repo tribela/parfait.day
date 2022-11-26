@@ -32,10 +32,7 @@ class HomeFeed < Feed
 
       remaining_limit = limit - statuses.size
 
-      # Early return if it seems like there are no followings
-      return statuses if statuses.empty?
-
-      max_id = statuses.last.id
+      max_id = statuses.last.id unless statuses.empty?
       statuses + from_database(remaining_limit, max_id, since_id, min_id)
     end
   end
