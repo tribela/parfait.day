@@ -98,7 +98,7 @@ services:
     image: tootsuite/mastodon
     restart: always
     env_file: .env.production
-    command: bundle exec sidekiq
+    command: bash -c 'exec bundle exec sidekiq -c $${WORKER_CONCURRENCY:-5}'
     depends_on:
       - db
       - redis
