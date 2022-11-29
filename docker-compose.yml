@@ -97,7 +97,7 @@ services:
     image: ghcr.io/mastodon/mastodon:v4.2.9
     restart: always
     env_file: .env.production
-    command: bundle exec sidekiq
+    command: bash -c 'exec bundle exec sidekiq -c $${WORKER_CONCURRENCY:-5}'
     depends_on:
       - db
       - redis
