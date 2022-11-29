@@ -20,15 +20,15 @@ class StatusesIndex < Chewy::Index
         language: 'possessive_english',
       },
     },
-
-    analyzer: {
-      verbatim: {
-        tokenizer: 'uax_url_email',
-        filter: %w(lowercase),
+    tokenizer: {
+      nori_user_dict: {
+        type: 'nori_tokenizer',
+        decompound_mode: 'mixed',
       },
-
+    },
+    analyzer: {
       content: {
-        tokenizer: 'standard',
+        tokenizer: 'nori_user_dict',
         filter: %w(
           lowercase
           asciifolding
