@@ -27,8 +27,8 @@ class TranslationService::TranslateProxy < TranslationService
   private
 
   def request(text, target_language)
-    req = Request.new(:post, "#{@endpoint}/#{target_language}", form: { text: text })
-    req.add_headers('Authorization': "DeepL-Auth-Key #{@api_key}")
+    plain_text = text.gsub(%r{</?[^>]+?>}, '')
+    req = Request.new(:post, "#{@endpoint}/#{target_language}", form: { text: plain_text })
     req
   end
 
