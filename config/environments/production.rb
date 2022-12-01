@@ -139,7 +139,7 @@ Rails.application.configure do
     'X-XSS-Protection'        => '0',
     'Permissions-Policy'      => 'interest-cohort=()',
     'Referrer-Policy'         => 'same-origin',
-    'X-Clacks-Overhead' => 'GNU Natalie Nguyen'
+    'X-Clacks-Overhead' => 'GNU Byun Huisu'
   }
 
   config.x.otp_secret = ENV.fetch('OTP_SECRET')
