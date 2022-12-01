@@ -123,6 +123,7 @@ class MediaAttachment < ApplicationRecord
         'c:v' => 'h264',
         'maxrate' => '1300K',
         'bufsize' => '1300K',
+        'b:v' => '1300K',
         'frames:v' => 60 * 60 * 3,
         'crf' => 18,
         'map_metadata' => '-1',
