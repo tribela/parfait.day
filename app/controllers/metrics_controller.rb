@@ -21,7 +21,7 @@ class MetricsController < ActionController::Base
 
   def check_ip
     trusted_metrics = Rails.configuration.x.trusted_metrics
-    head :unauthorized unless trusted_metrics.any? { |cidr| cidr == request.remote_ip }
+    head :unauthorized unless trusted_metrics.any? { |cidr| cidr.include?(request.remote_ip) }
   end
 
   def refresh!
