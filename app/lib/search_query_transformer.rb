@@ -2,7 +2,7 @@
 
 class SearchQueryTransformer < Parslet::Transform
   class Query
-    attr_reader :should_clauses, :must_not_clauses, :must_clauses, :filter_clauses
+    attr_reader :should_clauses, :must_not_clauses, :must_clauses, :filter_clauses, :range_clauses
 
     def initialize(clauses)
       grouped = clauses.chunk(&:operator).to_h
@@ -10,6 +10,7 @@ class SearchQueryTransformer < Parslet::Transform
       @must_not_clauses = grouped.fetch(:must_not, [])
       @must_clauses = grouped.fetch(:must, [])
       @filter_clauses = grouped.fetch(:filter, [])
+      @range_clauses = grouped.fetch(:range, [])
     end
 
     def apply(search)
@@ -17,6 +18,7 @@ class SearchQueryTransformer < Parslet::Transform
       must_clauses.each { |clause| search = search.query.must(clause_to_query(clause)) }
       must_not_clauses.each { |clause| search = search.query.must_not(clause_to_query(clause)) }
       filter_clauses.each { |clause| search = search.filter(**clause_to_filter(clause)) }
+      range_clauses.each { |clause| search = search.filter(**clause_to_range(clause)) }
       search.query.minimum_should_match(1)
     end
 
@@ -37,6 +39,15 @@ class SearchQueryTransformer < Parslet::Transform
       case clause
       when PrefixClause
         { term: { clause.filter => clause.term } }
+      else
+        raise "Unexpected clause type: #{clause}"
+      end
+    end
+
+    def clause_to_range(clause)
+      case clause
+      when PrefixClause
+        { range: { clause.filter => clause.term } }
       else
         raise "Unexpected clause type: #{clause}"
       end
@@ -94,6 +105,14 @@ class SearchQueryTransformer < Parslet::Transform
         account          = Account.find_remote!(username, domain)
 
         @term = account.id
+      when 'since'
+        @filter = :created_at
+        @operator = :range
+        @term = { gte: Time.parse(term).utc.iso8601 }
+      when 'until'
+        @filter = :created_at
+        @operator = :range
+        @term = { lte: Time.parse(term).utc.iso8601 }
       else
         raise Mastodon::SyntaxError
       end

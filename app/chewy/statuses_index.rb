@@ -76,6 +76,7 @@ class StatusesIndex < Chewy::Index
   root date_detection: false do
     field :id, type: 'long'
     field :account_id, type: 'long'
+    field :created_at, type: 'date'
 
     field :text, type: 'text', value: ->(status) { status.searchable_text } do
       field :stemmed, type: 'text', analyzer: 'content'
