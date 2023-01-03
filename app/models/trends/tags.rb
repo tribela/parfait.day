@@ -71,6 +71,8 @@ class Trends::Tags < Trends::Base
         end
       end
 
+      score *= 1.5 if /[가-힣]/.match?(tag.name)
+
       if score > max_score
         max_score = score
         max_time  = at_time

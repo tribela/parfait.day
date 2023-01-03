@@ -121,6 +121,8 @@ class Trends::Links < Trends::Base
         end
       end
 
+      score *= 1.5 if /[가-힣]/.match?(preview_card.title) || preview_card.language == 'ko'
+
       if score > max_score
         max_score = score
         max_time  = at_time
