@@ -27,9 +27,12 @@ class TranslationService::TranslateProxy < TranslationService
   private
 
   def request(text, target_language)
-    plain_text = text.gsub(%r{</?[^>]+?>}, '')
-    req = Request.new(:post, "#{@endpoint}/#{target_language}", form: { text: plain_text })
-    req
+    # Replace br tag to newline
+    text = text.gsub(/<br\s*\/?>/, "\n")
+    # Remove HTML tags
+    text = text.gsub(%r{</?[^>]+?>}, '')
+
+    Request.new(:post, "#{@endpoint}/#{target_language}", form: { text: text })
   end
 
   def transform_response(str, source_language)
@@ -37,7 +40,11 @@ class TranslationService::TranslateProxy < TranslationService
 
     raise UnexpectedResponseError unless json.is_a?(Hash)
 
-    Translation.new(text: json['text'], detected_source_language: source_language, provider: 'Google Translate proxy')
+    text = json['text']
+    # Restore newline
+    text = text.gsub("\n", '<br />') if text.present?
+
+    Translation.new(text: text, detected_source_language: source_language, provider: 'Google Translate proxy')
   rescue Oj::ParseError
     raise UnexpectedResponseError
   end
