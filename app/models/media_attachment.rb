@@ -323,7 +323,6 @@ class MediaAttachment < ApplicationRecord
         else
           IMAGE_STYLES
         end
-        attachment.instance.remote_url.present? ? IMAGE_STYLES_REMOTE : IMAGE_STYLES
       elsif VIDEO_MIME_TYPES.include?(attachment.instance.file_content_type)
         VIDEO_STYLES
       else
