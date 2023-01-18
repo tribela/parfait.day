@@ -121,7 +121,7 @@ class Trends::Links < Trends::Base
         end
       end
 
-      score *= 1.5 if /[가-힣]/.match?(preview_card.title) || preview_card.language == 'ko'
+      score *= @korean_multiply_factor if /[가-힣]/.match?(preview_card.title) || preview_card.language == 'ko'
 
       if score > max_score
         max_score = score
