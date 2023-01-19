@@ -13,7 +13,7 @@ class TranslationService
     elsif ENV['LIBRE_TRANSLATE_ENDPOINT'].present?
       TranslationService::LibreTranslate.new(ENV['LIBRE_TRANSLATE_ENDPOINT'], ENV['LIBRE_TRANSLATE_API_KEY'])
     elsif ENV['TRANSLATE_PROXY_ENDPOINT'].present?
-      TranslationService::TranslateProxy.new(ENV['TRANSLATE_PROXY_ENDPOINT'])
+      TranslationService::TranslateProxy.new(ENV['TRANSLATE_PROXY_ENDPOINT'], ENV['PAPAGO_CLIENT_ID'], ENV['PAPAGO_CLIENT_SECRET'])
     else
       raise NotConfiguredError
     end
