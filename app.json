@@ -117,15 +117,15 @@
   "cron": [
     {
       "command": "tootctl media remove --days 30",
-      "schedule": "0 2 1 * *"
+      "schedule": "0 4 1 * *"
     },
     {
-      "command": "tootctl accounts cull -c 20",
-      "schedule": "0 2 2 * *"
+      "command": "tootctl accounts cull -c 20 ; tootctl media remove --days 90 --prune-profiles",
+      "schedule": "0 4 2 * *"
     },
     {
-      "command": "tootctl statuses remove",
-      "schedule": "0 2 3 * *"
+      "command": "tootctl accounts unfollow_old --days 365 ; tootctl statuses remove ; tootctl accounts prune",
+      "schedule": "0 4 3 * *"
     }
   ]
 }
