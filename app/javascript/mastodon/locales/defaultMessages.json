@@ -652,15 +652,19 @@
         "id": "status.admin_account"
       },
       {
-        "defaultMessage": "Open this status in the moderation interface",
+        "defaultMessage": "Open this post in the moderation interface",
         "id": "status.admin_status"
       },
       {
-        "defaultMessage": "Copy link to status",
+        "defaultMessage": "Open moderation interface for {domain}",
+        "id": "status.admin_domain"
+      },
+      {
+        "defaultMessage": "Copy link to post",
         "id": "status.copy"
       },
       {
-        "defaultMessage": "Hide toot",
+        "defaultMessage": "Hide post",
         "id": "status.hide"
       },
       {
@@ -1197,6 +1201,10 @@
         "id": "status.admin_account"
       },
       {
+        "defaultMessage": "Open moderation interface for {domain}",
+        "id": "status.admin_domain"
+      },
+      {
         "defaultMessage": "Change subscribed languages",
         "id": "account.languages"
       },
@@ -1382,6 +1390,10 @@
       {
         "defaultMessage": "Lists",
         "id": "navigation_bar.lists"
+      },
+      {
+        "defaultMessage": "Followed hashtags",
+        "id": "navigation_bar.followed_tags"
       },
       {
         "defaultMessage": "Blocked users",
@@ -3597,6 +3609,10 @@
         "id": "status.admin_status"
       },
       {
+        "defaultMessage": "Open moderation interface for {domain}",
+        "id": "status.admin_domain"
+      },
+      {
         "defaultMessage": "Copy link to status",
         "id": "status.copy"
       },
@@ -4208,7 +4224,7 @@
         "id": "sign_in_banner.create_account"
       },
       {
-        "defaultMessage": "Sign in to follow profiles or hashtags, favourite, share and reply to posts, or interact from your account on a different server.",
+        "defaultMessage": "Sign in to follow profiles or hashtags, favourite, share and reply to posts. You can also interact from your account on a different server.",
         "id": "sign_in_banner.text"
       },
       {
