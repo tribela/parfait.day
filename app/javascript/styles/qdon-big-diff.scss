@@ -1,0 +1,46 @@
+body {
+  font-size: 16px;
+}
+
+.button {
+  font-size: 16px;
+}
+
+.column-header {
+  font-size: 18px;
+}
+
+.compose-form .autosuggest-input label .autosuggest-textarea__textarea,
+.compose-form .autosuggest-textarea label .autosuggest-textarea__textarea {
+  font-size: 16px;
+}
+
+.status__info {
+  .status__display-name {
+    font-size: 16px;
+  }
+}
+
+.status__content {
+  font-size: 18px;
+}
+
+.status__relative-time {
+  font-size: 16px;
+}
+
+.column-link__icon {
+  font-size: 20px;
+}
+
+.actions-modal ul li:not(:empty) a {
+  font-size: 16px;
+}
+
+.admin-wrapper {
+  .content {
+    h4 {
+      font-size: 14px;
+    }
+  }
+}
