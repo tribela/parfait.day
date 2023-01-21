@@ -1,5 +1,6 @@
 @media screen and (min-width: 631px) {
   body::before {
+    z-index: -1;
     content: '';
     position: fixed;
     left: 0;
@@ -18,6 +19,19 @@
 
     .empty-column-indicator {
       background: rgba(0, 0, 0, .4);
+    }
+  }
+
+  .admin-wrapper {
+    .sidebar-wrapper__inner {
+      background: transparent;
+    }
+
+    .sidebar ul {
+      & > a.selected,
+      ul {
+        background: transparent;
+      }
     }
   }
 }
