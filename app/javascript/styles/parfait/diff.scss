@@ -1,11 +1,16 @@
-body {
-  background: url(~images/parfait_background.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  backdrop-filter: brightness(0.2);
-}
+@media screen and (min-width: 631px) {
+  body {
+    background: url(~images/parfait_background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: brightness(0.2);
+  }
 
-.column .scrollable {
-  background: rgba(0, 0, 0, .4);
+  .column .scrollable {
+    background: rgba(0, 0, 0, .4);
+
+    .empty-column-indicator {
+      background: rgba(0, 0, 0, .4);
+    }
+  }
 }
