@@ -1,3 +1,5 @@
+$background-transparent: rgba(0, 0, 0, .4);
+
 @media screen and (min-width: 631px) {
   body::before {
     z-index: -1;
@@ -15,10 +17,10 @@
   }
 
   .column .scrollable {
-    background: rgba(0, 0, 0, .4);
+    background: $background-transparent;
 
     .empty-column-indicator {
-      background: rgba(0, 0, 0, .4);
+      background: $background-transparent;
     }
   }
 
@@ -27,11 +29,15 @@
       background: transparent;
     }
 
-    .sidebar ul {
-      & > a.selected,
-      ul {
-        background: transparent;
-      }
+    .sidebar > ul > li > a.selected,
+    .sidebar ul ul {
+      background: transparent;
     }
+  }
+}
+
+@media screen and (max-width: 1174px) {
+  .columns-area__panels__pane--navigational .navigation-panel {
+    background: $background-transparent;
   }
 }
