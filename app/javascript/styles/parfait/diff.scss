@@ -24,6 +24,11 @@ $background-transparent: rgba(0, 0, 0, .4);
     }
   }
 
+  .detailed-status,
+  .detailed-status__action_bar {
+    background: inherit;
+  }
+
   .admin-wrapper {
     .sidebar-wrapper__inner {
       background: transparent;
