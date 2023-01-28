@@ -17,6 +17,8 @@ class TranslationService::TranslateProxy < TranslationService
   def translate(text, source_language, target_language)
     use_papago = @papago_client_id.present? && @papago_languages.include?(source_language) && @papago_languages.include?(target_language)
 
+    text = sanitize(text)
+
     begin
       return translate_papago(text, source_language, target_language) if use_papago
       translate_proxy(text, source_language, target_language)
