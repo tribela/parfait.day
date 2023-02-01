@@ -41,6 +41,17 @@ body {
   font-size: 16px;
 }
 
+.block-modal__container,
+.confirmation-modal__container,
+.mute-modal__container,
+.report-moal__target {
+  font-size: 18px;
+}
+
+.confirmation-modal__do_not_ask_again {
+  font-size: 16px;
+}
+
 .admin-wrapper {
   .content {
     h4 {
