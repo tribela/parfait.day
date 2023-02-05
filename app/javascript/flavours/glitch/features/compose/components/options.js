@@ -145,7 +145,7 @@ class ComposerOptions extends ImmutablePureComponent {
     if (files.length && onUpload) {
       onUpload(files);
     }
-  }
+  };
 
   //  Handles attachment clicks.
   handleClickAttach = (name) => {
@@ -165,12 +165,12 @@ class ComposerOptions extends ImmutablePureComponent {
       }
       return;
     }
-  }
+  };
 
   //  Handles a ref to the file input.
   handleRefFileElement = (fileElement) => {
     this.fileElement = fileElement;
-  }
+  };
 
   renderToggleItemContents = (item) => {
     const { onChangeAdvancedOption } = this.props;
