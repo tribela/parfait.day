@@ -29,6 +29,12 @@ body {
   font-size: 16px;
 }
 
+.status {
+  .notification__message {
+    margin-top: -5px;
+  }
+}
+
 .poll {
   font-size: 16px;
 }
