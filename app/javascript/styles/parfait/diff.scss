@@ -17,6 +17,10 @@ $background-transparent: rgba(0, 0, 0, .4);
     filter: brightness(0.2);
   }
 
+  .regeneration-indicator {
+    background: $background-transparent;
+  }
+
   .column .scrollable {
     background: $background-transparent;
 
