@@ -15,6 +15,7 @@ const messages = defineMessages({
   favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Favourites' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
+  domain_mutes: { id: 'navigation_bar.domain_mutes', defaultMessage: 'Muted domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   info: { id: 'navigation_bar.info', defaultMessage: 'Extended information' },
   show_me_around: { id: 'getting_started.onboarding', defaultMessage: 'Show me around' },
@@ -56,6 +57,7 @@ class gettingStartedMisc extends ImmutablePureComponent {
           <ColumnLink key='{i++}' icon='thumb-tack' text={intl.formatMessage(messages.pins)} to='/pinned' />
           <ColumnLink key='{i++}' icon='users' text={intl.formatMessage(messages.featured_users)} onClick={this.openFeaturedAccountsModal} />
           <ColumnLink key='{i++}' icon='volume-off' text={intl.formatMessage(messages.mutes)} to='/mutes' />
+          <ColumnLink key='{i++}' icon='eye-slash' text={intl.formatMessage(messages.domain_mutes)} to='/domain_mutes' />
           <ColumnLink key='{i++}' icon='ban' text={intl.formatMessage(messages.blocks)} to='/blocks' />
           <ColumnLink key='{i++}' icon='minus-circle' text={intl.formatMessage(messages.domain_blocks)} to='/domain_blocks' />
           <ColumnLink key='{i++}' icon='question' text={intl.formatMessage(messages.keyboard_shortcuts)} to='/keyboard-shortcuts' />

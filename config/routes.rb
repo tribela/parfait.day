@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     /follow_requests
     /blocks
     /domain_blocks
+    /domain_mutes
     /mutes
     /followed_tags
     /statuses/(*any)
@@ -555,6 +556,7 @@ Rails.application.routes.draw do
       end
 
       resource :domain_blocks, only: [:show, :create, :destroy]
+      resource :domain_mutes, only: [:show, :create, :destroy]
 
       resource :directory, only: [:show]
 
