@@ -49,29 +49,3 @@ html {
   // scrollbar-color: $ui-secondary-color rgba($ui-base-color, 0.1);
   scrollbar-width: thin;
 }
-
-::-webkit-scrollbar {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  border-width: thin;
-  background: transparent;
-
-  &:vertical { /* stylelint-disable-line selector-pseudo-class-no-unknown */
-    border-right: 1px solid $ui-secondary-color;
-  }
-
-  &:horizontal { /* stylelint-disable-line selector-pseudo-class-no-unknown */
-    border-bottom: 1px solid $ui-secondary-color;
-  }
-
-  &:hover {
-    border-width: thick;
-    background: transparent;
-  }
-}
-
-::-webkit-scrollbar-track {
-  background: rgba($ui-base-color, 0.1);
-}
