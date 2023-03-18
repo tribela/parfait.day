@@ -15,7 +15,7 @@
     .field-group.korean-captcha
       %p.hint= t('simple_form.labels.defaults.korean_captcha')
       %p.question= Setting.korean_captcha_question
-      %input.answer{'required': 'true', name: 'korean_captcha_answer'}
+      %input.answer{ required: 'true', name: 'korean_captcha_answer' }
 
   .actions
     %button.button= t('challenge.confirm')
