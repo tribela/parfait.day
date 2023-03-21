@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class HomeFeed < Feed
-  def initialize(account)
+  def initialize(account, force: false)
     @account = account
+    @force = force
     super(:home, account.id)
   end
 
@@ -41,7 +42,7 @@ class HomeFeed < Feed
 
   def from_database(limit, max_id, since_id, min_id)
     # return if redis feed is not full
-    return [] if redis.zcount(key, '(0', '(+inf') < (FeedManager::MAX_ITEMS / 2)
+    return [] if !@force && redis.zcount(key, '(0', '(+inf') < (FeedManager::MAX_ITEMS / 2)
 
     tag_followings = TagFollow.where(account: @account).select(:tag_id)
     scope = Status.where(account: @account.following)
@@ -52,7 +53,7 @@ class HomeFeed < Feed
     scope = scope
             .to_a_paginated_by_id(limit, min_id: min_id, max_id: max_id, since_id: since_id)
             .reject do |status|
-              if status.tags.where(id: tag_followings).exists?
+              if status.tags.exists?(id: tag_followings)
                 FeedManager.instance.filter?(:tags, status, @account)
               else
                 FeedManager.instance.filter?(:home, status, @account)

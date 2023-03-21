@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe HomeFeed, type: :model do
-  subject { described_class.new(account) }
+  subject { described_class.new(account, force: true) }
 
   let(:account) { Fabricate(:account) }
   let(:followed) { Fabricate(:account) }
@@ -22,8 +22,8 @@ RSpec.describe HomeFeed, type: :model do
       Fabricate(:status, account: followed, id: 12, visibility: :private)
       Fabricate(:status, account: followed, id: 13, visibility: :direct)
       Fabricate(:status, account: account,  id: 14, visibility: :direct)
-      dm = Fabricate(:status, account: followed, id: 15, visibility: :direct)
-      Fabricate(:mention, account: account, status: dm)
+      mention = Fabricate(:status, account: followed, id: 15, visibility: :private)
+      Fabricate(:mention, account: account, status: mention)
     end
 
     context 'when feed is generated' do
