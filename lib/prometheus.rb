@@ -18,14 +18,15 @@ module MastodonPrometheus
     reg.gauge(:mastodon_user_count, docstring: 'The number of users in mastodon.')
     reg.gauge(:mastodon_status_count, docstring: 'The number of statuses in mastodon.')
     reg.gauge(:mastodon_domain_count, docstring: 'The number of domains in mastodon.')
+    reg.gauge(:mastodon_sign_up_count, labels: %I[days], docstring: 'The number of sign ups in mastodon.')
 
-    reg.gauge(:mastodon_active_user, labels: [:weeks], docstring: 'The number of active users in mastodon.')
-    reg.gauge(:mastodon_active_post, labels: [:hours, :by], docstring: 'The number of active posts in mastodon.')
+    reg.gauge(:mastodon_active_user, labels: %I[weeks], docstring: 'The number of active users in mastodon.')
+    reg.gauge(:mastodon_active_post, labels: %I[hours by], docstring: 'The number of active posts in mastodon.')
 
     reg.gauge(:mastodon_database_size, docstring: 'The size of postgres db.')
     reg.gauge(:mastodon_redis_size, docstring: 'The size of redis db.')
 
-    reg.gauge(:mastodon_media_size, labels: [:type, :by], docstring: 'The size of media files.')
+    reg.gauge(:mastodon_media_size, labels: %I[type by], docstring: 'The size of media files.')
 
     reg
   end

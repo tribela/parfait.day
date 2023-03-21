@@ -40,6 +40,10 @@ class MetricsController < ActionController::Base
     MastodonPrometheus.get(:mastodon_status_count).set(instance_presenter.status_count)
     MastodonPrometheus.get(:mastodon_domain_count).set(instance_presenter.domain_count)
 
+    [1, 7, 30].each do |days|
+      MastodonPrometheus.get(:mastodon_sign_up_count).set(Account.local.where('created_at > ?', days.days.ago).count, labels: { days: days })
+    end
+
     [1, 24].each do |hours|
       MastodonPrometheus.get(:mastodon_active_post).set(statuses_count(:remote, hours), labels: { by: 'remote', hours: hours })
       MastodonPrometheus.get(:mastodon_active_post).set(statuses_count(:local, hours), labels: { by: 'local', hours: hours })
