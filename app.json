@@ -116,12 +116,8 @@
   "addons": ["heroku-postgresql", "heroku-redis"],
   "cron": [
     {
-      "command": "tootctl media remove --days 30",
-      "schedule": "0 4 1 * *"
-    },
-    {
       "command": "tootctl accounts cull -c 20 ; tootctl media remove --days 90 --prune-profiles",
-      "schedule": "0 4 2 * *"
+      "schedule": "0 4 * * 1"
     },
     {
       "command": "tootctl accounts unfollow_old --days 365 ; tootctl statuses remove ; tootctl accounts prune",
