@@ -170,6 +170,8 @@
   "confirmations.domain_mute.confirm": "도메인 전체를 뮤트",
   "confirmations.domain_mute.explanation": "이 도메인의 모든 게시물을 공개 타임라인에서 숨깁니다. 단, 팔로우한 계정의 게시물은 제외됩니다.",
   "confirmations.domain_mute.message": "정말로 {domain} 전체를 뮤트하시겠습니까?",
+  "confirmations.edit.confirm": "수정",
+  "confirmations.edit.message": "지금 수정하면 작성 중인 메시지를 덮어쓰게 됩니다. 정말 진행합니까?",
   "confirmations.logout.confirm": "로그아웃",
   "confirmations.logout.message": "정말로 로그아웃 하시겠습니까?",
   "confirmations.mute.confirm": "뮤트",
