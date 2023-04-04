@@ -29,12 +29,6 @@ RSpec.describe HomeFeed, type: :model do
     context 'when feed is generated' do
       before do
         FeedManager.instance.populate_home(account)
-
-        # Add direct messages because populate_home does not do that
-        Redis.current.zadd(
-          FeedManager.instance.key(:home, account.id),
-          [[14, 14], [15, 15]]
-        )
       end
 
       it 'gets statuses with ids in the range from redis with database' do
@@ -58,14 +52,6 @@ RSpec.describe HomeFeed, type: :model do
     context 'when feed is only partial' do
       before do
         FeedManager.instance.populate_home(account)
-
-        # Add direct messages because populate_home does not do that
-        Redis.current.zadd(
-          FeedManager.instance.key(:home, account.id),
-          [[14, 14], [15, 15]]
-        )
-
-        Redis.current.zremrangebyrank(FeedManager.instance.key(:home, account.id), 0, -2)
       end
 
       it 'gets statuses with ids in the range from redis with database' do
