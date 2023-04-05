@@ -75,10 +75,12 @@ class MetricsController < ActionController::Base
   end
 
   def redis_size
-    if Redis.current.is_a?(Redis::Namespace)
-      Redis.current.redis.info
+    redis = RedisConfiguration.pool.checkout
+
+    if redis.is_a?(Redis::Namespace)
+      redis.redis.info
     else
-      Redis.current.info
+      redis.info
     end['used_memory'].to_i
   end
 
