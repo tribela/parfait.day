@@ -2,7 +2,7 @@
 
 require 'prometheus/client/formats/text'
 
-class MetricsController < ActionController::Base
+class MetricsController < ApplicationController
   before_action :check_ip
 
   def show
@@ -21,7 +21,7 @@ class MetricsController < ActionController::Base
 
   def check_ip
     trusted_metrics = Rails.configuration.x.trusted_metrics
-    head :unauthorized unless trusted_metrics.any? { |cidr| cidr.include?(request.remote_ip) }
+    head 401 unless trusted_metrics.any? { |cidr| cidr.include?(request.remote_ip) }
   end
 
   def refresh!
