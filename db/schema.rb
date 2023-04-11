@@ -1072,6 +1072,7 @@ ActiveRecord::Schema.define(version: 2023_02_21_054049) do
     t.inet "sign_up_ip"
     t.boolean "skip_sign_in_token"
     t.bigint "role_id"
+    t.text "settings"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_by_application_id"], name: "index_users_on_created_by_application_id", where: "(created_by_application_id IS NOT NULL)"

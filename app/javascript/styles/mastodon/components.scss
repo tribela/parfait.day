@@ -309,7 +309,7 @@
   &__counter {
     display: inline-block;
     width: auto;
-    margin-left: 4px;
+    margin-inline-start: 4px;
     font-size: 12px;
     font-weight: 500;
   }
@@ -413,7 +413,7 @@ body > [data-popper-placement] {
       width: 18px;
       height: 18px;
       flex: 0 0 auto;
-      margin-right: 10px;
+      margin-inline-end: 10px;
       top: -1px;
       border-radius: 4px;
       vertical-align: middle;
@@ -465,7 +465,7 @@ body > [data-popper-placement] {
   .emoji-picker-dropdown {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
   }
 
   .compose-form__autosuggest-wrapper {
@@ -527,7 +527,7 @@ body > [data-popper-placement] {
     min-height: 100px;
     border-radius: 4px 4px 0 0;
     padding-bottom: 0;
-    padding-right: 10px + 22px;
+    padding-right: 10px + 22px; // Cannot use inline-end because of dir=auto
     resize: none;
     scrollbar-color: initial;
 
@@ -536,7 +536,7 @@ body > [data-popper-placement] {
     }
 
     @media screen and (max-width: 600px) {
-      height: 100px !important; // prevent auto-resize textarea
+      height: 100px !important; // Prevent auto-resize textarea
       resize: vertical;
     }
   }
@@ -605,7 +605,7 @@ body > [data-popper-placement] {
 
     &__uses {
       flex: 0 0 auto;
-      text-align: right;
+      text-align: end;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -615,7 +615,7 @@ body > [data-popper-placement] {
   .autosuggest-account-icon,
   .autosuggest-emoji img {
     display: block;
-    margin-right: 8px;
+    margin-inline-end: 8px;
     width: 16px;
     height: 16px;
   }
@@ -677,8 +677,8 @@ body > [data-popper-placement] {
         position: absolute;
         z-index: 2;
         bottom: 0;
-        left: 0;
-        right: 0;
+        inset-inline-start: 0;
+        inset-inline-end: 0;
         box-sizing: border-box;
         background: linear-gradient(
           0deg,
@@ -737,7 +737,7 @@ body > [data-popper-placement] {
 
     .character-counter__wrapper {
       align-self: center;
-      margin-right: 4px;
+      margin-inline-end: 4px;
     }
   }
 
@@ -826,7 +826,7 @@ body > [data-popper-placement] {
 }
 
 .reply-indicator__cancel {
-  float: right;
+  float: inline-end;
   line-height: 24px;
 }
 
@@ -836,13 +836,13 @@ body > [data-popper-placement] {
   max-width: 100%;
   line-height: 24px;
   overflow: hidden;
-  padding-right: 25px;
+  padding-inline-end: 25px;
   text-decoration: none;
 }
 
 .reply-indicator__display-avatar {
-  float: left;
-  margin-right: 5px;
+  float: inline-start;
+  margin-inline-end: 5px;
 }
 
 .status__content--with-action {
@@ -1230,7 +1230,7 @@ body > [data-popper-placement] {
 
 .notification__relative_time {
   color: $dark-text-color;
-  float: right;
+  float: inline-end;
   font-size: 14px;
   padding-bottom: 1px;
 }
@@ -1315,7 +1315,7 @@ body > [data-popper-placement] {
 .status__prepend {
   padding: 16px;
   padding-bottom: 0;
-  display: flex;
+  display: inline-flex;
   gap: 10px;
   font-size: 15px;
   line-height: 22px;
@@ -1330,6 +1330,18 @@ body > [data-popper-placement] {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+.status__wrapper-direct {
+  background: mix($ui-base-color, $ui-highlight-color, 95%);
+
+  &:focus {
+    background: mix(lighten($ui-base-color, 4%), $ui-highlight-color, 95%);
+  }
+
+  .status__prepend {
+    color: $highlight-text-color;
   }
 }
 
@@ -1386,6 +1398,11 @@ body > [data-popper-placement] {
   .audio-player {
     margin-top: 16px;
   }
+
+  .status__prepend {
+    padding: 0;
+    margin-bottom: 16px;
+  }
 }
 
 .detailed-status__meta {
@@ -1404,6 +1421,32 @@ body > [data-popper-placement] {
   padding: 10px 0;
 }
 
+.detailed-status__wrapper-direct {
+  .detailed-status,
+  .detailed-status__action-bar {
+    background: mix($ui-base-color, $ui-highlight-color, 95%);
+  }
+
+  &:focus {
+    .detailed-status,
+    .detailed-status__action-bar {
+      background: mix(lighten($ui-base-color, 4%), $ui-highlight-color, 95%);
+    }
+  }
+
+  .detailed-status__action-bar {
+    border-top-color: mix(
+      lighten($ui-base-color, 8%),
+      $ui-highlight-color,
+      95%
+    );
+  }
+
+  .status__prepend {
+    color: $highlight-text-color;
+  }
+}
+
 .detailed-status__link {
   color: inherit;
   text-decoration: none;
@@ -1415,7 +1458,7 @@ body > [data-popper-placement] {
   font-weight: 500;
   font-size: 12px;
   line-height: 17px;
-  margin-left: 6px;
+  margin-inline-start: 6px;
 }
 
 .reply-indicator__content {
@@ -1455,15 +1498,6 @@ body > [data-popper-placement] {
   padding: 16px;
   border-bottom: 1px solid lighten($ui-base-color, 8%);
 
-  &.compact {
-    padding: 0;
-    border-bottom: 0;
-
-    .account__avatar-wrapper {
-      margin-left: 0;
-    }
-  }
-
   .account__display-name {
     flex: 1 1 auto;
     display: flex;
@@ -1474,9 +1508,23 @@ body > [data-popper-placement] {
     text-decoration: none;
     font-size: 14px;
 
-    &--with-note {
-      strong {
-        display: inline;
+    .display-name {
+      margin-bottom: 4px;
+    }
+
+    .display-name strong {
+      display: inline;
+    }
+  }
+
+  &--minimal {
+    .account__display-name {
+      .display-name {
+        margin-bottom: 0;
+      }
+
+      .display-name strong {
+        display: block;
       }
     }
   }
@@ -1521,7 +1569,7 @@ body > [data-popper-placement] {
   &-inline {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 5px;
+    margin-inline-end: 5px;
   }
 
   &-composite {
@@ -1530,7 +1578,7 @@ body > [data-popper-placement] {
     position: relative;
 
     & > div {
-      float: left;
+      float: inline-start;
       position: relative;
       box-sizing: border-box;
     }
@@ -1544,7 +1592,7 @@ body > [data-popper-placement] {
       display: block;
       position: absolute;
       top: 50%;
-      left: 50%;
+      inset-inline-start: 50%;
       transform: translate(-50%, -50%);
       color: $primary-text-color;
       text-shadow: 1px 1px 2px $base-shadow-color;
@@ -1564,7 +1612,7 @@ a .account__avatar {
   &-overlay {
     position: absolute;
     bottom: 0;
-    right: 0;
+    inset-inline-end: 0;
     z-index: 1;
   }
 }
@@ -1621,15 +1669,15 @@ a .account__avatar {
 
   .dropdown--active {
     .dropdown__content.dropdown__right {
-      left: 6px;
-      right: initial;
+      inset-inline-start: 6px;
+      inset-inline-end: initial;
     }
 
     &::after {
       bottom: initial;
-      margin-left: 11px;
+      margin-inline-start: 11px;
       margin-top: -7px;
-      right: initial;
+      inset-inline-end: initial;
     }
   }
 }
@@ -1645,7 +1693,7 @@ a .account__avatar {
   text-decoration: none;
   overflow: hidden;
   flex: 0 1 100%;
-  border-right: 1px solid lighten($ui-base-color, 8%);
+  border-inset-inline-end: 1px solid lighten($ui-base-color, 8%);
   padding: 10px 0;
   border-bottom: 4px solid transparent;
 
@@ -1685,8 +1733,8 @@ a .account__avatar {
 }
 
 .account-authorize__avatar {
-  float: left;
-  margin-right: 10px;
+  float: inline-start;
+  margin-inline-end: 10px;
 }
 
 .status__display-name,
@@ -1700,7 +1748,7 @@ a .account__avatar {
 
 .status__display-name,
 .account__display-name {
-  strong {
+  .display-name strong {
     color: $primary-text-color;
   }
 }
@@ -1715,12 +1763,12 @@ a .account__avatar {
 .reply-indicator__display-name,
 .detailed-status__display-name,
 a.account__display-name {
-  &:hover strong {
+  &:hover .display-name strong {
     text-decoration: underline;
   }
 }
 
-.account__display-name strong {
+.account__display-name .display-name strong {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2158,7 +2206,7 @@ a.account__display-name {
   }
 
   &.right {
-    left: -9px;
+    inset-inline-start: -9px;
 
     &::before {
       transform: rotate(-90deg);
@@ -2170,7 +2218,7 @@ a.account__display-name {
   }
 
   &.left {
-    right: -9px;
+    inset-inline-end: -9px;
 
     &::before {
       transform: rotate(90deg);
@@ -2240,7 +2288,7 @@ a.account__display-name {
   vertical-align: top;
 
   .account__avatar {
-    margin-right: 5px;
+    margin-inline-end: 5px;
     border-radius: 50%;
   }
 
@@ -2253,8 +2301,8 @@ a.account__display-name {
   display: block;
   line-height: 18px;
   max-width: 311px;
-  right: 0;
-  text-align: left;
+  inset-inline-end: 0;
+  text-align: start;
   z-index: 9999;
 
   & > ul {
@@ -2268,12 +2316,12 @@ a.account__display-name {
   }
 
   &.dropdown__right {
-    right: 0;
+    inset-inline-end: 0;
   }
 
   &.dropdown__left {
     & > ul {
-      left: -98px;
+      inset-inline-start: -98px;
     }
   }
 
@@ -2492,23 +2540,23 @@ $ui-header-height: 55px;
   .drawer {
     flex: 0 0 auto;
     padding: 10px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-inline-start: 5px;
+    padding-inline-end: 5px;
 
     &:first-child {
-      padding-left: 10px;
+      padding-inline-start: 10px;
     }
 
     &:last-child {
-      padding-right: 10px;
+      padding-inline-end: 10px;
     }
   }
 
   .columns-area > div {
     .column,
     .drawer {
-      padding-left: 5px;
-      padding-right: 5px;
+      padding-inline-start: 5px;
+      padding-inline-end: 5px;
     }
   }
 }
@@ -2555,7 +2603,7 @@ $ui-header-height: 55px;
   }
 
   span {
-    margin-left: 5px;
+    margin-inline-start: 5px;
     display: none;
   }
 }
@@ -2597,7 +2645,7 @@ $ui-header-height: 55px;
     line-height: 18px;
     font-size: 16px;
     padding: 15px;
-    padding-right: 30px;
+    padding-inline-end: 30px;
   }
 
   .search__icon .fa {
@@ -2665,7 +2713,7 @@ $ui-header-height: 55px;
     .navigation-panel {
       margin: 0;
       background: $ui-base-color;
-      border-left: 1px solid lighten($ui-base-color, 8%);
+      border-inset-inline-start: 1px solid lighten($ui-base-color, 8%);
       height: 100vh;
     }
 
@@ -2737,7 +2785,7 @@ $ui-header-height: 55px;
 
   &__badge {
     position: absolute;
-    left: 9px;
+    inset-inline-start: 9px;
     top: -13px;
     background: $ui-highlight-color;
     border: 2px solid lighten($ui-base-color, 8%);
@@ -2751,7 +2799,7 @@ $ui-header-height: 55px;
 
   &__issue-badge {
     position: absolute;
-    left: 11px;
+    inset-inline-start: 11px;
     bottom: 1px;
     display: block;
     background: $error-red;
@@ -2807,7 +2855,7 @@ $ui-header-height: 55px;
 
   &__background {
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     bottom: 0;
     height: 220px;
     width: auto;
@@ -2933,7 +2981,7 @@ $ui-header-height: 55px;
 .drawer__inner {
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   background: lighten($ui-base-color, 13%);
   box-sizing: border-box;
   padding: 0;
@@ -2976,7 +3024,7 @@ $ui-header-height: 55px;
 .pseudo-drawer {
   background: lighten($ui-base-color, 13%);
   font-size: 13px;
-  text-align: left;
+  text-align: start;
 }
 
 .drawer__header {
@@ -2986,6 +3034,8 @@ $ui-header-height: 55px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
+  border-radius: 4px;
+  overflow: hidden;
 
   a {
     transition: background 100ms ease-in;
@@ -3079,7 +3129,7 @@ $ui-header-height: 55px;
 
 .column-back-button__icon {
   display: inline-block;
-  margin-right: 5px;
+  margin-inline-end: 5px;
 }
 
 .column-back-button--slim {
@@ -3092,7 +3142,7 @@ $ui-header-height: 55px;
   font-size: 16px;
   padding: 15px;
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   top: -48px;
 }
 
@@ -3157,7 +3207,7 @@ $ui-header-height: 55px;
   margin-top: auto;
   margin-bottom: auto;
   line-height: 0;
-  left: 8px;
+  inset-inline-start: 8px;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -3176,7 +3226,7 @@ $ui-header-height: 55px;
   margin-top: auto;
   margin-bottom: auto;
   line-height: 0;
-  right: 10px;
+  inset-inline-end: 10px;
   opacity: 1;
   transition: opacity 0.25s ease;
 }
@@ -3188,7 +3238,7 @@ $ui-header-height: 55px;
 .react-toggle-thumb {
   position: absolute;
   top: 1px;
-  left: 1px;
+  inset-inline-start: 1px;
   width: 22px;
   height: 22px;
   border: 1px solid $ui-base-color;
@@ -3200,7 +3250,7 @@ $ui-header-height: 55px;
 }
 
 .react-toggle--checked .react-toggle-thumb {
-  left: 27px;
+  inset-inline-start: 27px;
   border-color: $ui-highlight-color;
 }
 
@@ -3254,7 +3304,7 @@ $ui-header-height: 55px;
 
 .column-link__icon {
   display: inline-block;
-  margin-right: 5px;
+  margin-inline-end: 5px;
 }
 
 .column-link__badge {
@@ -3348,7 +3398,7 @@ $ui-header-height: 55px;
 
   thead {
     position: absolute;
-    left: -9999px;
+    inset-inline-start: -9999px;
   }
 
   td {
@@ -3452,9 +3502,9 @@ button.icon-button.active i.fa-retweet {
 
   &__actions {
     bottom: 0;
-    left: 0;
+    inset-inline-start: 0;
     position: absolute;
-    right: 0;
+    inset-inline-end: 0;
     top: 0;
     display: flex;
     justify-content: center;
@@ -3560,7 +3610,7 @@ a.status-card {
     position: absolute;
     transform-origin: 50% 50%;
     top: 50%;
-    left: 50%;
+    inset-inline-start: 50%;
     transform: translate(-50%, -50%);
   }
 }
@@ -3627,7 +3677,7 @@ a.status-card.compact:hover {
   object-fit: fill;
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   z-index: 0;
   background: $base-overlay-background;
 
@@ -3742,8 +3792,8 @@ a.status-card.compact:hover {
       content: '';
       position: absolute;
       bottom: -13px;
-      left: 0;
-      right: 0;
+      inset-inline-start: 0;
+      inset-inline-end: 0;
       margin: 0 auto;
       width: 60%;
       pointer-events: none;
@@ -3778,11 +3828,12 @@ a.status-card.compact:hover {
   & > button {
     margin: 0;
     border: 0;
-    padding: 15px 0 15px 15px;
+    padding: 15px;
+    padding-inline-end: 0;
     color: inherit;
     background: transparent;
     font: inherit;
-    text-align: left;
+    text-align: start;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -3816,7 +3867,7 @@ a.status-card.compact:hover {
 }
 
 .column-header__links .text-btn {
-  margin-right: 10px;
+  margin-inline-end: 10px;
 }
 
 .column-header__button {
@@ -3899,18 +3950,18 @@ a.status-card.compact:hover {
 }
 
 .column-header__setting-arrows {
-  float: right;
+  float: inline-end;
 
   .column-header__setting-btn {
     padding: 5px;
 
     &:first-child {
-      padding-right: 7px;
+      padding-inline-end: 7px;
     }
 
     &:last-child {
-      padding-left: 7px;
-      margin-left: 5px;
+      padding-inline-start: 7px;
+      margin-inline-start: 5px;
     }
   }
 }
@@ -3937,7 +3988,7 @@ a.status-card.compact:hover {
 
 .column-header__icon {
   display: inline-block;
-  margin-right: 5px;
+  margin-inline-end: 5px;
 }
 
 .loading-indicator {
@@ -3948,7 +3999,7 @@ a.status-card.compact:hover {
   overflow: visible;
   position: absolute;
   top: 50%;
-  left: 50%;
+  inset-inline-start: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
@@ -4084,7 +4135,7 @@ a.status-card.compact:hover {
 
 .spoiler-button {
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -4092,7 +4143,7 @@ a.status-card.compact:hover {
 
   &--minified {
     display: block;
-    left: 4px;
+    inset-inline-start: 4px;
     top: 4px;
     width: auto;
     height: auto;
@@ -4209,12 +4260,12 @@ a.status-card.compact:hover {
 
     &__placeholder {
       color: $dark-text-color;
-      padding-left: 2px;
+      padding-inline-start: 2px;
       font-size: 12px;
     }
 
     &__value-container {
-      padding-left: 6px;
+      padding-inline-start: 6px;
     }
 
     &__multi-value {
@@ -4311,7 +4362,7 @@ a.status-card.compact:hover {
   color: $darker-text-color;
   display: inline-block;
   margin-bottom: 14px;
-  margin-left: 8px;
+  margin-inline-start: 8px;
   vertical-align: middle;
 }
 
@@ -4496,7 +4547,7 @@ a.status-card.compact:hover {
 .emoji-picker-dropdown__modifiers {
   position: absolute;
   top: 60px;
-  right: 11px;
+  inset-inline-end: 11px;
   cursor: pointer;
 }
 
@@ -4504,7 +4555,7 @@ a.status-card.compact:hover {
   position: absolute;
   z-index: 4;
   top: -4px;
-  left: -8px;
+  inset-inline-start: -8px;
   background: $simple-background-color;
   border-radius: 4px;
   box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
@@ -4541,7 +4592,7 @@ a.status-card.compact:hover {
   display: flex;
   height: 100vh;
   justify-content: center;
-  left: 0;
+  inset-inline-start: 0;
   opacity: 0;
   position: fixed;
   top: 0;
@@ -4566,9 +4617,9 @@ a.status-card.compact:hover {
 .upload-area__background {
   position: absolute;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   z-index: -1;
   border-radius: 4px;
   background: $ui-base-color;
@@ -4596,7 +4647,7 @@ a.status-card.compact:hover {
 
   .fa {
     font-size: 34px;
-    margin-right: 10px;
+    margin-inline-end: 10px;
   }
 
   span {
@@ -4622,7 +4673,7 @@ a.status-card.compact:hover {
 
 .upload-progress__tracker {
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   top: 0;
   height: 6px;
   background: $ui-highlight-color;
@@ -4631,7 +4682,10 @@ a.status-card.compact:hover {
 
 .emoji-button {
   display: block;
-  padding: 5px 5px 2px 2px;
+  padding-top: 5px;
+  padding-bottom: 2px;
+  padding-inline-start: 2px;
+  padding-inline-end: 5px;
   outline: 0;
   cursor: pointer;
 
@@ -4719,7 +4773,7 @@ a.status-card.compact:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 }
 
 .privacy-dropdown__option__content {
@@ -4785,11 +4839,11 @@ a.status-card.compact:hover {
     }
 
     .emoji-mart-search {
-      padding-right: 10px;
+      padding-inline-end: 10px;
     }
 
     .emoji-mart-search-icon {
-      right: 10px + 5px;
+      inset-inline-end: 10px + 5px;
     }
 
     .emoji-mart-scroll {
@@ -4835,6 +4889,86 @@ a.status-card.compact:hover {
 .search {
   margin-bottom: 10px;
   position: relative;
+
+  &__popout {
+    box-sizing: border-box;
+    display: none;
+    position: absolute;
+    inset-inline-start: 0;
+    margin-top: -2px;
+    width: 100%;
+    background: $ui-base-color;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 4px 4px 6px rgba($base-shadow-color, 0.4);
+    z-index: 2;
+    font-size: 13px;
+    padding: 15px 5px;
+
+    h4 {
+      text-transform: uppercase;
+      color: $dark-text-color;
+      font-weight: 500;
+      padding: 0 10px;
+      margin-bottom: 10px;
+    }
+
+    &__menu {
+      &__message {
+        color: $dark-text-color;
+        padding: 0 10px;
+      }
+
+      &__item {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        border: 0;
+        font: inherit;
+        background: transparent;
+        color: $darker-text-color;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-align: start;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        &--flex {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .icon-button {
+          transition: none;
+        }
+
+        &:hover,
+        &:focus,
+        &:active,
+        &.selected {
+          background: $ui-highlight-color;
+          color: $primary-text-color;
+
+          .icon-button {
+            color: $primary-text-color;
+          }
+        }
+
+        mark {
+          background: transparent;
+          font-weight: 700;
+          color: $primary-text-color;
+        }
+      }
+    }
+  }
+
+  &.active {
+    .search__popout {
+      display: block;
+    }
+  }
 }
 
 .search__input {
@@ -4842,7 +4976,7 @@ a.status-card.compact:hover {
 
   display: block;
   padding: 15px;
-  padding-right: 30px;
+  padding-inline-end: 30px;
   line-height: 18px;
   font-size: 16px;
 
@@ -4878,7 +5012,7 @@ a.status-card.compact:hover {
   .fa {
     position: absolute;
     top: 16px;
-    right: 10px;
+    inset-inline-end: 10px;
     z-index: 2;
     display: inline-block;
     opacity: 0;
@@ -4932,7 +5066,7 @@ a.status-card.compact:hover {
 
   .fa {
     display: inline-block;
-    margin-right: 5px;
+    margin-inline-end: 5px;
   }
 }
 
@@ -4951,7 +5085,7 @@ a.status-card.compact:hover {
 
     .fa {
       display: inline-block;
-      margin-right: 5px;
+      margin-inline-end: 5px;
     }
   }
 
@@ -4989,8 +5123,8 @@ a.status-card.compact:hover {
 .modal-root__overlay {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   background: rgba($base-overlay-background, 0.7);
   transition: background 0.5s;
@@ -4999,7 +5133,7 @@ a.status-card.compact:hover {
 .modal-root__container {
   position: fixed;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -5052,16 +5186,16 @@ a.status-card.compact:hover {
 .media-modal__closer {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
 }
 
 .media-modal__navigation {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   pointer-events: none;
   transition: opacity 0.3s linear;
@@ -5104,18 +5238,18 @@ a.status-card.compact:hover {
 }
 
 .media-modal__nav--left {
-  left: 0;
+  inset-inline-start: 0;
 }
 
 .media-modal__nav--right {
-  right: 0;
+  inset-inline-end: 0;
 }
 
 .media-modal__overlay {
   max-width: 600px;
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   margin: 0 auto;
 
@@ -5202,14 +5336,14 @@ a.status-card.compact:hover {
 
 .media-modal__close {
   position: absolute;
-  right: 8px;
+  inset-inline-end: 8px;
   top: 8px;
   z-index: 100;
 }
 
 .media-modal__zoom-button {
   position: absolute;
-  right: 64px;
+  inset-inline-end: 64px;
   top: 8px;
   z-index: 100;
   pointer-events: auto;
@@ -5243,7 +5377,7 @@ a.status-card.compact:hover {
   & > div {
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
@@ -5339,7 +5473,7 @@ a.status-card.compact:hover {
   display: inline-block;
   max-width: 30px;
   max-height: auto;
-  margin-left: 10px;
+  margin-inline-start: 10px;
 }
 
 .boost-modal,
@@ -5394,9 +5528,9 @@ a.status-card.compact:hover {
 
   & > div {
     flex: 1 1 auto;
-    text-align: right;
+    text-align: end;
     color: $lighter-text-color;
-    padding-right: 10px;
+    padding-inline-end: 10px;
   }
 
   .button {
@@ -5599,7 +5733,7 @@ a.status-card.compact:hover {
     & > span {
       font-size: 17px;
       font-weight: 500;
-      margin-left: 10px;
+      margin-inline-start: 10px;
     }
   }
 
@@ -5623,11 +5757,11 @@ a.status-card.compact:hover {
   }
 
   .emoji-mart-search {
-    padding-right: 10px;
+    padding-inline-end: 10px;
   }
 
   .emoji-mart-search-icon {
-    right: 10px + 5px;
+    inset-inline-end: 10px + 5px;
   }
 }
 
@@ -5690,7 +5824,7 @@ a.status-card.compact:hover {
 
 .report-modal__comment {
   padding: 20px;
-  border-right: 1px solid $ui-secondary-color;
+  border-inset-inline-end: 1px solid $ui-secondary-color;
   max-width: 320px;
 
   p {
@@ -5788,7 +5922,7 @@ a.status-card.compact:hover {
         }
 
         button:first-child {
-          margin-right: 10px;
+          margin-inline-end: 10px;
         }
       }
     }
@@ -5852,7 +5986,7 @@ a.status-card.compact:hover {
     border: 1px solid darken($simple-background-color, 14%);
     border-radius: 4px;
     padding: 6px 10px;
-    padding-right: 30px;
+    padding-inline-end: 30px;
   }
 }
 
@@ -5876,7 +6010,7 @@ a.status-card.compact:hover {
     &__label {
       color: $inverted-text-color;
       margin: 0;
-      margin-left: 8px;
+      margin-inline-start: 8px;
     }
   }
 }
@@ -5887,7 +6021,7 @@ a.status-card.compact:hover {
   .report-modal__close {
     position: absolute;
     top: 10px;
-    right: 10px;
+    inset-inline-end: 10px;
   }
 }
 
@@ -5938,7 +6072,7 @@ a.status-card.compact:hover {
   height: 3px;
   position: fixed;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   z-index: 9999;
 }
 
@@ -5948,7 +6082,7 @@ a.status-card.compact:hover {
   color: $primary-text-color;
   background: rgba($base-overlay-background, 0.5);
   bottom: 6px;
-  left: 6px;
+  inset-inline-start: 6px;
   padding: 2px 6px;
   border-radius: 2px;
   font-size: 11px;
@@ -5981,7 +6115,7 @@ a.status-card.compact:hover {
     color: $dark-text-color;
     padding: 8px 18px;
     cursor: default;
-    border-right: 1px solid lighten($ui-base-color, 8%);
+    border-inset-inline-end: 1px solid lighten($ui-base-color, 8%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -5996,7 +6130,7 @@ a.status-card.compact:hover {
   &__list {
     list-style: none;
     padding: 4px 0;
-    padding-left: 8px;
+    padding-inline-start: 8px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6046,7 +6180,7 @@ a.status-card.compact:hover {
   border: 0;
   box-sizing: border-box;
   display: block;
-  float: left;
+  float: inline-start;
   position: relative;
   border-radius: 4px;
   overflow: hidden;
@@ -6084,7 +6218,7 @@ a.status-card.compact:hover {
   object-fit: cover;
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   z-index: 0;
   background: $base-overlay-background;
 
@@ -6252,8 +6386,8 @@ a.status-card.compact:hover {
     position: absolute;
     z-index: 2;
     bottom: 0;
-    left: 0;
-    right: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     box-sizing: border-box;
     background: linear-gradient(
       0deg,
@@ -6281,7 +6415,7 @@ a.status-card.compact:hover {
     display: none;
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
     height: 100%;
     z-index: 4;
@@ -6397,7 +6531,7 @@ a.status-card.compact:hover {
     &.active {
       overflow: visible;
       width: 50px;
-      margin-right: 16px;
+      margin-inline-end: 16px;
     }
 
     &::before {
@@ -6408,7 +6542,7 @@ a.status-card.compact:hover {
       display: block;
       position: absolute;
       height: 4px;
-      left: 0;
+      inset-inline-start: 0;
       top: 50%;
       transform: translate(0, -50%);
     }
@@ -6418,7 +6552,7 @@ a.status-card.compact:hover {
       position: absolute;
       height: 4px;
       border-radius: 4px;
-      left: 0;
+      inset-inline-start: 0;
       top: 50%;
       transform: translate(0, -50%);
       background: lighten($ui-highlight-color, 8%);
@@ -6431,8 +6565,8 @@ a.status-card.compact:hover {
       width: 12px;
       height: 12px;
       top: 50%;
-      left: 0;
-      margin-left: -6px;
+      inset-inline-start: 0;
+      margin-inline-start: -6px;
       transform: translate(0, -50%);
       background: lighten($ui-highlight-color, 8%);
       box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
@@ -6503,7 +6637,7 @@ a.status-card.compact:hover {
       width: 12px;
       height: 12px;
       top: 10px;
-      margin-left: -6px;
+      margin-inline-start: -6px;
       background: lighten($ui-highlight-color, 8%);
       box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
 
@@ -6579,7 +6713,7 @@ a.status-card.compact:hover {
   &__icons {
     position: absolute;
     top: 50%;
-    left: 50%;
+    inset-inline-start: 50%;
     transform: translate(-50%, -50%);
     font-size: 24px;
   }
@@ -6622,7 +6756,7 @@ a.status-card.compact:hover {
         content: '';
         position: absolute;
         bottom: 0;
-        left: 50%;
+        inset-inline-start: 50%;
         width: 0;
         height: 0;
         transform: translateX(-50%);
@@ -6698,7 +6832,7 @@ a.status-card.compact:hover {
     width: 18px;
     height: 18px;
     flex: 0 0 auto;
-    margin-right: 10px;
+    margin-inline-end: 10px;
     top: -1px;
     border-radius: 50%;
     vertical-align: middle;
@@ -6712,10 +6846,6 @@ a.status-card.compact:hover {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 0;
-}
-
-.search-popout {
-  @include search-popout;
 }
 
 noscript {
@@ -6775,10 +6905,10 @@ noscript {
 
   .navigation-bar {
     & > a:first-child {
-      will-change: margin-top, margin-left, margin-right, width;
+      will-change: margin-top, margin-inline-start, margin-inline-end, width;
       transition: margin-top $duration $delay,
-        margin-left $duration ($duration + $delay),
-        margin-right $duration ($duration + $delay);
+        margin-inline-start $duration ($duration + $delay),
+        margin-inline-end $duration ($duration + $delay);
     }
 
     & > .navigation-bar__profile-edit {
@@ -6960,7 +7090,7 @@ noscript {
   cursor: pointer;
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   height: 100%;
   background: rgba($base-overlay-background, 0.5);
@@ -6989,6 +7119,7 @@ noscript {
 
   .drawer__pager {
     height: 50vh;
+    border-radius: 4px;
   }
 
   .drawer__inner {
@@ -7098,13 +7229,13 @@ noscript {
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
   }
 
   &__preview {
     position: absolute;
     bottom: 10px;
-    right: 10px;
+    inset-inline-end: 10px;
     z-index: 2;
     cursor: move;
     transition: opacity 0.1s ease;
@@ -7181,7 +7312,7 @@ noscript {
   &__info {
     position: absolute;
     top: 10px;
-    left: 10px;
+    inset-inline-start: 10px;
   }
 
   &__image {
@@ -7224,7 +7355,7 @@ noscript {
     padding-top: 10px;
     gap: 8px;
     overflow: hidden;
-    margin-left: -2px; // aligns the pfp with content below
+    margin-inline-start: -2px; // aligns the pfp with content below
 
     &__buttons {
       display: flex;
@@ -7427,6 +7558,19 @@ noscript {
   }
 }
 
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  color: $valid-value-color;
+  gap: 4px;
+
+  a {
+    color: inherit;
+    font-weight: 500;
+    text-decoration: none;
+  }
+}
+
 .trends {
   &__header {
     color: $dark-text-color;
@@ -7439,7 +7583,7 @@ noscript {
 
     .fa {
       display: inline-block;
-      margin-right: 5px;
+      margin-inline-end: 5px;
     }
   }
 
@@ -7489,7 +7633,7 @@ noscript {
       flex: 0 0 auto;
       font-size: 24px;
       font-weight: 500;
-      text-align: right;
+      text-align: end;
       color: $secondary-text-color;
       text-decoration: none;
     }
@@ -7594,7 +7738,7 @@ noscript {
   &__content {
     flex: 1 1 auto;
     padding: 10px 5px;
-    padding-right: 15px;
+    padding-inline-end: 15px;
     overflow: hidden;
 
     &__info {
@@ -7607,7 +7751,7 @@ noscript {
     &__relative-time {
       font-size: 15px;
       color: $darker-text-color;
-      padding-left: 15px;
+      padding-inline-start: 15px;
     }
 
     &__names {
@@ -7697,13 +7841,13 @@ noscript {
       display: block;
       font-weight: 500;
       margin-bottom: 10px;
-      padding-right: 18px;
+      padding-inline-end: 18px;
     }
 
     &__unread {
       position: absolute;
       top: 19px;
-      right: 19px;
+      inset-inline-end: 19px;
       display: block;
       background: $highlight-text-color;
       border-radius: 50%;
@@ -7717,7 +7861,7 @@ noscript {
     color: $darker-text-color;
     position: absolute;
     bottom: 3px;
-    right: 0;
+    inset-inline-end: 0;
   }
 }
 
@@ -7734,7 +7878,7 @@ noscript {
   flex-wrap: wrap;
   align-items: center;
   margin-top: 15px;
-  margin-left: -2px;
+  margin-inline-start: -2px;
   width: calc(100% - (90px - 33px));
 
   &__item {
@@ -7775,7 +7919,7 @@ noscript {
       font-size: 13px;
       font-weight: 500;
       text-align: center;
-      margin-left: 6px;
+      margin-inline-start: 6px;
       color: $darker-text-color;
     }
 
@@ -7854,10 +7998,10 @@ noscript {
       content: '';
       position: absolute;
       top: 0;
-      left: 0;
+      inset-inline-start: 0;
       width: 100%;
       height: 100%;
-      border-left: 4px solid $highlight-text-color;
+      border-inset-inline-start: 4px solid $highlight-text-color;
       pointer-events: none;
     }
   }
@@ -7866,7 +8010,7 @@ noscript {
 .picture-in-picture {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  inset-inline-end: 20px;
   width: 300px;
 
   &__footer {
@@ -7892,7 +8036,7 @@ noscript {
     }
 
     .account__avatar {
-      margin-right: 10px;
+      margin-inline-end: 10px;
     }
 
     .display-name {
@@ -7958,7 +8102,7 @@ noscript {
   &__close {
     position: absolute;
     top: 10px;
-    right: 10px;
+    inset-inline-end: 10px;
   }
 
   h2 {
@@ -7991,9 +8135,13 @@ noscript {
     padding: 10px;
   }
 
+  .search__popout {
+    border: 1px solid lighten($ui-base-color, 8%);
+  }
+
   .search .fa {
     top: 10px;
-    right: 10px;
+    inset-inline-end: 10px;
     color: $dark-text-color;
   }
 
@@ -8077,7 +8225,7 @@ noscript {
       object-fit: fill;
       position: absolute;
       top: 0;
-      left: 0;
+      inset-inline-start: 0;
       z-index: 0;
 
       &--hidden {
@@ -8163,7 +8311,7 @@ noscript {
   }
 
   .account__avatar-wrapper {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 
   .spacer {
@@ -8383,7 +8531,7 @@ noscript {
     &::before {
       content: counter(list-counter) '.';
       position: absolute;
-      left: 0;
+      inset-inline-start: 0;
     }
   }
 
@@ -8395,13 +8543,13 @@ noscript {
     width: 0.375em;
     height: 0.375em;
     top: 0.5em;
-    left: 0.25em;
+    inset-inline-start: 0.25em;
   }
 
   ul > li,
   ol > li {
     position: relative;
-    padding-left: 1.75em;
+    padding-inline-start: 1.75em;
   }
 
   & > ul > li p {
@@ -8534,7 +8682,7 @@ noscript {
   &__preview {
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -8740,7 +8888,7 @@ noscript {
   }
 
   .account__avatar-wrapper {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 
   .account__relationship {
