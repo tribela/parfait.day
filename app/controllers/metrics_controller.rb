@@ -75,13 +75,13 @@ class MetricsController < ApplicationController
   end
 
   def redis_size
-    redis = RedisConfiguration.pool.checkout
-
-    if redis.is_a?(Redis::Namespace)
-      redis.redis.info
-    else
-      redis.info
-    end['used_memory'].to_i
+    RedisConfiguration.with do |redis|
+      if redis.is_a?(Redis::Namespace)
+        redis.redis.info
+      else
+        redis.info
+      end['used_memory'].to_i
+    end
   end
 
   def statuses_count(type, hours)
