@@ -9,17 +9,13 @@ if ENV['SENTRY_DSN']
     # config.traces_sample_rate = 0.1
     # or
     config.traces_sampler = lambda do |context|
-      unless context[:parent_sampled].nil?
-        next context[:parent_sampled]
-      end
-
       transaction_context = context[:transaction_context]
 
       op = transaction_context[:op]
       transaction_name = transaction_context[:name]
 
       case op
-      when /request/
+      when /http/
         case transaction_name
         when /metrics/
           0.0
