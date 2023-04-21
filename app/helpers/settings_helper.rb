@@ -2,7 +2,7 @@
 
 module SettingsHelper
   def filterable_languages
-    LanguagesHelper::SUPPORTED_LOCALES.keys
+    LanguagesHelper::SUPPORTED_LOCALES.keys + ['NONE']
   end
 
   def hash_to_object(hash)

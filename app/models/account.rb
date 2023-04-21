@@ -183,6 +183,12 @@ class Account < ApplicationRecord
     local? ? username : "#{username}@#{domain}"
   end
 
+  def chosen_languages
+    return if user&.chosen_languages.nil?
+
+    user.chosen_languages.map { |l| l == 'NONE' ? nil : l }
+  end
+
   def pretty_acct
     local? ? username : "#{username}@#{Addressable::IDNA.to_unicode(domain)}"
   end
