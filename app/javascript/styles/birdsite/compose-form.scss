@@ -1,0 +1,13 @@
+/* Add background color for the compose form */
+/* stylelint-disable-next-line no-duplicate-selectors */
+.layout-single-column .compose-form .compose-form__autosuggest-wrapper,
+.layout-single-column .compose-form .compose-form__buttons-wrapper {
+  background-color: var(--color-mud);
+  border-color: var(--color-mud);
+  padding-top: 0;
+}
+
+/* Fixes to bottom row when there's a background */
+.layout-single-column .compose-form .compose-form__buttons-wrapper {
+  padding-bottom: calc(var(--gap-default) / 2);
+}
