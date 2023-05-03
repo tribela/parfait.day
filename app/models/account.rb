@@ -151,6 +151,7 @@ class Account < ApplicationRecord
   delegate :chosen_languages, to: :user, prefix: false, allow_nil: true
 
   update_index('accounts', :self)
+  update_index('statuses', :statuses_to_index) if Rails.configuration.x.public_search_mode == 'discoverable'
 
   def local?
     domain.nil?
@@ -515,5 +516,14 @@ class Account < ApplicationRecord
   # NOTE: the `account.created` webhook is triggered by the `User` model, not `Account`.
   def trigger_update_webhooks
     TriggerWebhookWorker.perform_async('account.updated', 'Account', id) if local?
+  end
+
+  def statuses_to_index
+    case Rails.configuration.x.public_search_mode
+    when 'discoverable'
+      statuses.where(visibility: :public) if changes.key?(:discoverable) || changes.key?(:silenced_at)
+    when 'all', nil
+      nil
+    end
   end
 end

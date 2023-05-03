@@ -211,6 +211,30 @@ class Status < ApplicationRecord
     ].compact.join("\n\n")
   end
 
+  def searchable_is
+    keywords = []
+    keywords << :bot if account.bot?
+    keywords << :group if account.group?
+    keywords << :local_only if self.class.method_defined?(:local_only) && local_only?
+    keywords << :reply if reply?
+    keywords << :sensitive if sensitive?
+    keywords << visibility.to_sym
+    keywords
+  end
+
+  def searchable_has
+    keywords = []
+    keywords << :warning if spoiler_text?
+    keywords << :link if preview_cards.any?
+    keywords << :poll if preloadable_poll.present?
+
+    media_types = media_attachments.pluck(:type).map(&:to_sym).uniq
+    keywords << :media if media_attachments.any?
+    keywords += media_types.reject { |t| t == :unknown }
+
+    keywords
+  end
+
   def to_log_human_identifier
     account.acct
   end

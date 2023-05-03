@@ -77,11 +77,23 @@ class StatusesIndex < Chewy::Index
     field :id, type: 'long'
     field :account_id, type: 'long'
     field :created_at, type: 'date'
+    field :is, type: 'keyword', value: ->(status) { status.searchable_is }
+    field :has, type: 'keyword', value: ->(status) { status.searchable_has }
 
     field :text, type: 'text', value: ->(status) { status.searchable_text } do
       field :stemmed, type: 'text', analyzer: 'content'
     end
 
     field :searchable_by, type: 'long', value: ->(status, crutches) { status.searchable_by(crutches) }
+    field :is_public, type: 'boolean', value: lambda { |status|
+      case Rails.configuration.x.public_search_mode
+      when 'all'
+        status.public_visibility?
+      when 'discoverable'
+        status.public_visibility? && (status.account.discoverable? && !status.account.silenced?)
+      else
+        false
+      end
+    }
   end
 end

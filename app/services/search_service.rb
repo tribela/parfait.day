@@ -35,7 +35,16 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }))
+    query = parsed_query
+    definition =
+      case query.scope
+      when :related
+        query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }))
+      when :public
+        query.apply(StatusesIndex.filter(term: { is_public: true }))
+      else
+        raise Mastodon::SyntaxError, "Unknown scope: #{query.scope}"
+      end
 
     definition = definition.filter(term: { account_id: @options[:account_id] }) if @options[:account_id].present?
 

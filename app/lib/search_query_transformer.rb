@@ -2,15 +2,16 @@
 
 class SearchQueryTransformer < Parslet::Transform
   class Query
-    attr_reader :should_clauses, :must_not_clauses, :must_clauses, :filter_clauses, :range_clauses
+    attr_reader :should_clauses, :must_not_clauses, :must_clauses, :filter_clauses, :range_clauses, :scope_clauses
 
     def initialize(clauses)
-      grouped = clauses.chunk(&:operator).to_h
+      grouped = clauses.group_by(&:operator).to_h
       @should_clauses = grouped.fetch(:should, [])
       @must_not_clauses = grouped.fetch(:must_not, [])
       @must_clauses = grouped.fetch(:must, [])
       @filter_clauses = grouped.fetch(:filter, [])
       @range_clauses = grouped.fetch(:range, [])
+      @scope_clauses = grouped.fetch(:scope, [])
     end
 
     def apply(search)
@@ -22,6 +23,17 @@ class SearchQueryTransformer < Parslet::Transform
       search.query.minimum_should_match(1)
     end
 
+    def scope
+      case scope_clauses.last&.term
+      when 'related', nil
+        :related
+      when 'public'
+        :public
+      else
+        raise Mastodon::SyntaxError, "Unknown scope: #{scope_clauses.last.term}"
+      end
+    end
+
     private
 
     def clause_to_query(clause)
@@ -30,6 +42,8 @@ class SearchQueryTransformer < Parslet::Transform
         { multi_match: { type: 'most_fields', query: clause.term, fields: ['text', 'text.stemmed'] } }
       when PhraseClause
         { match_phrase: { text: { query: clause.phrase } } }
+      when PrefixClause
+        { clause.query => { clause.filter => clause.term } }
       else
         raise "Unexpected clause type: #{clause}"
       end
@@ -65,7 +79,18 @@ class SearchQueryTransformer < Parslet::Transform
         when nil
           :should
         else
-          raise "Unknown operator: #{str}"
+          raise Mastodon::SyntaxError, "Unknown operator: #{str}"
+        end
+      end
+
+      def filter_context_symbol(str)
+        case str
+        when '+', nil
+          :filter
+        when '-'
+          :must_not
+        else
+          raise Mastodon::SyntaxError, "Unknown operator: #{str}"
         end
       end
     end
@@ -92,10 +117,11 @@ class SearchQueryTransformer < Parslet::Transform
   end
 
   class PrefixClause
-    attr_reader :filter, :operator, :term
+    attr_reader :filter, :operator, :term, :query
 
-    def initialize(prefix, term)
-      @operator = :filter
+    def initialize(prefix, operator, term)
+      @query = :term
+      @operator = Operator.filter_context_symbol(operator)
       case prefix
       when 'from'
         @filter = :account_id
@@ -113,6 +139,15 @@ class SearchQueryTransformer < Parslet::Transform
         @filter = :created_at
         @operator = :range
         @term = { lte: Time.parse(term).utc.iso8601 }
+      when 'is'
+        @filter = :is
+        @term = term
+      when 'has'
+        @filter = :has
+        @term = term
+      when 'scope'
+        @operator = :scope
+        @term = term
       else
         raise Mastodon::SyntaxError
       end
@@ -120,11 +155,11 @@ class SearchQueryTransformer < Parslet::Transform
   end
 
   rule(clause: subtree(:clause)) do
-    prefix   = clause[:prefix][:term].to_s if clause[:prefix]
+    prefix   = clause[:prefix]&.to_s
     operator = clause[:operator]&.to_s
 
     if clause[:prefix]
-      PrefixClause.new(prefix, clause[:term].to_s)
+      PrefixClause.new(prefix, operator, clause[:term].to_s)
     elsif clause[:term]
       TermClause.new(prefix, operator, clause[:term].to_s)
     elsif clause[:shortcode]
@@ -132,7 +167,7 @@ class SearchQueryTransformer < Parslet::Transform
     elsif clause[:phrase]
       PhraseClause.new(prefix, operator, clause[:phrase].is_a?(Array) ? clause[:phrase].map { |p| p[:term].to_s }.join(' ') : clause[:phrase].to_s)
     else
-      raise "Unexpected clause type: #{clause}"
+      raise Mastodon::SyntaxError, "Unexpected clause type: #{clause}"
     end
   end
 
