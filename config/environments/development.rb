@@ -81,7 +81,6 @@ Rails.application.configure do
       config.x.trusted_metrics << IPAddr.new(item)
     end
   end
-
 end
 
 Redis.raise_deprecations = true

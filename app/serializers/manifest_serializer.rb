@@ -37,7 +37,7 @@ class ManifestSerializer < ActiveModel::Serializer
         type: 'image/png',
         purpose: 'maskable',
       }
-    end.concat [{
+    end + [{
       src: full_pack_url('media/images/app-icon.svg'),
       sizes: 'any',
       type: 'image/svg+xml',

@@ -44,7 +44,7 @@ class MediaAttachment < ApplicationRecord
 
   MAX_VIDEO_MATRIX_LIMIT = 8_294_400 # 3840x2160px
   MAX_VIDEO_INPUT_MATRIX_LIMIT = (ENV['MAX_VIDEO_INPUT_MATRIX_LIMIT'] || MAX_VIDEO_MATRIX_LIMIT).to_i
-  MAX_VIDEO_FRAME_RATE   = 120
+  MAX_VIDEO_FRAME_RATE = 120
 
   IMAGE_FILE_EXTENSIONS = %w(.jpg .jpeg .png .gif .webp .heic .heif .avif).freeze
   VIDEO_FILE_EXTENSIONS = %w(.webm .mp4 .m4v .mov).freeze

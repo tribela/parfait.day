@@ -87,6 +87,6 @@ class Importer::StatusesIndexImporter < Importer::BaseImporter
   end
 
   def local_replied_scope
-    Status.local.where('in_reply_to_id is not null').select('id, in_reply_to_id as status_id')
+    Status.local.where.not(in_reply_to_id: nil).select('id, in_reply_to_id as status_id')
   end
 end

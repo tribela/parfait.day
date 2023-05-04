@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAccountDomainMutes < ActiveRecord::Migration[6.1]
   def change
     create_table :account_domain_mutes do |t|

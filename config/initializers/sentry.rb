@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if ENV['SENTRY_DSN']
   Sentry.init do |config|
     config.dsn = ENV['SENTRY_DSN']
@@ -28,6 +30,6 @@ if ENV['SENTRY_DSN']
     end
 
     config.rails.report_rescued_exceptions = false
-    config.environment = ENV['SENTRY_ENVIRONMENT'] if ENV['ALTERNATE_DOMAINS']
+    config.environment = ENV.fetch('SENTRY_ENVIRONMENT') if ENV['ALTERNATE_DOMAINS']
   end
 end

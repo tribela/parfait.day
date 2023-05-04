@@ -476,7 +476,7 @@ module Mastodon
     def unfollow_old
       dry_run  = options[:dry_run] ? '(DRY RUN)' : ''
 
-      remote_accs_to_unfollow = \
+      remote_accs_to_unfollow =
         Account
         .remote
         .where(id: Follow.select(:target_account_id))
