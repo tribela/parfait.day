@@ -49,7 +49,7 @@ RSpec.describe HomeFeed do
       end
     end
 
-    context 'when feed is only partial' do
+    context 'when feed is only partial', :partial do
       before do
         FeedManager.instance.populate_home(account)
       end
