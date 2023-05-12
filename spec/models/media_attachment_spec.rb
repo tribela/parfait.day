@@ -144,7 +144,7 @@ RSpec.describe MediaAttachment do
     end
 
     it 'extracts colors from thumbnail' do
-      expect(media.file.meta['colors']['background']).to match /^#[0-9a-f]{6}$/
+      expect(media.file.meta['colors']['background']).to match(/^#[0-9a-f]{6}$/)
     end
 
     it 'gives the file a random name' do

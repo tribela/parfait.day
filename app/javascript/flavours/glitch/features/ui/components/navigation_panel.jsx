@@ -38,6 +38,7 @@ class NavigationPanel extends React.Component {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     onOpenSettings: PropTypes.func,
+    onTouchAbout: PropTypes.func,
   };
 
   render() {

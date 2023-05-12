@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Account
   .local.without_suspended
   .where('accounts.id > 0')

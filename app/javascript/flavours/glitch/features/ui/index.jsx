@@ -375,7 +375,7 @@ class UI extends React.Component {
   handleKonamiCommand = () => {
     this.props.dispatch(changeLocalSetting(['unlock_hidden_feature'], true));
     this.props.dispatch(showAlert('Qdon', 'Unlocked hidden feature!'));
-  }
+  };
 
   handleLayoutChange = debounce(() => {
     this.props.dispatch(clearHeight()); // The cached heights are no longer accurate, invalidate

@@ -32,7 +32,7 @@ describe Settings::Preferences::OtherController do
       expect(response).to redirect_to(settings_preferences_other_path)
       user.reload
       expect(user.locale).to eq 'en'
-      expect(user.chosen_languages).to eq ['es', 'fr', 'NONE']
+      expect(user.chosen_languages).to eq %w(es fr NONE)
       expect(user.account.chosen_languages).to eq ['es', 'fr', nil]
     end
 

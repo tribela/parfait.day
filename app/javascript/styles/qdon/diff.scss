@@ -51,7 +51,7 @@ html {
 }
 
 // Bigger link preview
-@media (min-width: 631px) {
+@media (width >= 631px) {
   a.status-card,
   a.status-card.compact {
     background-color: darken($ui-base-color, 5%);
