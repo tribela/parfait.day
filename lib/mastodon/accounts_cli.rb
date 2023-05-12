@@ -102,7 +102,8 @@ module Mastodon
           say('Use --force to reattach it anyway and delete the other user')
           return
         elsif account.user.present?
-          DeleteAccountService.new.call(account, reserve_email: false)
+          DeleteAccountService.new.call(account, reserve_email: false, reserve_username: false)
+          account = Account.new(username: username)
         end
       end
 
@@ -120,10 +121,10 @@ module Mastodon
         say('OK', :green)
         say("New password: #{password}")
       else
-        user.errors.to_h.each do |key, error|
+        user.errors.each do |error|
           say('Failure/Error: ', :red)
-          say(key)
-          say("    #{error}", :red)
+          say(error.attribute)
+          say("    #{error.type}", :red)
         end
 
         exit(1)
@@ -196,10 +197,10 @@ module Mastodon
         say('OK', :green)
         say("New password: #{password}") if options[:reset_password]
       else
-        user.errors.to_h.each do |key, error|
+        user.errors.each do |error|
           say('Failure/Error: ', :red)
-          say(key)
-          say("    #{error}", :red)
+          say(error.attribute)
+          say("    #{error.type}", :red)
         end
 
         exit(1)
@@ -352,7 +353,7 @@ module Mastodon
 
         begin
           code = Request.new(:head, account.uri).perform(&:code)
-        rescue HTTP::TimeoutError, HTTP::ConnectionError, OpenSSL::SSL::SSLError
+        rescue HTTP::TimeoutError, HTTP::ConnectionError, OpenSSL::SSL::SSLError, Mastodon::PrivateNetworkAddressError
           skip_domains << account.domain
         end
 
@@ -574,8 +575,8 @@ module Mastodon
       if options[:all]
         User.pending.find_each(&:approve!)
         say('OK', :green)
-      elsif options[:number]
-        User.pending.limit(options[:number]).each(&:approve!)
+      elsif options[:number]&.positive?
+        User.pending.order(created_at: :asc).limit(options[:number]).each(&:approve!)
         say('OK', :green)
       elsif username.present?
         account = Account.find_local(username)
@@ -588,6 +589,7 @@ module Mastodon
         account.user&.approve!
         say('OK', :green)
       else
+        say('Number must be positive', :red) if options[:number]
         exit(1)
       end
     end

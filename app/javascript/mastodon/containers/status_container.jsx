@@ -71,6 +71,7 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, props) => ({
     status: getStatus(state, props),
+    nextInReplyToId: props.nextId ? state.getIn(['statuses', props.nextId, 'in_reply_to_id']) : null,
     pictureInPicture: getPictureInPicture(state, props),
   });
 

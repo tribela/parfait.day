@@ -60,12 +60,11 @@ export default class LocalSettingsPageItem extends React.PureComponent {
       const optionElems = options && options.length > 0 && options.map((opt) => {
         let optionId = `${id}--${opt.value}`;
         return (
-          <label htmlFor={optionId}>
+          <label key={optionId} htmlFor={optionId}>
             <input
               type='radio'
               name={id}
               id={optionId}
-              key={optionId}
               value={opt.value}
               onBlur={handleChange}
               onChange={handleChange}
@@ -99,7 +98,7 @@ export default class LocalSettingsPageItem extends React.PureComponent {
                 placeholder={placeholder}
                 onChange={handleChange}
                 disabled={!enabled}
-	        {...inputProps}
+                {...inputProps}
               />
             </p>
           </label>

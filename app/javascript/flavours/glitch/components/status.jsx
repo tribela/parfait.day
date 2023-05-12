@@ -67,6 +67,9 @@ class Status extends ImmutablePureComponent {
     id: PropTypes.string,
     status: ImmutablePropTypes.map,
     account: ImmutablePropTypes.map,
+    previousId: PropTypes.string,
+    nextInReplyToId: PropTypes.string,
+    rootId: PropTypes.string,
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
     onReblog: PropTypes.func,
@@ -131,6 +134,9 @@ class Status extends ImmutablePureComponent {
     'expanded',
     'unread',
     'pictureInPicture',
+    'previousId',
+    'nextInReplyToId',
+    'rootId',
   ];
 
   updateOnStates = [
@@ -276,7 +282,7 @@ class Status extends ImmutablePureComponent {
 
   //  Hack to fix timeline jumps on second rendering when auto-collapsing
   //  or on subsequent rendering when a preview card has been fetched
-  getSnapshotBeforeUpdate (prevProps, prevState) {
+  getSnapshotBeforeUpdate() {
     if (!this.props.getScrollPosition) return null;
 
     const { muted, hidden, status, settings } = this.props;
@@ -291,7 +297,7 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot !== null && this.props.updateScrollBottom && this.node.offsetTop < snapshot.top) {
       this.props.updateScrollBottom(snapshot.height - snapshot.top);
     }
@@ -455,7 +461,7 @@ class Status extends ImmutablePureComponent {
     this.props.onMoveDown(this.props.containerId || this.props.id, e.target.getAttribute('data-featured'));
   };
 
-  handleHotkeyCollapse = e => {
+  handleHotkeyCollapse = () => {
     if (!this.props.settings.getIn(['collapsed', 'enabled']))
       return;
 
@@ -499,7 +505,6 @@ class Status extends ImmutablePureComponent {
     const {
       handleRef,
       parseClick,
-      setExpansion,
       setCollapsed,
     } = this;
     const { router } = this.context;
@@ -518,9 +523,12 @@ class Status extends ImmutablePureComponent {
       unread,
       featured,
       pictureInPicture,
+      previousId,
+      nextInReplyToId,
+      rootId,
       ...other
     } = this.props;
-    const { isCollapsed, forceFilter } = this.state;
+    const { isCollapsed } = this.state;
     let background = null;
     let attachments = null;
 
@@ -561,6 +569,8 @@ class Status extends ImmutablePureComponent {
       openMedia: this.handleHotkeyOpenMedia,
     };
 
+    let prepend, rebloggedByText;
+
     if (hidden) {
       return (
         <HotKeys handlers={handlers}>
@@ -572,7 +582,11 @@ class Status extends ImmutablePureComponent {
       );
     }
 
+    const connectUp = previousId && previousId === status.get('in_reply_to_id');
+    const connectToRoot = rootId && rootId === status.get('in_reply_to_id');
+    const connectReply = nextInReplyToId && nextInReplyToId === status.get('id');
     const matchedFilters = status.get('matched_filters');
+
     if (this.state.forceFilter === undefined ? matchedFilters : this.state.forceFilter) {
       const minHandlers = this.props.muted ? {} : {
         moveUp: this.handleHotkeyMoveUp,
@@ -610,7 +624,7 @@ class Status extends ImmutablePureComponent {
     attachments = status.get('media_attachments');
 
     if (pictureInPicture.get('inUse')) {
-      media.push(<PictureInPicturePlaceholder width={this.props.cachedMediaWidth} />);
+      media.push(<PictureInPicturePlaceholder />);
       mediaIcons.push('video-camera');
     } else if (attachments.size > 0) {
       if (muted || attachments.every(item => item.get('type') === 'unknown')) {
@@ -663,11 +677,9 @@ class Status extends ImmutablePureComponent {
               inline
               sensitive={status.get('sensitive')}
               letterbox={settings.getIn(['media', 'letterbox'])}
-              fullwidth={settings.getIn(['media', 'fullwidth'])}
+              fullwidth={!rootId && settings.getIn(['media', 'fullwidth'])}
               preventPlayback={isCollapsed || !isExpanded}
               onOpenVideo={this.handleOpenVideo}
-              width={this.props.cachedMediaWidth}
-              cacheWidth={this.props.cacheMediaWidth}
               deployPictureInPicture={pictureInPicture.get('available') ? this.handleDeployPictureInPicture : undefined}
               visible={this.state.showMedia}
               onToggleVisibility={this.handleToggleMediaVisibility}
@@ -684,7 +696,7 @@ class Status extends ImmutablePureComponent {
                 lang={status.get('language')}
                 sensitive={status.get('sensitive')}
                 letterbox={settings.getIn(['media', 'letterbox'])}
-                fullwidth={settings.getIn(['media', 'fullwidth'])}
+                fullwidth={!rootId && settings.getIn(['media', 'fullwidth'])}
                 hidden={isCollapsed || !isExpanded}
                 onOpenMedia={this.handleOpenMedia}
                 cacheWidth={this.props.cacheMediaWidth}
@@ -707,8 +719,6 @@ class Status extends ImmutablePureComponent {
           onOpenMedia={this.handleOpenMedia}
           card={status.get('card')}
           compact
-          cacheWidth={this.props.cacheMediaWidth}
-          defaultWidth={this.props.cachedMediaWidth}
           sensitive={status.get('sensitive')}
         />,
       );
@@ -725,8 +735,6 @@ class Status extends ImmutablePureComponent {
     const selectorAttribs = {
       'data-status-by': `@${status.getIn(['account', 'acct'])}`,
     };
-
-    let prepend;
 
     if (this.props.prepend && account) {
       const notifKind = {
@@ -748,8 +756,6 @@ class Status extends ImmutablePureComponent {
       );
     }
 
-    let rebloggedByText;
-
     if (this.props.prepend === 'reblog') {
       rebloggedByText = intl.formatMessage({ id: 'status.reblogged_by', defaultMessage: '{name} boosted' }, { name: account.get('acct') });
     }
@@ -758,6 +764,8 @@ class Status extends ImmutablePureComponent {
       collapsed: isCollapsed,
       'has-background': isCollapsed && background,
       'status__wrapper-reply': !!status.get('in_reply_to_id'),
+      'status--in-thread': !!rootId,
+      'status--first-in-thread': previousId && (!connectUp || connectToRoot),
       unread,
       muted,
     }, 'focusable');
@@ -774,6 +782,9 @@ class Status extends ImmutablePureComponent {
           aria-label={textForScreenReader(intl, status, rebloggedByText, !status.get('hidden'))}
         >
           {!muted && prepend}
+
+          {(connectReply || connectUp || connectToRoot) && <div className={classNames('status__line', { 'status__line--full': connectReply, 'status__line--first': !status.get('in_reply_to_id') && !connectToRoot })} />}
+
           <header className='status__info'>
             <span>
               {muted && prepend}

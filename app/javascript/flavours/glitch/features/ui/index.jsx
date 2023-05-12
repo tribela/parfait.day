@@ -63,7 +63,6 @@ import { closeOnboarding, INTRODUCTION_VERSION } from 'flavours/glitch/actions/o
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import { showAlert } from 'flavours/glitch/actions/alerts';
-import { Helmet } from 'react-helmet';
 import Header from './components/header';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -79,10 +78,8 @@ const mapStateToProps = state => ({
   hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
   hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
   canUploadMore: !state.getIn(['compose', 'media_attachments']).some(x => ['audio', 'video'].includes(x.get('type'))) && state.getIn(['compose', 'media_attachments']).size < 4,
-  layout: state.getIn(['meta', 'layout']),
   layout_local_setting: state.getIn(['local_settings', 'layout']),
   isWide: state.getIn(['local_settings', 'stretch']),
-  navbarUnder: state.getIn(['local_settings', 'navbar_under']),
   dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
   unreadNotifications: state.getIn(['notifications', 'unread']),
   showFaviconBadge: state.getIn(['local_settings', 'notifications', 'favicon_badge']),
@@ -137,7 +134,6 @@ class SwitchingColumnsArea extends React.PureComponent {
   static propTypes = {
     children: PropTypes.node,
     location: PropTypes.object,
-    navbarUnder: PropTypes.bool,
     mobile: PropTypes.bool,
   };
 
@@ -169,7 +165,7 @@ class SwitchingColumnsArea extends React.PureComponent {
   };
 
   render () {
-    const { children, mobile, navbarUnder } = this.props;
+    const { children, mobile } = this.props;
     const { signedIn } = this.context.identity;
 
     let redirect;
@@ -189,7 +185,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     }
 
     return (
-      <ColumnsAreaContainer ref={this.setRef} singleColumn={mobile} navbarUnder={navbarUnder}>
+      <ColumnsAreaContainer ref={this.setRef} singleColumn={mobile}>
         <WrappedSwitch>
           {redirect}
 
@@ -261,7 +257,6 @@ class UI extends React.Component {
     layout_local_setting: PropTypes.string,
     isWide: PropTypes.bool,
     systemFontUi: PropTypes.bool,
-    navbarUnder: PropTypes.bool,
     isComposing: PropTypes.bool,
     hasComposingText: PropTypes.bool,
     hasMediaAttachments: PropTypes.bool,
@@ -273,6 +268,7 @@ class UI extends React.Component {
     dropdownMenuIsOpen: PropTypes.bool,
     unreadNotifications: PropTypes.number,
     showFaviconBadge: PropTypes.bool,
+    hicolorPrivacyIcons: PropTypes.bool,
     moved: PropTypes.map,
     layout: PropTypes.string.isRequired,
     firstLaunch: PropTypes.bool,
@@ -392,7 +388,7 @@ class UI extends React.Component {
 
     if (layout !== this.props.layout) {
       this.handleLayoutChange.cancel();
-      this.props.dispatch(changeLayout(layout));
+      this.props.dispatch(changeLayout({ layout }));
     } else {
       this.handleLayoutChange();
     }
@@ -466,8 +462,8 @@ class UI extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (this.props.unreadNotifications != prevProps.unreadNotifications ||
-        this.props.showFaviconBadge != prevProps.showFaviconBadge) {
+    if (this.props.unreadNotifications !== prevProps.unreadNotifications ||
+        this.props.showFaviconBadge !== prevProps.showFaviconBadge) {
       if (this.favicon) {
         try {
           this.favicon.badge(this.props.showFaviconBadge ? this.props.unreadNotifications : 0);
@@ -616,7 +612,7 @@ class UI extends React.Component {
 
   render () {
     const { draggingOver } = this.state;
-    const { children, isWide, navbarUnder, location, dropdownMenuIsOpen, layout, moved } = this.props;
+    const { children, isWide, location, dropdownMenuIsOpen, layout, moved } = this.props;
 
     const columnsClass = layout => {
       switch (layout) {
@@ -632,7 +628,6 @@ class UI extends React.Component {
     const className = classNames('ui', columnsClass(layout), {
       'wide': isWide,
       'system-font': this.props.systemFontUi,
-      'navbar-under': navbarUnder,
       'hicolor-privacy-icons': this.props.hicolorPrivacyIcons,
     });
 
@@ -676,7 +671,7 @@ class UI extends React.Component {
 
           <Header />
 
-          <SwitchingColumnsArea location={location} mobile={layout === 'mobile' || layout === 'single-column'} navbarUnder={navbarUnder}>
+          <SwitchingColumnsArea location={location} mobile={layout === 'mobile' || layout === 'single-column'}>
             {children}
           </SwitchingColumnsArea>
 
