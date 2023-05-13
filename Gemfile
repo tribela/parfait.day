@@ -165,5 +165,6 @@ gem 'rubyzip', '~> 2.3'
 
 gem 'prometheus-client', '~> 2.1'
 
-gem 'sentry-ruby', '~> 5.1'
-gem 'sentry-rails', '~> 5.1'
+gem 'sentry-ruby', '~> 5.8'
+gem 'sentry-rails', '~> 5.8'
+gem 'sentry-sidekiq', '~> 5.8'
