@@ -9,8 +9,8 @@ module AccountHeader
 
   class_methods do
     def header_styles(file)
-      styles = { original: { pixels: MAX_PIXELS, file_geometry_parser: FastGeometryParser } }
-      styles[:static] = { format: 'png', convert_options: '-coalesce', file_geometry_parser: FastGeometryParser } if file.content_type == 'image/gif'
+      styles = { original: { format: 'webp', pixels: MAX_PIXELS, file_geometry_parser: FastGeometryParser } }
+      styles[:static] = { format: 'webp', convert_options: '-coalesce', file_geometry_parser: FastGeometryParser } if file.content_type == 'image/gif'
       styles
     end
 
@@ -19,7 +19,7 @@ module AccountHeader
 
   included do
     # Header upload
-    has_attached_file :header, styles: ->(f) { header_styles(f) }, convert_options: { all: '+profile "!icc,*" +set modify-date +set create-date' }, processors: [:lazy_thumbnail]
+    has_attached_file :header, styles: ->(f) { header_styles(f) }, convert_options: { all: '+profile "!icc,*" +set modify-date +set create-date' }, processors: [:lazy_thumbnail, :type_corrector]
     validates_attachment_content_type :header, content_type: IMAGE_MIME_TYPES
     validates_attachment_size :header, less_than: LIMIT
     remotable_attachment :header, LIMIT, suppress_errors: false
