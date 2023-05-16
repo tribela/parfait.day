@@ -6,6 +6,7 @@ const { resolve } = require('path');
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const TerserPlugin = require('terser-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 const sharedConfig = require('./shared');
 
@@ -28,6 +29,19 @@ module.exports = merge(sharedConfig, {
   },
 
   plugins: [
+    ...(process.env.ASSET_BUILD_TIME_COMPRESSION !== 'false' ? [
+      new CompressionPlugin({
+        filename: '[path][base].gz[query]',
+        cache: true,
+        test: /\.(js|css|html|json|ico|svg|eot|otf|ttf|map)$/,
+      }),
+      new CompressionPlugin({
+        filename: '[path][base].br[query]',
+        algorithm: 'brotliCompress',
+        cache: true,
+        test: /\.(js|css|html|json|ico|svg|eot|otf|ttf|map)$/,
+      }),
+    ] : []),
     new BundleAnalyzerPlugin({ // generates report.html
       analyzerMode: 'static',
       openAnalyzer: false,
