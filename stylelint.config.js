@@ -4,7 +4,7 @@ module.exports = {
     'app/javascript/styles/mastodon/reset.scss',
     'app/javascript/flavours/glitch/styles/reset.scss',
     'app/javascript/styles/win95.scss',
-    'app/javascript/styles/birdsite/diff.scss',
+    'app/javascript/styles/birdsite/*.scss',
     'coverage/**/*',
     'node_modules/**/*',
     'public/assets/**/*',

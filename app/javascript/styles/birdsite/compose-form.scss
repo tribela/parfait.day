@@ -1,12 +1,12 @@
 /* Add background color for the compose form */
-.layout-single-column .compose-form .compose-form__autosuggest-wrapper,
-.layout-single-column .compose-form .compose-form__buttons-wrapper {
+.compose-form .compose-form__autosuggest-wrapper,
+.compose-form .compose-form__buttons-wrapper {
   background-color: var(--color-mud);
   border-color: var(--color-mud);
   padding-top: 0;
 }
 
 /* Fixes to bottom row when there's a background */
-.layout-single-column .compose-form .compose-form__buttons-wrapper {
+.compose-form .compose-form__buttons-wrapper {
   padding-bottom: calc(var(--gap-default) / 2);
 }
