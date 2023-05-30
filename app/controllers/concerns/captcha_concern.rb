@@ -8,6 +8,14 @@ module CaptchaConcern
     helper_method :render_captcha
   end
 
+  def captcha_available?
+    hcaptcha_available?
+  end
+
+  def captcha_enabled?
+    hcaptcha_enabled? || korean_captcha_enabled?
+  end
+
   def hcaptcha_available?
     ENV['HCAPTCHA_SECRET_KEY'].present? && ENV['HCAPTCHA_SITE_KEY'].present?
   end
