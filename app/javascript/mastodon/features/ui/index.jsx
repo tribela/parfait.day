@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 import { HotKeys } from 'react-hotkeys';
 
+import { showAlert } from 'mastodon/actions/alerts';
 import { focusApp, unfocusApp, changeLayout } from 'mastodon/actions/app';
 import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'mastodon/actions/markers';
 import { INTRODUCTION_VERSION } from 'mastodon/actions/onboarding';
@@ -65,7 +66,6 @@ import {
   About,
   PrivacyPolicy,
 } from './util/async-components';
-import { showAlert } from 'flavours/glitch/actions/alerts';
 import { WrappedSwitch, WrappedRoute } from './util/react_router_helpers';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.

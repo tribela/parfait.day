@@ -10,6 +10,7 @@ import {
   mentionCompose,
   directCompose,
 } from '../../../actions/compose';
+import { initDomainMuteModal } from '../../../actions/domain_mutes';
 import {
   reblog,
   favourite,
@@ -18,7 +19,6 @@ import {
   pin,
   unpin,
 } from '../../../actions/interactions';
-import { initDomainMuteModal } from '../../../actions/domain_mutes';
 import { openModal } from '../../../actions/modal';
 import { initMuteModal } from '../../../actions/mutes';
 import { initReport } from '../../../actions/reports';

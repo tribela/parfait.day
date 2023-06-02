@@ -24,14 +24,15 @@ import {
   DOMAIN_BLOCK_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
 } from 'flavours/glitch/actions/domain_blocks';
-
 import {
   DOMAIN_MUTE_SUCCESS,
   DOMAIN_UNMUTE_SUCCESS,
 } from 'flavours/glitch/actions/domain_mutes';
+
 import {
-  ACCOUNT_NOTE_SUBMIT_SUCCESS,
-} from 'flavours/glitch/actions/account_notes';
+  NOTIFICATIONS_UPDATE,
+} from '../actions/notifications';
+
 
 const normalizeRelationship = (state, relationship) => state.set(relationship.id, fromJS(relationship));
 

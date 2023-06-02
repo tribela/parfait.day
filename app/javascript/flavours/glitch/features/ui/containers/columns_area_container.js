@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { openModal } from 'flavours/glitch/actions/modal';
-import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import { showAlert } from 'flavours/glitch/actions/alerts';
+import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
+import { openModal } from 'flavours/glitch/actions/modal';
 
 import ColumnsArea from '../components/columns_area';
 

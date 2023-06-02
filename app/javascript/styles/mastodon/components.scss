@@ -960,12 +960,17 @@ body > [data-popper-placement] {
       margin-bottom: 20px;
     }
 
-    h1, h2, h3, h4, h5 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
       margin-top: 20px;
       margin-bottom: 20px;
     }
 
-    h1, h2 {
+    h1,
+    h2 {
       font-weight: 700;
       font-size: 1.2em;
     }
@@ -974,7 +979,9 @@ body > [data-popper-placement] {
       font-size: 1.1em;
     }
 
-    h3, h4, h5 {
+    h3,
+    h4,
+    h5 {
       font-weight: 500;
     }
 
@@ -989,11 +996,13 @@ body > [data-popper-placement] {
       }
     }
 
-    b, strong {
+    b,
+    strong {
       font-weight: 700;
     }
 
-    em, i {
+    em,
+    i {
       font-style: italic;
     }
 
@@ -1007,7 +1016,8 @@ body > [data-popper-placement] {
       vertical-align: super;
     }
 
-    ul, ol {
+    ul,
+    ol {
       margin-left: 1em;
 
       p {

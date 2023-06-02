@@ -13,6 +13,7 @@ import Toggle from 'react-toggle';
 //  Components.
 import { IconButton } from 'flavours/glitch/components/icon_button';
 import { pollLimits } from 'flavours/glitch/initial_state';
+import Settings from 'flavours/glitch/settings';
 
 import DropdownContainer from '../containers/dropdown_container';
 import LanguageDropdown from '../containers/language_dropdown_container';
@@ -23,7 +24,6 @@ import TextIconButton from './text_icon_button';
 
 
 //  Utils.
-import Settings from 'flavours/glitch/settings';
 
 //  Messages.
 const messages = defineMessages({

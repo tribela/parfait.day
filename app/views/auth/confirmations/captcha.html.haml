@@ -14,8 +14,9 @@
       = render_captcha
 
   - if korean_captcha_enabled?
+    %p.lead= t('simple_form.labels.defaults.korean_captcha')
+
     .field-group.korean-captcha
-      %p.hint= t('simple_form.labels.defaults.korean_captcha')
       %pre.question= Setting.korean_captcha_question
       %input.answer{ required: 'true', name: 'korean_captcha_answer' }
 

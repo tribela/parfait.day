@@ -1,17 +1,21 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { debounce } from 'lodash';
-import LoadingIndicator from '../../components/loading_indicator';
-import Column from '../ui/components/column';
-import ColumnBackButtonSlim from '../../components/column_back_button_slim';
-import MutedDomainContainer from '../../containers/muted_domain_container';
-import { fetchDomainMutes, expandDomainMutes } from '../../actions/domain_mutes';
-import ScrollableList from '../../components/scrollable_list';
+
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+
 import { Helmet } from 'react-helmet';
+
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
+
+import { debounce } from 'lodash';
+
+import { fetchDomainMutes, expandDomainMutes } from '../../actions/domain_mutes';
+import ColumnBackButtonSlim from '../../components/column_back_button_slim';
+import LoadingIndicator from '../../components/loading_indicator';
+import ScrollableList from '../../components/scrollable_list';
+import MutedDomainContainer from '../../containers/muted_domain_container';
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.domain_mutes', defaultMessage: 'Muted domains' },

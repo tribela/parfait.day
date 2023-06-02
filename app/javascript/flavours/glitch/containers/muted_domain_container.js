@@ -1,7 +1,8 @@
-import { connect } from 'react-redux';
-import { unmuteDomain, excludeDomainHomeTimeline, initDomainMuteModal } from '../actions/domain_mutes';
 import { injectIntl } from 'react-intl';
 
+import { connect } from 'react-redux';
+
+import { unmuteDomain, excludeDomainHomeTimeline, initDomainMuteModal } from '../actions/domain_mutes';
 import MutedDomain from '../components/muted_domain';
 
 const makeMapStateToProps = () => {

@@ -1,4 +1,5 @@
 import api, { getLinks } from '../api';
+
 import { openModal } from './modal';
 
 export const DOMAIN_MUTE_REQUEST = 'DOMAIN_MUTE_REQUEST';

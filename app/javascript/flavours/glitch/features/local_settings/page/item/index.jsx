@@ -41,7 +41,7 @@ export default class LocalSettingsPageItem extends PureComponent {
     let enabled = !disabled;
 
     if (showWhen === false) {
-      return (<></>);
+      return (null);
     }
 
     if (dependsOn) {

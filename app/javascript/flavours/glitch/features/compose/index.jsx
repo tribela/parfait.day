@@ -4,15 +4,15 @@ import { PureComponent } from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
 
 import classNames from 'classnames';
-import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
-import { showAlert } from 'flavours/glitch/actions/alerts';
 import { Helmet } from 'react-helmet';
 
 import { connect } from 'react-redux';
 
 import spring from 'react-motion/lib/spring';
 
+import { showAlert } from 'flavours/glitch/actions/alerts';
 import { mountCompose, unmountCompose, cycleElefriendCompose } from 'flavours/glitch/actions/compose';
+import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import Column from 'flavours/glitch/components/column';
 import { mascot } from 'flavours/glitch/initial_state';
 

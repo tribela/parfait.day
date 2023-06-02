@@ -12,9 +12,11 @@ import Favico from 'favico.js';
 import { debounce } from 'lodash';
 import { HotKeys } from 'react-hotkeys';
 
+import { showAlert } from 'flavours/glitch/actions/alerts';
 import { changeLayout } from 'flavours/glitch/actions/app';
 import { uploadCompose, resetCompose, changeComposeSpoilerness } from 'flavours/glitch/actions/compose';
 import { clearHeight } from 'flavours/glitch/actions/height_cache';
+import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'flavours/glitch/actions/markers';
 import { expandNotifications, notificationsSetVisibility } from 'flavours/glitch/actions/notifications';
 import { fetchServer, fetchServerTranslationLanguages } from 'flavours/glitch/actions/server';
@@ -67,9 +69,6 @@ import {
   About,
   PrivacyPolicy,
 } from './util/async-components';
-import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
-import { showAlert } from 'flavours/glitch/actions/alerts';
-
 import { WrappedSwitch, WrappedRoute } from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.

@@ -1,5 +1,6 @@
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 
+
 import { connect } from 'react-redux';
 
 import { initEditAccountNote } from 'flavours/glitch/actions/account_notes';

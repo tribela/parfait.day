@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 import {
   DOMAIN_BLOCKS_FETCH_SUCCESS,
@@ -11,7 +11,6 @@ import {
   DOMAIN_UNMUTE_SUCCESS,
   DOMAIN_MUTE_HOME_TIMELINE_SUCCESS,
 } from '../actions/domain_mutes';
-import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const initialState = ImmutableMap({
   blocks: ImmutableMap({
