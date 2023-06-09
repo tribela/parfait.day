@@ -1,6 +1,8 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
-  NOTIFICATIONS_UPDATE,
-} from '../actions/notifications';
+  ACCOUNT_NOTE_SUBMIT_SUCCESS,
+} from 'flavours/glitch/actions/account_notes';
 import {
   ACCOUNT_FOLLOW_SUCCESS,
   ACCOUNT_FOLLOW_REQUEST,
@@ -22,6 +24,7 @@ import {
   DOMAIN_BLOCK_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
 } from 'flavours/glitch/actions/domain_blocks';
+
 import {
   DOMAIN_MUTE_SUCCESS,
   DOMAIN_UNMUTE_SUCCESS,
@@ -29,7 +32,6 @@ import {
 import {
   ACCOUNT_NOTE_SUBMIT_SUCCESS,
 } from 'flavours/glitch/actions/account_notes';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const normalizeRelationship = (state, relationship) => state.set(relationship.id, fromJS(relationship));
 

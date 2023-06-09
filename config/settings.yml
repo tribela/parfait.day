@@ -43,11 +43,11 @@ defaults: &defaults
   show_domain_blocks_rationale: 'disabled'
   outgoing_spoilers: ''
   require_invite_text: false
-  captcha_enabled: false
   korean_captcha_enabled: false
   korean_captcha_question: '광복절은 몇 월 며칠인가요? 띄어쓰기 없이 한글 다섯 글자로 답하세요. 예: 이월이십구일'
   korean_captcha_answer: '팔월십오일'
   backups_retention_period: 7
+  captcha_enabled: false
 
 development:
   <<: *defaults

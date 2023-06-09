@@ -19,7 +19,7 @@
 
   - if captcha_available?
     .fields-group
-      = f.input :captcha_enabled, as: :boolean, wrapper: :with_label, label: t('admin.settings.captcha_enabled.title'), hint: t('admin.settings.captcha_enabled.desc_html'), glitch_only: true
+      = f.input :captcha_enabled, as: :boolean, wrapper: :with_label, label: t('admin.settings.captcha_enabled.title'), hint: t('admin.settings.captcha_enabled.desc_html')
 
   .fields-group
     = f.input :korean_captcha_enabled, as: :boolean, wrapper: :with_label, label: t('admin.settings.korean_captcha_enabled.title'), hint: t('admin.settings.korean_captcha_enabled.desc_html')

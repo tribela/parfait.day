@@ -1,9 +1,11 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Icon } from './icon';
-import { AnimatedNumber } from './animated_number';
+import { PureComponent } from 'react';
 
-type Props = {
+import classNames from 'classnames';
+
+import { AnimatedNumber } from './animated_number';
+import { Icon } from './icon';
+
+interface Props {
   className?: string;
   title: string;
   icon: string;
@@ -25,12 +27,12 @@ type Props = {
   obfuscateCount?: boolean;
   href?: string;
   ariaHidden: boolean;
-};
-type States = {
+}
+interface States {
   activate: boolean;
   deactivate: boolean;
-};
-export class IconButton extends React.PureComponent<Props, States> {
+}
+export class IconButton extends PureComponent<Props, States> {
   static defaultProps = {
     size: 18,
     active: false,
@@ -125,14 +127,14 @@ export class IconButton extends React.PureComponent<Props, States> {
     }
 
     let contents = (
-      <React.Fragment>
+      <>
         <Icon id={icon} fixedWidth aria-hidden='true' />{' '}
         {typeof counter !== 'undefined' && (
           <span className='icon-button__counter'>
             <AnimatedNumber value={counter} obfuscate={obfuscateCount} />
           </span>
         )}
-      </React.Fragment>
+      </>
     );
 
     if (href != null) {

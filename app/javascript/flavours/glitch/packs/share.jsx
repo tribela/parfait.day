@@ -1,8 +1,8 @@
 import 'packs/public-path';
-import { loadPolyfills } from 'flavours/glitch/polyfills';
+import { createRoot } from 'react-dom/client';
+
 import ComposeContainer from 'flavours/glitch/containers/compose_container';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { loadPolyfills } from 'flavours/glitch/polyfills';
 import ready from 'flavours/glitch/ready';
 
 function loaded() {
@@ -13,7 +13,8 @@ function loaded() {
     if(!attr) return;
 
     const props = JSON.parse(attr);
-    ReactDOM.render(<ComposeContainer {...props} />, mountNode);
+    const root = createRoot(mountNode);
+    root.render(<ComposeContainer {...props} />);
   }
 }
 
