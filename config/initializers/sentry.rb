@@ -6,8 +6,11 @@ if ENV['SENTRY_DSN']
     config.breadcrumbs_logger = [:active_support_logger, :http_logger]
 
     config.excluded_exceptions += [
+      'ActiveRecord::RecordNotUnique',
       'HTTP::ConnectionError',
+      'HTTP::StateError',
       'HTTP::TimeoutError',
+      'OpenSSL::SSL::SSLError',
       'Stoplight::Error::RedLight',
     ]
 
