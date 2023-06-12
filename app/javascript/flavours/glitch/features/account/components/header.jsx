@@ -306,7 +306,7 @@ class Header extends ImmutablePureComponent {
       if (account.getIn(['relationship', 'domain_muting'])) {
         menu.push({ text: intl.formatMessage(messages.unmuteDomain, { domain: remoteDomain }), action: this.props.onUnmuteDomain });
       } else {
-        menu.push({ text: intl.formatMessage(messages.muteDomain, { domain: remoteDomain }), action: this.props.onMuteDomain });
+        menu.push({ text: intl.formatMessage(messages.muteDomain, { domain: remoteDomain }), action: this.props.onMuteDomain, dangerous: true });
       }
     }
 

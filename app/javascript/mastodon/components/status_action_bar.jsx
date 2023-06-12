@@ -339,7 +339,7 @@ class StatusActionBar extends ImmutablePureComponent {
         if (relationship && relationship.get('domain_muteing')) {
           menu.push({ text: intl.formatMessage(messages.unmuteDomain, { domain }), action: this.handleUnmuteDomain });
         } else {
-          menu.push({ text: intl.formatMessage(messages.muteDomain, { domain }), action: this.handleMuteDomain });
+          menu.push({ text: intl.formatMessage(messages.muteDomain, { domain }), action: this.handleMuteDomain, dangerous: true });
         }
       }
 

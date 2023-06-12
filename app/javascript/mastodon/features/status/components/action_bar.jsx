@@ -271,7 +271,7 @@ class ActionBar extends PureComponent {
         if (relationship && relationship.get('domain_muting')) {
           menu.push({ text: intl.formatMessage(messages.unmuteDomain, { domain }), action: this.handleUnmuteDomain });
         } else {
-          menu.push({ text: intl.formatMessage(messages.muteDomain, { domain }), action: this.handleMuteDomain });
+          menu.push({ text: intl.formatMessage(messages.muteDomain, { domain }), action: this.handleMuteDomain, dangerous: true });
         }
       }
 
