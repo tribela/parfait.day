@@ -42,6 +42,9 @@ if ENV['SENTRY_DSN']
       end
     end
 
+    # The profiles_sample_rate setting is relative to the traces_sample_rate setting.
+    config.profiles_sample_rate = 1.0
+
     config.rails.report_rescued_exceptions = false
     config.environment = ENV.fetch('SENTRY_ENVIRONMENT', 'production')
   end

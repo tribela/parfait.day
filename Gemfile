@@ -178,7 +178,7 @@ group :development do
 
   # Profiling tools
   gem 'memory_profiler', require: false
-  gem 'stackprof', require: false
+  # gem 'stackprof', require: false
 end
 
 group :production do
@@ -198,6 +198,7 @@ gem 'hcaptcha', '~> 7.1'
 
 gem 'prometheus-client', '~> 2.1'
 
-gem 'sentry-ruby', '~> 5.8'
-gem 'sentry-rails', '~> 5.8'
-gem 'sentry-sidekiq', '~> 5.8'
+gem 'stackprof'
+gem 'sentry-ruby', '~> 5.9'
+gem 'sentry-rails', '~> 5.9'
+gem 'sentry-sidekiq', '~> 5.9'
