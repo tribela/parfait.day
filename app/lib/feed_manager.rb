@@ -418,6 +418,10 @@ class FeedManager
     return true if check_for_blocks.any? { |target_account_id| crutches[:blocking][target_account_id] || crutches[:muting][target_account_id] }
     return true if crutches[:blocked_by][status.account_id]
 
+    filter_from_home_inner(status, receiver_id, crutches)
+  end
+
+  def filter_from_home_inner(status, receiver_id, crutches)
     if status.reply? && !status.in_reply_to_account_id.nil?                                                                      # Filter out if it's a reply
       should_filter   = !crutches[:following][status.in_reply_to_account_id]                                                     # and I'm not following the person it's a reply to
       should_filter &&= receiver_id != status.in_reply_to_account_id                                                             # and it's not a reply to me
