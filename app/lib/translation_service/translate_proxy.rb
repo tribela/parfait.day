@@ -14,7 +14,13 @@ class TranslationService::TranslateProxy < TranslationService
     @papago_client_secret = papago_client_secret
   end
 
-  def translate(text, source_language, target_language)
+  def translate(texts, source_language, target_language)
+    texts.map do |text|
+      translate_text(text, source_language, target_language)
+    end
+  end
+
+  def translate_text(text, source_language, target_language)
     use_papago = @papago_client_id.present? && @papago_languages.include?(source_language) && @papago_languages.include?(target_language)
 
     text = sanitize(text)
@@ -97,7 +103,11 @@ class TranslationService::TranslateProxy < TranslationService
 
     text = restore_text(text)
 
-    Translation.new(text: text, detected_source_language: source_language, provider: provider)
+    Translation.new(
+      text: text,
+      detected_source_language: source_language,
+      provider: provider
+    )
   rescue Oj::ParseError
     raise UnexpectedResponseError
   end
@@ -108,11 +118,16 @@ class TranslationService::TranslateProxy < TranslationService
     raise UnexpectedResponseError unless json.is_a?(Hash)
 
     text = json['text']
-    provider = 'Google Translate proxy'
+    provider = 'Google Translate'
 
     text = restore_text(text)
+    source_language = json['lang'] || source_language
 
-    Translation.new(text: text, detected_source_language: source_language, provider: provider)
+    Translation.new(
+      text: text,
+      detected_source_language: source_language,
+      provider: provider
+    )
   rescue Oj::ParseError
     raise UnexpectedResponseError
   end
