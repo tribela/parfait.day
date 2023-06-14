@@ -126,6 +126,8 @@ class MuteModal extends PureComponent {
               <option value={86400}>{intl.formatMessage(messages.days, { number: 1 })}</option>
               <option value={259200}>{intl.formatMessage(messages.days, { number: 3 })}</option>
               <option value={604800}>{intl.formatMessage(messages.days, { number: 7 })}</option>
+              <option value={1209600}>{intl.formatMessage(messages.days, { number: 14 })}</option>
+              <option value={2592000}>{intl.formatMessage(messages.days, { number: 30 })}</option>
             </select>
           </div>
         </div>
