@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
+import DebounceInput from 'react-debounce-input';
 import Textarea from 'react-textarea-autosize';
 
 import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
@@ -206,8 +207,10 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
           <label>
             <span style={{ display: 'none' }}>{placeholder}</span>
 
-            <Textarea
-              ref={this.setTextarea}
+            <DebounceInput
+              element={Textarea}
+              debounceTimeout={1}
+              inputRef={this.setTextarea}
               className='autosuggest-textarea__textarea'
               disabled={disabled}
               placeholder={placeholder}

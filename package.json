@@ -98,6 +98,7 @@
     "prop-types": "^15.8.1",
     "punycode": "^2.3.0",
     "react": "^18.2.0",
+    "react-debounce-input": "^3.3.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-hotkeys": "^1.1.4",
