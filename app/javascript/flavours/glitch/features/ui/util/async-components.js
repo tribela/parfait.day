@@ -115,7 +115,7 @@ export function DomainMutes () {
 }
 
 export function DomainMuteModal () {
-  return import(/* webpackChunkName: "modals/domain_mute_modal" */'../components/domain_mute_modal');
+  return import(/* webpackChunkName: "modals/domain_mute_modal" */'flavours/glitch/features/ui/components/domain_mute_modal');
 }
 
 export function Mutes () {

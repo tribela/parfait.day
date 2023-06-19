@@ -25,7 +25,10 @@ const mapDispatchToProps = dispatch => {
     },
 
     onClose() {
-      dispatch(closeModal());
+      dispatch(closeModal({
+        modalType: undefined,
+        ignoreFocus: false,
+      }));
     },
 
     onToggleHideFromHome() {
