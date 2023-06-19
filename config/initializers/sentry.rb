@@ -10,6 +10,7 @@ if ENV['SENTRY_DSN']
       'HTTP::ConnectionError',
       'HTTP::StateError',
       'HTTP::TimeoutError',
+      'Mastodon::RaceConditionError',
       'OpenSSL::SSL::SSLError',
       'Stoplight::Error::RedLight',
     ]
@@ -33,10 +34,10 @@ if ENV['SENTRY_DSN']
         when /metrics/
           0.001
         else
-          0.005
+          0.0005
         end
       when /sidekiq/
-        0.001
+        0.00001
       else
         0.0
       end
