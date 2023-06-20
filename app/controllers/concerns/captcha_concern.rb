@@ -2,6 +2,7 @@
 
 module CaptchaConcern
   extend ActiveSupport::Concern
+
   include Hcaptcha::Adapters::ViewMethods
 
   included do
@@ -49,6 +50,7 @@ module CaptchaConcern
         flash.delete(:hcaptcha_error)
         yield message
       end
+
       false
     elsif korean_captcha_enabled? && !verify_korean_captcha
       yield I18n.t('auth.korean_captcha_fail')
@@ -60,12 +62,15 @@ module CaptchaConcern
 
   def extend_csp_for_captcha!
     policy = request.content_security_policy
+
     return unless hcaptcha_enabled? && policy.present?
 
     %w(script_src frame_src style_src connect_src).each do |directive|
       values = policy.send(directive)
+
       values << 'https://hcaptcha.com' unless values.include?('https://hcaptcha.com') || values.include?('https:')
       values << 'https://*.hcaptcha.com' unless values.include?('https://*.hcaptcha.com') || values.include?('https:')
+
       policy.send(directive, *values)
     end
   end
