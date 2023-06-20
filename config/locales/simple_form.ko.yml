@@ -182,7 +182,6 @@ ko:
         honeypot: "%{label} (채우지 마시오)"
         inbox_url: 릴레이 서버의 inbox URL
         irreversible: 숨기는 대신 삭제
-        korean_captcha: 한국인이신가요?
         locale: 인터페이스 언어
         locked: 팔로우 요청 필요
         max_uses: 사용 횟수 제한
