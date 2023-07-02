@@ -9,7 +9,8 @@ module AccountHeader
 
   class_methods do
     def header_styles(file)
-      styles = { original: { format: 'webp', pixels: MAX_PIXELS, file_geometry_parser: FastGeometryParser } }
+      styles = { original: { pixels: MAX_PIXELS, file_geometry_parser: FastGeometryParser } }
+      styles[:original][:format] = 'webp' if file.content_type != 'image/gif'
       styles[:static] = { format: 'webp', convert_options: '-coalesce', file_geometry_parser: FastGeometryParser } if file.content_type == 'image/gif'
       styles
     end

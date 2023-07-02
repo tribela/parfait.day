@@ -8,7 +8,8 @@ module AccountAvatar
 
   class_methods do
     def avatar_styles(file)
-      styles = { original: { geometry: '400x400#', format: 'webp', file_geometry_parser: FastGeometryParser } }
+      styles = { original: { geometry: '400x400#', file_geometry_parser: FastGeometryParser } }
+      styles[:original][:format] = 'webp' if file.content_type != 'image/gif'
       styles[:static] = { geometry: '400x400#', format: 'webp', convert_options: '-coalesce', file_geometry_parser: FastGeometryParser } if file.content_type == 'image/gif'
       styles
     end
