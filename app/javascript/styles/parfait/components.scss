@@ -1,0 +1,13 @@
+.mabinogi-clock {
+  padding: 15px 0 0;
+  margin: 0 4px;
+
+  &__time {
+    font-size: 15px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 40%);
+    padding: 7px 15px;
+    line-height: 22px;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
