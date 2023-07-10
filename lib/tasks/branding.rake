@@ -41,7 +41,7 @@ namespace :branding do
 
     # rsvg_convert = Terrapin::CommandLine.new('rsvg-convert', '-w :size -h :size --keep-aspect-ratio :input -o :output')
     png_convert = Terrapin::CommandLine.new('convert', ':input -resize :size :output')
-    convert = Terrapin::CommandLine.new('convert', ':input :output')
+    convert = Terrapin::CommandLine.new('convert', ':input :output', environment: { 'MAGICK_CONFIGURE_PATH' => nil })
 
     favicon_sizes      = [16, 32, 48]
     apple_icon_sizes   = [57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024]
