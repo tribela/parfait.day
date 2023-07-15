@@ -33,7 +33,7 @@ class AccountsIndex < Chewy::Index
       },
 
       verbatim: {
-        tokenizer: 'ngram',
+        tokenizer: 'whitespace',
         filter: %w(lowercase asciifolding cjk_width),
       },
 
@@ -44,11 +44,6 @@ class AccountsIndex < Chewy::Index
     },
 
     tokenizer: {
-      ngram: {
-        type: 'ngram',
-        min_gram: 1,
-        max_gram: 2,
-      },
       edge_ngram: {
         type: 'edge_ngram',
         min_gram: 1,
