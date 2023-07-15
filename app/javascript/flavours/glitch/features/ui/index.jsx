@@ -25,7 +25,7 @@ import PermaLink from 'flavours/glitch/components/permalink';
 import PictureInPicture from 'flavours/glitch/features/picture_in_picture';
 import { layoutFromWindow } from 'flavours/glitch/is_mobile';
 
-import initialState, { me, owner, singleUserMode, showTrends, trendsAsLanding } from '../../initial_state';
+import initialState, { me, owner, singleUserMode, trendsEnabled, trendsAsLanding } from '../../initial_state';
 
 import BundleColumnError from './components/bundle_column_error';
 import Header from './components/header';
@@ -39,8 +39,7 @@ import {
   Status,
   GettingStarted,
   KeyboardShortcuts,
-  PublicTimeline,
-  CommunityTimeline,
+  Firehose,
   AccountTimeline,
   AccountGallery,
   HomeTimeline,
@@ -83,7 +82,6 @@ const mapStateToProps = state => ({
   hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
   hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
   canUploadMore: !state.getIn(['compose', 'media_attachments']).some(x => ['audio', 'video'].includes(x.get('type'))) && state.getIn(['compose', 'media_attachments']).size < 4,
-  layout_local_setting: state.getIn(['local_settings', 'layout']),
   isWide: state.getIn(['local_settings', 'stretch']),
   dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
   unreadNotifications: state.getIn(['notifications', 'unread']),
@@ -139,11 +137,11 @@ class SwitchingColumnsArea extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     location: PropTypes.object,
-    mobile: PropTypes.bool,
+    singleColumn: PropTypes.bool,
   };
 
   UNSAFE_componentWillMount () {
-    if (this.props.mobile) {
+    if (this.props.singleColumn) {
       document.body.classList.toggle('layout-single-column', true);
       document.body.classList.toggle('layout-multiple-columns', false);
     } else {
@@ -157,9 +155,9 @@ class SwitchingColumnsArea extends PureComponent {
       this.node.handleChildrenContentChange();
     }
 
-    if (prevProps.mobile !== this.props.mobile) {
-      document.body.classList.toggle('layout-single-column', this.props.mobile);
-      document.body.classList.toggle('layout-multiple-columns', !this.props.mobile);
+    if (prevProps.singleColumn !== this.props.singleColumn) {
+      document.body.classList.toggle('layout-single-column', this.props.singleColumn);
+      document.body.classList.toggle('layout-multiple-columns', !this.props.singleColumn);
     }
   }
 
@@ -170,29 +168,33 @@ class SwitchingColumnsArea extends PureComponent {
   };
 
   render () {
-    const { children, mobile } = this.props;
+    const { children, singleColumn } = this.props;
     const { signedIn } = this.context.identity;
+    const pathName = this.props.location.pathname;
 
     let redirect;
 
     if (signedIn) {
-      if (mobile) {
+      if (singleColumn) {
         redirect = <Redirect from='/' to='/home' exact />;
       } else {
-        redirect = <Redirect from='/' to='/getting-started' exact />;
+        redirect = <Redirect from='/' to='/deck/getting-started' exact />;
       }
     } else if (singleUserMode && owner && initialState?.accounts[owner]) {
       redirect = <Redirect from='/' to={`/@${initialState.accounts[owner].username}`} exact />;
-    } else if (showTrends && trendsAsLanding) {
+    } else if (trendsEnabled && trendsAsLanding) {
       redirect = <Redirect from='/' to='/explore' exact />;
     } else {
       redirect = <Redirect from='/' to='/about' exact />;
     }
 
     return (
-      <ColumnsAreaContainer ref={this.setRef} singleColumn={mobile}>
+      <ColumnsAreaContainer ref={this.setRef} singleColumn={singleColumn}>
         <WrappedSwitch>
           {redirect}
+
+          {singleColumn ? <Redirect from='/deck' to='/home' exact /> : null}
+          {singleColumn && pathName.startsWith('/deck/') ? <Redirect from={pathName} to={pathName.slice(5)} /> : null}
 
           <WrappedRoute path='/getting-started' component={GettingStarted} content={children} />
           <WrappedRoute path='/keyboard-shortcuts' component={KeyboardShortcuts} content={children} />
@@ -200,8 +202,11 @@ class SwitchingColumnsArea extends PureComponent {
           <WrappedRoute path='/privacy-policy' component={PrivacyPolicy} content={children} />
 
           <WrappedRoute path={['/home', '/timelines/home']} component={HomeTimeline} content={children} />
-          <WrappedRoute path={['/public', '/timelines/public']} exact component={PublicTimeline} content={children} />
-          <WrappedRoute path={['/public/local', '/timelines/public/local']} exact component={CommunityTimeline} content={children} />
+          <Redirect from='/timelines/public' to='/public' exact />
+          <Redirect from='/timelines/public/local' to='/public/local' exact />
+          <WrappedRoute path='/public' exact component={Firehose} componentParams={{ feedType: 'public' }} content={children} />
+          <WrappedRoute path='/public/local' exact component={Firehose} componentParams={{ feedType: 'community' }} content={children} />
+          <WrappedRoute path='/public/remote' exact component={Firehose} componentParams={{ feedType: 'public:remote' }} content={children} />
           <WrappedRoute path={['/conversations', '/timelines/direct']} component={DirectTimeline} content={children} />
           <WrappedRoute path='/tags/:id' component={HashtagTimeline} content={children} />
           <WrappedRoute path='/lists/:id' component={ListTimeline} content={children} />
@@ -259,7 +264,6 @@ class UI extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     children: PropTypes.node,
-    layout_local_setting: PropTypes.string,
     isWide: PropTypes.bool,
     systemFontUi: PropTypes.bool,
     isComposing: PropTypes.bool,
@@ -389,7 +393,7 @@ class UI extends Component {
   });
 
   handleResize = () => {
-    const layout = layoutFromWindow(this.props.layout_local_setting);
+    const layout = layoutFromWindow();
 
     if (layout !== this.props.layout) {
       this.handleLayoutChange.cancel();
@@ -450,19 +454,6 @@ class UI extends Component {
     if (this.visibilityChange !== undefined) {
       document.addEventListener(this.visibilityChange, this.handleVisibilityChange, false);
       this.handleVisibilityChange();
-    }
-  }
-
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    if (nextProps.layout_local_setting !== this.props.layout_local_setting) {
-      const layout = layoutFromWindow(nextProps.layout_local_setting);
-
-      if (layout !== this.props.layout) {
-        this.handleLayoutChange.cancel();
-        this.props.dispatch(changeLayout(layout));
-      } else {
-        this.handleLayoutChange();
-      }
     }
   }
 
@@ -676,7 +667,7 @@ class UI extends Component {
 
           <Header />
 
-          <SwitchingColumnsArea location={location} mobile={layout === 'mobile' || layout === 'single-column'}>
+          <SwitchingColumnsArea location={location} singleColumn={layout === 'mobile' || layout === 'single-column'}>
             {children}
           </SwitchingColumnsArea>
 
