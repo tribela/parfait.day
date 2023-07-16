@@ -103,7 +103,7 @@ class User < ApplicationRecord
   validates :time_zone, inclusion: { in: ActiveSupport::TimeZone.all.map { |tz| tz.tzinfo.name } }, allow_blank: true
 
   # Honeypot/anti-spam fields
-  attr_accessor :registration_form_time, :website, :confirm_password, :korean_captcha
+  attr_accessor :registration_form_time, :website, :confirm_password
 
   validates_with RegistrationFormTimeValidator, on: :create
   validates :website, absence: true, on: :create
