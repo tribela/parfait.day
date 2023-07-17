@@ -672,9 +672,9 @@ a.status-card.compact .status-card__host {
   order: 1;
 }
 
-/* Make the side input last in order */
+/* Make the side input first in order */
 .layout-multiple-columns .drawer {
-  order: 999999;
+  order: 0;
   padding: 0 10px;
   width: var(--width-column);
 }
