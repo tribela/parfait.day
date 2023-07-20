@@ -11,6 +11,12 @@ body {
   font-size: 18px;
 }
 
+.column-header,
+.drawer__header,
+.column-back-button {
+  line-height: 1;
+}
+
 .compose-form .autosuggest-input label .autosuggest-textarea__textarea,
 .compose-form .autosuggest-textarea label .autosuggest-textarea__textarea {
   font-size: 16px;
