@@ -58,7 +58,7 @@ services:
 
   web:
     build: .
-    image: ghcr.io/mastodon/mastodon:v4.1.5
+    image: ghcr.io/mastodon/mastodon
     restart: always
     env_file: .env.production
     command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
@@ -79,7 +79,7 @@ services:
 
   streaming:
     build: .
-    image: ghcr.io/mastodon/mastodon:v4.1.5
+    image: ghcr.io/mastodon/mastodon
     restart: always
     env_file: .env.production
     command: node ./streaming
@@ -99,7 +99,7 @@ services:
 
   sidekiq:
     build: .
-    image: ghcr.io/mastodon/mastodon:v4.1.5
+    image: ghcr.io/mastodon/mastodon
     restart: always
     env_file: .env.production
     command: bash -c 'exec bundle exec sidekiq -c $${WORKER_CONCURRENCY:-5}'
