@@ -16,12 +16,18 @@ docker-compose build # --parallel
 
 docker-compose run --rm -e SKIP_POST_DEPLOYMENT_MIGRATIONS=true web rails db:migrate
 
+docker-compose start web-sub
+# Ensure stop web-sub container
+trap "docker-compose stop web-sub" EXIT
+sleep 10
+
 # docker-compose down
 docker-compose up -d
 
 if curl -fso /dev/null https://parfait.day/api/v1/instance; then
   docker-compose run --rm web rails db:migrate
   docker-compose run --rm web tootctl cache clear
+  docker-compose stop web-sub
   docker image prune -f
 else
   # Rollback
