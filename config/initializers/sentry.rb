@@ -7,11 +7,14 @@ if ENV['SENTRY_DSN']
 
     config.excluded_exceptions += [
       'ActiveRecord::RecordNotUnique',
+      'Aws::S3::Errors::InternalError',
       'HTTP::ConnectionError',
       'HTTP::StateError',
       'HTTP::TimeoutError',
       'Mastodon::RaceConditionError',
+      'Mastodon::UnexpectedResponseError',
       'OpenSSL::SSL::SSLError',
+      'Seahorse::Client::NetworkingError',
       'Stoplight::Error::RedLight',
     ]
 
