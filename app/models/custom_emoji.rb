@@ -48,6 +48,7 @@ class CustomEmoji < ApplicationRecord
   validates_attachment_size :image, less_than: LIMIT, unless: :local?
   validates_attachment_size :image, less_than: LOCAL_LIMIT, if: :local?
   validates :shortcode, uniqueness: { scope: :domain }, format: { with: SHORTCODE_ONLY_RE }, length: { minimum: 2 }
+  validate :check_image_ratio
 
   scope :local, -> { where(domain: nil) }
   scope :remote, -> { where.not(domain: nil) }
@@ -101,5 +102,14 @@ class CustomEmoji < ApplicationRecord
 
   def downcase_domain
     self.domain = domain.downcase unless domain.nil?
+  end
+
+  def check_image_ratio
+    return if image.blank? || !/image.*/.match?(image.content_type) || image.queued_for_write[:original].blank?
+
+    width, height = FastImage.size(image.queued_for_write[:original].path)
+    ratio = width.to_f / height
+
+    errors.add(:image, :invalid_image_ratio) if ratio >= 2 || ratio <= 0.5
   end
 end
