@@ -6,6 +6,7 @@ if ENV['SENTRY_DSN']
     config.breadcrumbs_logger = [:active_support_logger, :http_logger]
 
     config.excluded_exceptions += [
+      'ActiveRecord::RecordInvalid',
       'ActiveRecord::RecordNotUnique',
       'Aws::S3::Errors::InternalError',
       'HTTP::ConnectionError',
