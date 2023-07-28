@@ -1559,7 +1559,8 @@ ko:
     contrast: 마스토돈 (고대비)
     default: 마스토돈 (어두움)
     mastodon-light: 마스토돈 (밝음)
-    parfait: 파르페
+    nao_cat: 나오와 고양이
+    festia: 페스티아
   time:
     formats:
       default: "%Y년 %m월 %d일 %H:%M"
