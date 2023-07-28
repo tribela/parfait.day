@@ -1742,6 +1742,8 @@ ko:
     mastodon-light: 마스토돈 (밝음)
     system: 자동 선택 (시스템 테마 이용)
     parfait: 파르페
+    nao_cat: 나오와 고양이
+    festia: 페스티아
   time:
     formats:
       default: "%Y-%m-%d %H:%M"
