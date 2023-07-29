@@ -1744,6 +1744,7 @@ ko:
     parfait: 파르페
     nao_cat: 나오와 고양이
     festia: 페스티아
+    parfait: 파르페
   time:
     formats:
       default: "%Y-%m-%d %H:%M"
