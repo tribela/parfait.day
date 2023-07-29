@@ -1561,6 +1561,7 @@ ko:
     mastodon-light: 마스토돈 (밝음)
     nao_cat: 나오와 고양이
     festia: 페스티아
+    parfait: 파르페
   time:
     formats:
       default: "%Y년 %m월 %d일 %H:%M"
