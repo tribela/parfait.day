@@ -16,6 +16,8 @@ on:
         type: string
       labels:
         type: string
+      is_brandless:
+        type: boolean
 
 jobs:
   build-image:
@@ -23,6 +25,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - run: |
+          git remote add upstream https://github.com/glitch-soc/mastodon
+          git fetch upstream
+          git checkout upstream/main -- app/javascript/images app/javascript/icons public
+        if: ${{ inputs.is_brandless }}
 
       - uses: docker/setup-qemu-action@v2
         if: contains(inputs.platforms, 'linux/arm64') && !inputs.use_native_arm64_builder

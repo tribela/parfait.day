@@ -1,0 +1,25 @@
+name: Build brandless container release images
+on:
+  push:
+    branches:
+      - 'qdon-glitch'
+      - 'qdon-glitch-beta'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-image:
+    uses: ./.github/workflows/build-container-image.yml
+    with:
+      platforms: linux/amd64
+      use_native_arm64_builder: false
+      is_brandless: true
+      push_to_images: |
+        # ghcr.io/${{ github.repository_owner }}/mastodon
+        qdon/glitch
+      tags: |
+        type=raw,value=brandless,enable={{is_default_branch}}
+        type=raw,value=brandless-beta,enable=${{ github.ref == format('refs/heads/{0}', 'qdon-glitch-beta') }}
+    secrets: inherit
