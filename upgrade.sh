@@ -24,6 +24,8 @@ sleep 10
 # docker-compose down
 docker-compose up -d
 
+sleep 10
+
 if curl -fso /dev/null https://parfait.day/about; then
   docker-compose run --rm web rails db:migrate
   docker-compose run --rm web tootctl cache clear
