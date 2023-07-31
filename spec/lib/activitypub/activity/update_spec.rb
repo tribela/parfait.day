@@ -54,7 +54,6 @@ RSpec.describe ActivityPub::Activity::Update do
         stub_request(:get, actor_json[:followers]).to_return(status: 404)
         stub_request(:get, actor_json[:following]).to_return(status: 404)
         stub_request(:get, actor_json[:featured]).to_return(status: 404)
-        stub_request(:get, actor_json[:icon][:url]).to_return(status: 404)
         stub_request(:get, actor_json[:featuredTags]).to_return(status: 404)
 
         subject.perform
