@@ -5,10 +5,10 @@ ready(() => {
   const image = document.querySelector('img');
 
   image.addEventListener('mouseenter', () => {
-    image.src = '/oops.gif';
+    image.src = '/gyudon.png';
   });
 
   image.addEventListener('mouseleave', () => {
-    image.src = '/oops.png';
+    image.src = '/spilled_gyudon.png';
   });
 });
