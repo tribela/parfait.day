@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+if [[ "${FFMPEG_DISABLE:-false}" == "true" ]]; then
+  echo "FFMPEG_DISABLE is set to true, exiting"
+  exit 1
+fi
+
 EXECNAME="$(basename "$0")"
 
 BINARY="$(which -a "$EXECNAME" | grep -vE "^$0$" | head -1)"
