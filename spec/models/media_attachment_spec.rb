@@ -148,13 +148,13 @@ RSpec.describe MediaAttachment, paperclip_processing: true do
   describe 'avif' do
     let(:media) { described_class.create(account: Fabricate(:account), file: attachment_fixture('600x400.avif')) }
 
-    it_behaves_like 'static 600x400 image', 'image/jpeg', '.jpeg'
+    it_behaves_like 'static 600x400 image', 'image/webp', '.webp'
   end
 
   describe 'heic' do
     let(:media) { described_class.create(account: Fabricate(:account), file: attachment_fixture('600x400.heic')) }
 
-    it_behaves_like 'static 600x400 image', 'image/jpeg', '.jpeg'
+    it_behaves_like 'static 600x400 image', 'image/webp', '.webp'
   end
 
   describe 'base64-encoded image' do
