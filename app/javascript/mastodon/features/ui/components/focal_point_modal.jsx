@@ -442,4 +442,4 @@ class FocalPointModal extends ImmutablePureComponent {
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {
   forwardRef: true,
-})(injectIntl(FocalPointModal, { withRef: true }));
+})(injectIntl(FocalPointModal, { forwardRef: true }));

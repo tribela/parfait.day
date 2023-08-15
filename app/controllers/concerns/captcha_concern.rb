@@ -61,7 +61,7 @@ module CaptchaConcern
   end
 
   def extend_csp_for_captcha!
-    policy = request.content_security_policy
+    policy = request.content_security_policy&.clone
 
     return unless hcaptcha_enabled? && policy.present?
 
@@ -73,6 +73,8 @@ module CaptchaConcern
 
       policy.send(directive, *values)
     end
+
+    request.content_security_policy = policy
   end
 
   def render_captcha
