@@ -43,7 +43,7 @@ module Paperclip
         end
 
         if high_vfr?(metadata) && !eligible_to_passthrough?(metadata)
-          @output_options['vsync'] = 'vfr'
+          # @output_options['vsync'] = 'vfr'
           @output_options['r'] = @vfr_threshold
         end
       end
