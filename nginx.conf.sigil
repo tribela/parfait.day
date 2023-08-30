@@ -108,14 +108,15 @@ server {
     try_files $uri $uri.html =404;
   }
 
-  location ~/(emoji|packs|system/accounts/avatars|system/site_uploads|system/media_attachments/files) {
+  location ~/(system/accounts/avatars|system/site_uploads|system/media_attachments/files) {
     add_header Cache-Control "public, max-age=31536000, immutable";
     {{ $proxy_cache_settings }}
     proxy_pass http://{{ $.APP }}-web;
   }
 
-  location /sw.js {
-    add_header Cache-Control "public, max-age=0";
+  location ~ ^/(sw.js|avatars|emoji|headers|packs|shortcuts|sounds) {
+    add_header Cache-Control "public, max-age=604800, must-revalidate";
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains";
     {{ $proxy_cache_settings }}
     proxy_pass http://{{ $.APP }}-web;
   }
