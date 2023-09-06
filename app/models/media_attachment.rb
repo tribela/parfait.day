@@ -44,7 +44,8 @@ class MediaAttachment < ApplicationRecord
 
   MAX_VIDEO_MATRIX_LIMIT = 8_294_400 # 3840x2160px
   MAX_VIDEO_INPUT_MATRIX_LIMIT = (ENV['MAX_VIDEO_INPUT_MATRIX_LIMIT'] || MAX_VIDEO_MATRIX_LIMIT).to_i
-  MAX_VIDEO_FRAME_RATE = 120
+  MAX_VIDEO_FRAME_RATE   = 120
+  MAX_VIDEO_FRAMES       = 36_000 # Approx. 5 minutes at 120 fps
 
   IMAGE_FILE_EXTENSIONS = %w(.jpg .jpeg .png .gif .webp .heic .heif .avif).freeze
   VIDEO_FILE_EXTENSIONS = %w(.webm .mp4 .m4v .mov).freeze
@@ -110,6 +111,14 @@ class MediaAttachment < ApplicationRecord
     }.merge(IMAGE_STYLES[:small]).freeze,
   }.freeze
 
+  VIDEO_FILTER = begin
+    if MAX_VIDEO_INPUT_MATRIX_LIMIT <= MAX_VIDEO_MATRIX_LIMIT
+      'crop=floor(iw/2)*2:floor(ih/2)*2' # h264 requires width and height to be even. Crop instead of scale to avoid blurring
+    else
+      "scale='trunc(min(#{MAX_VIDEO_MATRIX_LIMIT}, iw*ih) / ih / 2)*2:-2'"
+    end
+  end
+
   VIDEO_FORMAT = {
     format: 'mp4',
     content_type: 'video/mp4',
@@ -117,17 +126,15 @@ class MediaAttachment < ApplicationRecord
     convert_options: {
       output: {
         'loglevel' => 'fatal',
-        'movflags' => 'faststart',
-        'pix_fmt' => 'yuv420p',
-        'vf' => "scale='trunc(min(#{MAX_VIDEO_MATRIX_LIMIT}, iw*ih) / ih / 2)*2:-2'",
-        'vsync' => 'cfr',
+        'preset' => 'veryfast',
+        'movflags' => 'faststart', # Move metadata to start of file so playback can begin before download finishes
+        'pix_fmt' => 'yuv420p', # Ensure color space for cross-browser compatibility
+        'vf' => VIDEO_FILTER,
         'c:v' => 'h264',
-        'maxrate' => '1300K',
-        'bufsize' => '1300K',
-        'b:v' => '1300K',
-        'frames:v' => 60 * 60 * 3,
-        'crf' => 18,
+        'c:a' => 'aac',
+        'b:a' => '192k',
         'map_metadata' => '-1',
+        'frames:v' => MAX_VIDEO_FRAMES,
       }.freeze,
     }.freeze,
   }.freeze
@@ -154,7 +161,7 @@ class MediaAttachment < ApplicationRecord
       convert_options: {
         output: {
           'loglevel' => 'fatal',
-          :vf => 'scale=\'min(400\, iw):min(400\, ih)\':force_original_aspect_ratio=decrease',
+          :vf => 'scale=\'min(640\, iw):min(640\, ih)\':force_original_aspect_ratio=decrease',
         }.freeze,
       }.freeze,
       format: 'png',
