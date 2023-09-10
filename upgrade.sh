@@ -14,8 +14,6 @@ rollback() {
   exit 1
 }
 
-sudo setfacl -R -m "user:$USER:rx" postgres14
-
 # Save image
 docker tag $IMAGE_NAME:latest $IMAGE_NAME:stable
 
