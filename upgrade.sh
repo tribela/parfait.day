@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo pipefail
+set -euo pipefail
 
 # docker-compose pull
 export COMPOSE_DOCKER_CLI_BUILD=1
@@ -9,6 +9,7 @@ IMAGE_NAME='ghcr.io/mastodon/mastodon'
 
 rollback() {
   # Rollback
+  echo "Rollback deployment"
   docker tag $IMAGE_NAME:stable $IMAGE_NAME:latest
   docker-compose up -d
   exit 1
@@ -24,13 +25,25 @@ docker-compose run --rm -e SKIP_POST_DEPLOYMENT_MIGRATIONS=true web rails db:mig
 docker-compose up -d --force-recreate --no-deps web-sub
 # Ensure stop web-sub container
 trap "docker-compose stop web-sub" EXIT
-sleep 10
 
-curl -fso /dev/null http://localhost:3001/about -H Host:parfait.day -H X-Forwarded-Proto:https || rollback
+for retry in {4..0}; do
+  sleep 10
+  curl -fso /dev/null http://localhost:3001/about -H Host:parfait.day -H X-Forwarded-Proto:https && break
+  if [[ $retry -eq 0 ]]; then
+    rollback
+  fi
+done
+
 
 docker-compose up -d --force-recreate --no-deps web sidekiq streaming
 
-sleep 10
+for retry in {4..0}; do
+  sleep 10
+  curl -fso /dev/null http://localhost:3000/about -H Host:parfait.day -H X-Forwarded-Proto:https && break
+  if [[ $retry -eq 0 ]]; then
+    rollback
+  fi
+done
 
 curl -fso /dev/null https://parfait.day/about || rollback
 
