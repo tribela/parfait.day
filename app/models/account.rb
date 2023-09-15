@@ -199,7 +199,7 @@ class Account < ApplicationRecord
   def chosen_languages
     return if user&.chosen_languages.nil?
 
-    user.chosen_languages.map { |l| l == 'NONE' ? nil : l }
+    user.chosen_languages.map { |l| l == 'und' ? nil : l }
   end
 
   def pretty_acct

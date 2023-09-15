@@ -27,12 +27,12 @@ describe Settings::Preferences::OtherController do
 
   describe 'PUT #update' do
     it 'updates the user record' do
-      put :update, params: { user: { locale: 'en', chosen_languages: ['es', 'fr', '', 'NONE'] } }
+      put :update, params: { user: { locale: 'en', chosen_languages: ['es', 'fr', '', 'und'] } }
 
       expect(response).to redirect_to(settings_preferences_other_path)
       user.reload
       expect(user.locale).to eq 'en'
-      expect(user.chosen_languages).to eq %w(es fr NONE)
+      expect(user.chosen_languages).to eq %w(es fr und)
       expect(user.account.chosen_languages).to eq ['es', 'fr', nil]
     end
 

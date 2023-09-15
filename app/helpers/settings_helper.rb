@@ -2,7 +2,7 @@
 
 module SettingsHelper
   def filterable_languages
-    LanguagesHelper::SUPPORTED_LOCALES.keys + ['NONE']
+    ['und'] + LanguagesHelper::SUPPORTED_LOCALES.keys
   end
 
   def session_device_icon(session)
