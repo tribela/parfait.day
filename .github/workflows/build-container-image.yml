@@ -4,6 +4,9 @@ on:
       platforms:
         required: true
         type: string
+      cache:
+        type: boolean
+        default: true
       use_native_arm64_builder:
         type: boolean
       push_to_images:
@@ -26,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - run: git apply .github/brandless.patch
         if: ${{ inputs.is_brandless }}
@@ -97,5 +100,5 @@ jobs:
           push: ${{ inputs.push_to_images != '' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: ${{ inputs.cache && 'type=gha' || '' }}
+          cache-to: ${{ inputs.cache && 'type=gha,mode=max' || '' }}

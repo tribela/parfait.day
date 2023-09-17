@@ -198,7 +198,7 @@ class MediaAttachment < ApplicationRecord
   DEFAULT_STYLES = [:original].freeze
 
   GLOBAL_CONVERT_OPTIONS = {
-    all: '+profile "!icc,*" +set modify-date +set create-date',
+    all: '+profile "!icc,*" +set modify-date -define jpeg:dct-method=float +set create-date',
   }.freeze
 
   belongs_to :account,          inverse_of: :media_attachments, optional: true
@@ -442,6 +442,6 @@ class MediaAttachment < ApplicationRecord
   end
 
   def reset_parent_cache
-    Rails.cache.delete("statuses/#{status_id}") if status_id.present?
+    Rails.cache.delete("v3:statuses/#{status_id}") if status_id.present?
   end
 end
