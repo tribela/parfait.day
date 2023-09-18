@@ -19,6 +19,7 @@ jobs:
       push_to_images: |
         # ghcr.io/${{ github.repository_owner }}/mastodon
         qdon/glitch
+      cache: false
       tags: |
         type=raw,value=brandless,enable={{is_default_branch}}
         type=raw,value=brandless-beta,enable=${{ github.ref == format('refs/heads/{0}', 'qdon-glitch-beta') }}
