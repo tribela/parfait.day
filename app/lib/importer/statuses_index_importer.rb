@@ -56,6 +56,7 @@ class Importer::StatusesIndexImporter < Importer::BaseImporter
       local_favourites_scope,
       local_votes_scope,
       local_bookmarks_scope,
+      local_replied_scope,
     ]
   end
 
@@ -80,6 +81,6 @@ class Importer::StatusesIndexImporter < Importer::BaseImporter
   end
 
   def local_replied_scope
-    Status.local.where.not(in_reply_to_id: nil).select('id, in_reply_to_id as status_id')
+    Status.local.where.not(in_reply_to_id: nil).where('in_reply_to_account_id != account_id').select(:id, 'in_reply_to_id AS status_id')
   end
 end
