@@ -15,10 +15,10 @@ jobs:
   build-image:
     uses: ./.github/workflows/build-container-image.yml
     with:
-      platforms: linux/amd64
-      use_native_arm64_builder: false
+      platforms: linux/amd64,linux/arm64
+      use_native_arm64_builder: true
       push_to_images: |
-        # ghcr.io/${{ github.repository_owner }}/mastodon
+        ghcr.io/${{ github.repository_owner }}/mastodon
         qdon/glitch
       # Do not use cache when building releases, so apt update is always ran and the release always contain the latest packages
       cache: false
