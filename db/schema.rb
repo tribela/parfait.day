@@ -54,8 +54,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_07_150100) do
     t.string "domain"
     t.bigint "account_id"
     t.boolean "hide_from_home", default: false, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id", "domain"], name: "index_account_domain_mutes_on_account_id_and_domain", unique: true
   end
 
