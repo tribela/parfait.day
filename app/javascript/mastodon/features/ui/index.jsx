@@ -555,7 +555,7 @@ class UI extends PureComponent {
 
   handleHiddenCommand = () => {
     this.props.dispatch(showAlert(undefined, 'ちょっと、↑にためて下さい。'));
-  }
+  };
 
   render () {
     const { draggingOver } = this.state;
