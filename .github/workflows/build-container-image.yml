@@ -31,7 +31,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: git apply .github/brandless.patch
+      - name: Apply brandless patch
+        run: |
+          git fetch --unshallow
+          git remote add upstream https://github.com/glitch-soc/mastodon
+          git fetch upstream main
+          ./.github/brandless.sh
         if: ${{ inputs.is_brandless }}
 
       - uses: docker/setup-qemu-action@v3
