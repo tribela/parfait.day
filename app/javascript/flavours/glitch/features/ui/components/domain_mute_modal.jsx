@@ -9,7 +9,7 @@ import Toggle from 'react-toggle';
 
 import { muteDomain, toggleHideFromHome } from '../../../actions/domain_mutes';
 import { closeModal } from '../../../actions/modal';
-import Button from '../../../components/button';
+import { Button } from '../../../components/button';
 
 const mapStateToProps = state => {
   return {
