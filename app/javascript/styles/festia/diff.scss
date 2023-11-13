@@ -1,6 +1,6 @@
-$background-transparent: rgba(0, 0, 0, .4);
+$background-transparent: rgba(0, 0, 0, 40%);
 
-@media screen and (min-width: 890px) {
+@media screen and (width >= 890px) {
   body::before {
     z-index: -1;
     content: '';
@@ -9,7 +9,7 @@ $background-transparent: rgba(0, 0, 0, .4);
     top: 0;
     width: 100%;
     height: 100%;
-    background: url(~images/festia.webp);
+    background: url("~images/festia.webp");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -46,12 +46,25 @@ $background-transparent: rgba(0, 0, 0, .4);
   }
 }
 
-@media screen and (max-width: 1174px) {
+@media screen and (width <= 1174px) {
   .columns-area__panels__pane--navigational .navigation-panel {
     background: $background-transparent;
   }
 }
 
 body.system-font {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", mastodon-font-sans-serif, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    mastodon-font-sans-serif,
+    sans-serif,
+    'Mabinogi_Custom';
 }
