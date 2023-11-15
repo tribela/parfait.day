@@ -48,10 +48,6 @@ class DomainMuteModal extends React.PureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount() {
-    this.button.focus();
-  }
-
   handleClick = () => {
     this.props.onClose();
     this.props.onConfirm(this.props.domain, this.props.hideFromHome);
@@ -59,10 +55,6 @@ class DomainMuteModal extends React.PureComponent {
 
   handleCancel = () => {
     this.props.onClose();
-  };
-
-  setRef = (c) => {
-    this.button = c;
   };
 
   toggleHideFromHome = () => {
@@ -100,7 +92,7 @@ class DomainMuteModal extends React.PureComponent {
           <Button onClick={this.handleCancel} className='mute-modal__cancel-button'>
             <FormattedMessage id='confirmation_modal.cancel' defaultMessage='Cancel' />
           </Button>
-          <Button onClick={this.handleClick} ref={this.setRef}>
+          <Button onClick={this.handleClick}>
             <FormattedMessage id='confirmations.domain_mute.confirm' defaultMessage='Mute domain' />
           </Button>
         </div>
