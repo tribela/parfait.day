@@ -136,13 +136,21 @@ RSpec.describe 'Media' do
     context 'with image/gif', paperclip_processing: true do
       let(:params) { { file: fixture_file_upload('attachment.gif', 'image/gif') } }
 
-      it_behaves_like 'a successful media upload', 'image'
+      it 'returns http unprocessable entity' do
+        subject
+
+        expect(response).to have_http_status(422)
+      end
     end
 
     context 'with video/webm', paperclip_processing: true do
       let(:params) { { file: fixture_file_upload('attachment.webm', 'video/webm') } }
 
-      it_behaves_like 'a successful media upload', 'gifv'
+      it 'returns http unprocessable entity' do
+        subject
+
+        expect(response).to have_http_status(422)
+      end
     end
   end
 
