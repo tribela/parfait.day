@@ -98,13 +98,8 @@ USER mastodon
 WORKDIR /opt/mastodon
 
 # Precompile assets
-RUN --mount=type=cache,target=/opt/mastodon/node_modules/.cache,uid=$UID,gid=$GID \
-    --mount=type=cache,target=/opt/mastodon/tmp,uid=$UID,gid=$GID \
-    --mount=type=cache,target=/opt/mastodon/public/packs-cache,uid=$UID,gid=$GID \
-    cp -aT public/packs-cache/ public/packs/ && \
-    OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder ASSET_BUILD_TIME_COMPRESSION=false rails assets:precompile && \
+RUN OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder ASSET_BUILD_TIME_COMPRESSION=false rails assets:precompile && \
     OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:clean && \
-    cp -aT public/packs/ public/packs-cache/ && \
     rm -rf app/javascript/fonts/
 
 # Set the work dir and the container entry point
