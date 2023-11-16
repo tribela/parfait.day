@@ -13,8 +13,8 @@ jobs:
   build-image:
     uses: ./.github/workflows/build-container-image.yml
     with:
-      platforms: linux/amd64
-      use_native_arm64_builder: false
+      platforms: linux/amd64,linux/arm64
+      use_native_arm64_builder: true
       is_brandless: true
       push_to_images: |
         # ghcr.io/${{ github.repository_owner }}/mastodon
