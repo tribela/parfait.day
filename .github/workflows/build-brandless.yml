@@ -17,7 +17,7 @@ jobs:
       use_native_arm64_builder: true
       is_brandless: true
       push_to_images: |
-        # ghcr.io/${{ github.repository_owner }}/mastodon
+        ghcr.io/${{ github.repository_owner }}/mastodon
         qdon/glitch
       cache: false
       tags: |
