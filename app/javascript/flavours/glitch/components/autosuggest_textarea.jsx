@@ -8,7 +8,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import DebounceInput from 'react-debounce-input';
 import Textarea from 'react-textarea-autosize';
 
-import AutosuggestAccountContainer from 'flavours/glitch/features/compose/containers/autosuggest_account_container';
+import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
 
 import AutosuggestEmoji from './autosuggest_emoji';
 import { AutosuggestHashtag } from './autosuggest_hashtag';
