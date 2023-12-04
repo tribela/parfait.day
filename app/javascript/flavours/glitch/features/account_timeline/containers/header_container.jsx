@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import { initDomainMuteModal, unmuteDomain } from 'flavours/glitch/actions/domain_mutes';
 
-import { initEditAccountNote } from '../../../actions/account_notes';
 import {
   followAccount,
   unfollowAccount,
@@ -140,10 +139,6 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     } else {
       dispatch(initMuteModal(account));
     }
-  },
-
-  onEditAccountNote (account) {
-    dispatch(initEditAccountNote(account));
   },
 
   onBlockDomain (domain) {

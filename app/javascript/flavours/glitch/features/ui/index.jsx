@@ -16,6 +16,7 @@ import { showAlert } from 'flavours/glitch/actions/alerts';
 import { changeLayout } from 'flavours/glitch/actions/app';
 import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'flavours/glitch/actions/markers';
+import { INTRODUCTION_VERSION } from 'flavours/glitch/actions/onboarding';
 import PermaLink from 'flavours/glitch/components/permalink';
 import PictureInPicture from 'flavours/glitch/features/picture_in_picture';
 import { layoutFromWindow } from 'flavours/glitch/is_mobile';
@@ -65,7 +66,7 @@ import {
   GettingStartedMisc,
   Directory,
   Explore,
-  FollowRecommendations,
+  Onboarding,
   About,
   PrivacyPolicy,
 } from './util/async-components';
@@ -89,7 +90,7 @@ const mapStateToProps = state => ({
   showFaviconBadge: state.getIn(['local_settings', 'notifications', 'favicon_badge']),
   hicolorPrivacyIcons: state.getIn(['local_settings', 'hicolor_privacy_icons']),
   moved: state.getIn(['accounts', me, 'moved']) && state.getIn(['accounts', state.getIn(['accounts', me, 'moved'])]),
-  firstLaunch: false, // TODO: state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION,
+  firstLaunch: state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION,
   username: state.getIn(['accounts', me, 'username']),
 });
 
@@ -220,7 +221,7 @@ class SwitchingColumnsArea extends PureComponent {
           <WrappedRoute path='/bookmarks' component={BookmarkedStatuses} content={children} />
           <WrappedRoute path='/pinned' component={PinnedStatuses} content={children} />
 
-          <WrappedRoute path='/start' component={FollowRecommendations} content={children} />
+          <WrappedRoute path='/start' exact component={Onboarding} content={children} />
           <WrappedRoute path='/directory' component={Directory} content={children} />
           <WrappedRoute path={['/explore', '/search']} component={Explore} content={children} />
           <WrappedRoute path={['/publish', '/statuses/new']} component={Compose} content={children} />
@@ -427,7 +428,6 @@ class UI extends Component {
     // On first launch, redirect to the follow recommendations page
     if (signedIn && this.props.firstLaunch) {
       this.props.history.replace('/start');
-      // TODO: this.props.dispatch(closeOnboarding());
     }
 
     if (signedIn) {
