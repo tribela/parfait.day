@@ -29,23 +29,27 @@ services:
     build:
       context: es-nori
     environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.enforce.bootstrap.checks=true"
-      - "xpack.license.self_generated.type=basic"
-      - "xpack.security.enabled=false"
-      - "xpack.watcher.enabled=false"
-      - "xpack.graph.enabled=false"
-      - "xpack.ml.enabled=false"
-      - "bootstrap.memory_lock=true"
-      - "cluster.name=es-mastodon"
-      - "discovery.type=single-node"
-      - "thread_pool.write.queue_size=1000"
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.enforce.bootstrap.checks=true'
+      - 'xpack.license.self_generated.type=basic'
+      - 'xpack.security.enabled=false'
+      - 'xpack.watcher.enabled=false'
+      - 'xpack.graph.enabled=false'
+      - 'xpack.ml.enabled=false'
+      - 'bootstrap.memory_lock=true'
+      - 'cluster.name=es-mastodon'
+      - 'discovery.type=single-node'
+      - 'thread_pool.write.queue_size=1000'
     networks:
-       - external_network
-       - internal_network
+      - external_network
+      - internal_network
     healthcheck:
-       test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+      test:
+        [
+          'CMD-SHELL',
+          'curl --silent --fail localhost:9200/_cluster/health || exit 1',
+        ]
     volumes:
-       - ./elasticsearch:/usr/share/elasticsearch/data
+      - ./elasticsearch:/usr/share/elasticsearch/data
     ulimits:
       memlock:
         soft: -1
@@ -58,7 +62,7 @@ services:
 
   web: &web
     build: .
-    image: ghcr.io/mastodon/mastodon
+    image: ghcr.io/mastodon/mastodon:v4.2.2
     restart: always
     env_file: .env.production
     command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
@@ -84,7 +88,7 @@ services:
 
   streaming:
     build: .
-    image: ghcr.io/mastodon/mastodon
+    image: ghcr.io/mastodon/mastodon:v4.2.2
     restart: always
     env_file: .env.production
     command: node ./streaming
@@ -104,7 +108,7 @@ services:
 
   sidekiq:
     build: .
-    image: ghcr.io/mastodon/mastodon
+    image: ghcr.io/mastodon/mastodon:v4.2.2
     restart: always
     env_file: .env.production
     command: bash -c 'exec bundle exec sidekiq -c $${WORKER_CONCURRENCY:-5}'
