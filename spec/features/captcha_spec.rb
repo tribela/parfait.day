@@ -8,8 +8,7 @@ describe 'email confirmation flow when captcha is enabled' do
 
   before do
     # rubocop:disable RSpec/AnyInstance -- easiest way to deal with that that I know of
-    allow_any_instance_of(Auth::ConfirmationsController).to receive(:captcha_enabled?).and_return(true)
-    allow_any_instance_of(Auth::ConfirmationsController).to receive(:captcha_required?).and_return(true)
+    allow_any_instance_of(Auth::ConfirmationsController).to receive(:hcaptcha_enabled?).and_return(true)
     allow_any_instance_of(Auth::ConfirmationsController).to receive(:check_captcha!).and_return(true)
     allow_any_instance_of(Auth::ConfirmationsController).to receive(:render_captcha).and_return(nil)
     # rubocop:enable RSpec/AnyInstance
