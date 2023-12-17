@@ -49,7 +49,7 @@ class NavigationPanel extends Component {
     return match || location.pathname.startsWith('/public');
   };
 
-  render() {
+  render () {
     const { intl, onOpenSettings, onTouchAbout } = this.props;
     const { signedIn, disabledAccountId } = this.context.identity;
 
