@@ -32,10 +32,10 @@ index 8f47a417a..6376dc2f5 100644
 +    image.src = '/oops.png';
    });
  });
-diff --git a/app/models/concerns/account_avatar.rb b/app/models/concerns/account_avatar.rb
+diff --git a/app/models/concerns/account/avatar.rb b/app/models/concerns/account/avatar.rb
 index 7d38628db..8cc418c26 100644
---- a/app/models/concerns/account_avatar.rb
-+++ b/app/models/concerns/account_avatar.rb
+--- a/app/models/concerns/account/avatar.rb
++++ b/app/models/concerns/account/avatar.rb
 @@ -26,7 +26,7 @@ module AccountAvatar
    end
 
