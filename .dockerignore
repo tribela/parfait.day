@@ -11,6 +11,7 @@ Dockerfile
 public/system
 public/assets
 public/packs
+public/packs-test
 node_modules
 neo4j
 vendor/bundle
