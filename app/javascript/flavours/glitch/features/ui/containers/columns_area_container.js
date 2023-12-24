@@ -20,10 +20,10 @@ const touchAboutHandler = (() => {
     if (aboutTouchTimestamps.length === 10 && timestamp - aboutTouchTimestamps[0] <= 5000)  {
       if (!unlocked) {
         dispatch(changeLocalSetting(['unlock_hidden_feature'], true));
-        dispatch(showAlert('Qdon', 'Unlocked hidden feature!'));
+        dispatch(showAlert({title: 'Qdon', message: 'Unlocked hidden feature!'}));
         unlocked = true;
       } else {
-        dispatch(showAlert('Qdon', 'You Already have unlocked hidden feature!'));
+        dispatch(showAlert({title: 'Qdon', message: 'You Already have unlocked hidden feature!'}));
       }
       aboutTouchTimestamps = [];
     }

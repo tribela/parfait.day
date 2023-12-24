@@ -388,7 +388,7 @@ class UI extends PureComponent {
 
   handleKonamiCommand = () => {
     this.props.dispatch(changeLocalSetting(['unlock_hidden_feature'], true));
-    this.props.dispatch(showAlert('Qdon', 'Unlocked hidden feature!'));
+    this.props.dispatch(showAlert({title: 'Qdon', message: 'Unlocked hidden feature!'}));
   };
 
   handleLayoutChange = debounce(() => {
