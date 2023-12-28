@@ -18,11 +18,12 @@ class AccountDomainMute < ApplicationRecord
   belongs_to :account
   validates :domain, presence: true, uniqueness: { scope: :account_id }, domain: true
 
-  after_commit :remove_mute_cache
+  after_commit :invalidate_domain_muting_cache
 
   private
 
-  def remove_mute_cache
-    Rails.cache.delete("mute_domains_for:#{account_id}")
+  def invalidate_domain_muting_cache
+    Rails.cache.delete("hide_domains_for:#{account_id}")
+    Rails.cache.delete(['hide_domains', account_id, domain])
   end
 end
