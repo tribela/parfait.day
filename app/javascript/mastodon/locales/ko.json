@@ -53,7 +53,7 @@
   "account.mention": "@{name} 님에게 멘션",
   "account.moved_to": "{name} 님은 자신의 새 계정이 다음과 같다고 표시했습니다:",
   "account.mute": "@{name} 뮤트",
-  "account.mute_domain": "도메인 {domain}을 뮤트",
+  "account.mute_domain": "{domain} 도메인 뮤트",
   "account.mute_notifications_short": "알림 뮤트",
   "account.mute_short": "뮤트",
   "account.muted": "뮤트됨",
