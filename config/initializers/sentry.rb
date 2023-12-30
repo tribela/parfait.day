@@ -37,8 +37,8 @@ if ENV['SENTRY_DSN']
       case op
       when /http/
         case transaction_name
-        when /metrics/
-          0.001
+        when /MediaProxyController/
+          0.000
         else
           0.0005
         end
