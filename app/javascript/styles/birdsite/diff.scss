@@ -3,3 +3,20 @@
   order: 0;
   border-right: 1px solid var(--color-border);
 }
+
+// Shadow on scrollable nav panel
+@media screen and (max-width: 889px) {
+  .layout-single-column .columns-area__panels__pane--navigational {
+    .navigation-panel {
+      background-image: linear-gradient(to right, var(--color-bg), var(--color-bg)),
+        linear-gradient(to right, var(--color-bg), var(--color-bg)),
+        linear-gradient(to right, var(--color-dim), rgba(0, 0, 0, 0)),
+        linear-gradient(to left, var(--color-dim), rgba(0, 0, 0, 0));
+      background-position: left center, right center, left center, right center;
+      background-color: var(--color-bg);
+      background-repeat: no-repeat;
+      background-size: 40px 100%, 40px 100%, 20px 100%, 20px 100%;
+      background-attachment: local, local, scroll, scroll;
+    }
+  }
+}
