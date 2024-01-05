@@ -558,7 +558,28 @@ class UI extends PureComponent {
   };
 
   handleHiddenCommand = () => {
-    this.props.dispatch(showAlert({message: 'ちょっと、↑にためて下さい。'}));
+    const targetElem = document.querySelector('.columns-area');
+    const orignalStyle = targetElem.style.cssText;
+    const interval = 60 / 142 * 1000; // 142 BPM
+
+    targetElem.style.transition = `all ${interval / 1000 / 2}s linear`;
+
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '回転'}));
+      targetElem.style.transform = 'rotate(-10deg)';
+    }, interval * 0);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '反転'}));
+      targetElem.style.filter = 'invert(100%)';
+    }, interval * 1);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '一回転'}));
+      targetElem.style.transform = 'rotate(360deg)';
+    }, interval * 2);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: 'リセット'}));
+      targetElem.style.cssText = orignalStyle;
+    }, interval * 6);
   };
 
   render () {

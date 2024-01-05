@@ -128,6 +128,7 @@ const keyMap = {
   toggleCollapse: 'shift+x',
   toggleSensitive: 'h',
   openMedia: 'e',
+  hiddenHappy: 'right down up right right down right right up up down down left right left right',
   konamiCommand: 'up up down down left right left right b a enter',
 };
 
@@ -384,6 +385,31 @@ class UI extends PureComponent {
     } else {
       console.warn('Unknown message type:', data.type);
     }
+  };
+
+  handleHiddenCommand = () => {
+    const targetElem = document.querySelector('.columns-area');
+    const orignalStyle = targetElem.style.cssText;
+    const interval = 60 / 142 * 1000; // 142 BPM
+
+    targetElem.style.transition = `all ${interval / 1000 / 2}s linear`;
+
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '回転'}));
+      targetElem.style.transform = 'rotate(-10deg)';
+    }, interval * 0);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '反転'}));
+      targetElem.style.filter = 'invert(100%)';
+    }, interval * 1);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '一回転'}));
+      targetElem.style.transform = 'rotate(360deg)';
+    }, interval * 2);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: 'リセット'}));
+      targetElem.style.cssText = orignalStyle;
+    }, interval * 6);
   };
 
   handleKonamiCommand = () => {
@@ -647,6 +673,7 @@ class UI extends PureComponent {
       goToBlocked: this.handleHotkeyGoToBlocked,
       goToMuted: this.handleHotkeyGoToMuted,
       goToRequests: this.handleHotkeyGoToRequests,
+      hiddenHappy: this.handleHiddenCommand,
       konamiCommand: this.handleKonamiCommand,
     };
 
