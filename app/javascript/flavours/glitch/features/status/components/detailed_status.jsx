@@ -160,7 +160,7 @@ class DetailedStatus extends ImmutablePureComponent {
       media.push(<PictureInPicturePlaceholder />);
       mediaIcons.push('video-camera');
     } else if (status.get('media_attachments').size > 0) {
-      if (status.get('media_attachments').some(item => item.get('type') === 'unknown')) {
+      if (status.get('media_attachments').every(item => item.get('type') === 'unknown')) {
         media.push(<AttachmentList media={status.get('media_attachments')} />);
       } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio') {
         const attachment = status.getIn(['media_attachments', 0]);
