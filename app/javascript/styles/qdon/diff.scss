@@ -1,17 +1,3 @@
-// Fix button on modal dialog background color
-.modal-root {
-  .button {
-    &:hover {
-      background-color: lighten($ui-highlight-color, 5%);
-    }
-
-    &:active,
-    &:focus {
-      background-color: darken($ui-highlight-color, 5%);
-    }
-  }
-}
-
 // Change the background colors of modals
 .actions-modal,
 .boost-modal,
