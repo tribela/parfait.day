@@ -17,11 +17,7 @@
   background: $white;
 }
 
-// Change submit button
-.simple_form button[type='submit']:not(.negative) {
-  background: darken($ui-primary-color, 10%);
-}
-
+// Colourise mention
 a.status-link {
   color: $skyblue;
 }
