@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 import { ReactComponent as BlockIcon } from '@material-symbols/svg-600/outlined/block.svg';
 import { ReactComponent as InfoIcon } from '@material-symbols/svg-600/outlined/info.svg';
+import { ReactComponent as MoreHorizIcon } from '@material-symbols/svg-600/outlined/more_horiz.svg';
 import { ReactComponent as PersonCheckIcon } from '@material-symbols/svg-600/outlined/person_check.svg';
 import { ReactComponent as PushPinIcon } from '@material-symbols/svg-600/outlined/push_pin.svg';
 import { ReactComponent as StarIcon } from '@material-symbols/svg-600/outlined/star-fill.svg';
@@ -17,7 +18,6 @@ import { openModal } from 'flavours/glitch/actions/modal';
 import Column from 'flavours/glitch/features/ui/components/column';
 import ColumnLink from 'flavours/glitch/features/ui/components/column_link';
 import ColumnSubheading from 'flavours/glitch/features/ui/components/column_subheading';
-import { VisibilityIcon } from 'mastodon/components/visibility_icon';
 
 const messages = defineMessages({
   heading: { id: 'column.heading', defaultMessage: 'Misc' },
@@ -54,7 +54,7 @@ class GettingStartedMisc extends ImmutablePureComponent {
     const { signedIn } = this.context.identity;
 
     return (
-      <Column icon='ellipsis-h' heading={intl.formatMessage(messages.heading)} alwaysShowBackButton>
+      <Column icon='ellipsis-h' iconComponent={MoreHorizIcon} heading={intl.formatMessage(messages.heading)} alwaysShowBackButton>
         <div className='scrollable'>
           <ColumnSubheading text={intl.formatMessage(messages.subheading)} />
           {signedIn && (<ColumnLink key='favourites' icon='star' iconComponent={StarIcon} text={intl.formatMessage(messages.favourites)} to='/favourites' />)}
