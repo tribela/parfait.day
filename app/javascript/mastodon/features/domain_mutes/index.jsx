@@ -8,8 +8,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
-import { ReactComponent as VolumeOffIcon } from '@material-symbols/svg-600/outlined/volume_off.svg';
 import { debounce } from 'lodash';
+
+import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
 
 import { fetchDomainMutes, expandDomainMutes } from '../../actions/domain_mutes';
 import { LoadingIndicator } from '../../components/loading_indicator';
@@ -60,7 +61,7 @@ class Mutes extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.domain_mutes' defaultMessage='There are no muted domains yet.' />;
 
     return (
-      <Column bindToDocument={!multiColumn} icon='minus-circle' iconComponent={VolumeOffIcon} heading={intl.formatMessage(messages.heading)} alwaysShowBackButton>
+      <Column bindToDocument={!multiColumn} icon='minus-circle' iconComponent={VisibilityOffIcon} heading={intl.formatMessage(messages.heading)} alwaysShowBackButton>
 
         <ScrollableList
           scrollKey='domain_mutes'

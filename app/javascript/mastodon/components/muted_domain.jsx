@@ -4,9 +4,9 @@ import { defineMessages, injectIntl } from 'react-intl';
 
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { ReactComponent as VisibilityIcon } from '@material-symbols/svg-600/outlined/visibility.svg';
-import { ReactComponent as VisibilityOffIcon } from '@material-symbols/svg-600/outlined/visibility_off.svg';
-import { ReactComponent as VolumeUpIcon } from '@material-symbols/svg-600/outlined/volume_up.svg';
+import VisibilityIcon from '@/material-icons/400-24px/visibility.svg?react';
+import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
+import VolumeUpIcon from '@/material-icons/400-24px/volume_up.svg?react';
 
 import { IconButton } from './icon_button';
 

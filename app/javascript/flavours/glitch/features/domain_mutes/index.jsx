@@ -8,8 +8,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
-import { ReactComponent as VisibilityOffIcon } from '@material-symbols/svg-600/outlined/visibility_off.svg';
 import { debounce } from 'lodash';
+
+import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
 
 import { fetchDomainMutes, expandDomainMutes } from '../../actions/domain_mutes';
 import { LoadingIndicator } from '../../components/loading_indicator';
