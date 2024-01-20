@@ -22,7 +22,7 @@ const messages = defineMessages({
 });
 
 const colCount = function(size) {
-  return Math.max(Math.floor(Math.sqrt(size)), 2);
+  return Math.max(Math.ceil(Math.sqrt(size)), 2);
 };
 
 const rowCount = function(size) {
