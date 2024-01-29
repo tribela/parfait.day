@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import type { Account } from 'mastodon/models/account';
+import type { Account } from 'flavours/glitch/models/account';
 
 export const muteDomainSuccess = createAction<{
   domain: string;

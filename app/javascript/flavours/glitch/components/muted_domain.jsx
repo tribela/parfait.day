@@ -4,6 +4,10 @@ import { defineMessages, injectIntl } from 'react-intl';
 
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
+import VisibilityIcon from '@/material-icons/400-24px/visibility.svg?react';
+import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
+import VolumeUpIcon from '@/material-icons/400-24px/volume_up.svg?react';
+
 import { IconButton } from './icon_button';
 
 const messages = defineMessages({
@@ -39,16 +43,16 @@ class MutedDomain extends ImmutablePureComponent {
     const buttons = [];
     if (hide_from_home) {
       buttons.push(
-        <IconButton active icon='eye' title={intl.formatMessage(messages.include_domain_from_home_timeline, { domain })} onClick={this.handleDomainIncludeHomeTimeline} />,
+        <IconButton active icon='eye' iconComponent={VisibilityIcon} title={intl.formatMessage(messages.include_domain_from_home_timeline, { domain })} onClick={this.handleDomainIncludeHomeTimeline} />,
       );
     } else {
       buttons.push(
-        <IconButton active icon='eye-slash' title={intl.formatMessage(messages.exclude_domain_from_home_timeline, { domain })} onClick={this.handleDomainExcludeHomeTimeline} />,
+        <IconButton active icon='eye-slash' iconComponent={VisibilityOffIcon} title={intl.formatMessage(messages.exclude_domain_from_home_timeline, { domain })} onClick={this.handleDomainExcludeHomeTimeline} />,
       );
     }
 
     buttons.push(
-      <IconButton active icon='volume-up' title={intl.formatMessage(messages.unmute_domain, { domain })} onClick={this.handleDomainUnmute} />,
+      <IconButton active icon='volume-up' iconComponent={VolumeUpIcon} title={intl.formatMessage(messages.unmute_domain, { domain })} onClick={this.handleDomainUnmute} />,
     );
 
     return (

@@ -13,6 +13,9 @@ import {
   SERVER_DOMAIN_BLOCKS_FETCH_REQUEST,
   SERVER_DOMAIN_BLOCKS_FETCH_SUCCESS,
   SERVER_DOMAIN_BLOCKS_FETCH_FAIL,
+  SERVER_DOMAIN_MUTES_FETCH_REQUEST,
+  SERVER_DOMAIN_MUTES_FETCH_SUCCESS,
+  SERVER_DOMAIN_MUTES_FETCH_FAIL,
 } from 'mastodon/actions/server';
 
 const initialState = ImmutableMap({
@@ -57,6 +60,12 @@ export default function server(state = initialState, action) {
     return state.setIn(['domainBlocks', 'items'], fromJS(action.blocks)).setIn(['domainBlocks', 'isLoading'], false).setIn(['domainBlocks', 'isAvailable'], action.isAvailable);
   case SERVER_DOMAIN_BLOCKS_FETCH_FAIL:
     return state.setIn(['domainBlocks', 'isLoading'], false);
+  case SERVER_DOMAIN_MUTES_FETCH_REQUEST:
+    return state.setIn(['domainMutes', 'isLoading'], true);
+  case SERVER_DOMAIN_MUTES_FETCH_SUCCESS:
+    return state.setIn(['domainMutes', 'items'], fromJS(action.blocks)).setIn(['domainMutes', 'isLoading'], false).setIn(['domainMutes', 'isAvailable'], action.isAvailable);
+  case SERVER_DOMAIN_MUTES_FETCH_FAIL:
+    return state.setIn(['domainMutes', 'isLoading'], false);
   default:
     return state;
   }

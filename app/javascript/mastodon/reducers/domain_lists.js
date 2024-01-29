@@ -8,7 +8,7 @@ import {
 import {
   DOMAIN_MUTES_FETCH_SUCCESS,
   DOMAIN_MUTES_EXPAND_SUCCESS,
-  DOMAIN_UNMUTE_SUCCESS,
+  unmuteDomainSuccess,
   DOMAIN_MUTE_HOME_TIMELINE_SUCCESS,
 } from '../actions/domain_mutes';
 
@@ -41,8 +41,8 @@ export default function domainLists(state = initialState, action) {
     return state.setIn(['mutes', 'items'], mapDomains(action.domains)).setIn(['mutes', 'next'], action.next);
   case DOMAIN_MUTES_EXPAND_SUCCESS:
     return state.updateIn(['mutes', 'items'], map => expandDomains(map, action.domains)).setIn(['mutes', 'next'], action.next);
-  case DOMAIN_UNMUTE_SUCCESS:
-    return state.updateIn(['mutes', 'items'], map => map.delete(action.domain));
+  case unmuteDomainSuccess.type:
+    return state.updateIn(['mutes', 'items'], map => map.delete(action.payload.domain));
   case DOMAIN_MUTE_HOME_TIMELINE_SUCCESS:
     return state.updateIn(['mutes', 'items', action.domain, 'hide_from_home'], () => action.homeTimeline);
   default:

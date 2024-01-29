@@ -18,6 +18,10 @@ export const SERVER_DOMAIN_BLOCKS_FETCH_REQUEST = 'SERVER_DOMAIN_BLOCKS_FETCH_RE
 export const SERVER_DOMAIN_BLOCKS_FETCH_SUCCESS = 'SERVER_DOMAIN_BLOCKS_FETCH_SUCCESS';
 export const SERVER_DOMAIN_BLOCKS_FETCH_FAIL    = 'SERVER_DOMAIN_BLOCKS_FETCH_FAIL';
 
+export const SERVER_DOMAIN_MUTES_FETCH_REQUEST = 'SERVER_DOMAIN_MUTES_FETCH_REQUEST';
+export const SERVER_DOMAIN_MUTES_FETCH_SUCCESS = 'SERVER_DOMAIN_MUTES_FETCH_SUCCESS';
+export const SERVER_DOMAIN_MUTES_FETCH_FAIL    = 'SERVER_DOMAIN_MUTES_FETCH_FAIL';
+
 export const fetchServer = () => (dispatch, getState) => {
   if (getState().getIn(['server', 'server', 'isLoading'])) {
     return;
@@ -115,6 +119,25 @@ export const fetchDomainBlocks = () => (dispatch, getState) => {
     });
 };
 
+export const fetchDomainMutes = () => (dispatch, getState) => {
+  if (getState().getIn(['server', 'domainMutes', 'isLoading'])) {
+    return;
+  }
+
+  dispatch(fetchDomainMutesRequest());
+
+  api(getState)
+    .get('/api/v1/instance/domain_mutes')
+    .then(({ data }) => dispatch(fetchDomainMutesSuccess(true, data)))
+    .catch(err => {
+      if (err.response.status === 404) {
+        dispatch(fetchDomainMutesSuccess(false, []));
+      } else {
+        dispatch(fetchDomainMutesFail(err));
+      }
+    });
+};
+
 const fetchDomainBlocksRequest = () => ({
   type: SERVER_DOMAIN_BLOCKS_FETCH_REQUEST,
 });
@@ -127,5 +150,20 @@ const fetchDomainBlocksSuccess = (isAvailable, blocks) => ({
 
 const fetchDomainBlocksFail = error => ({
   type: SERVER_DOMAIN_BLOCKS_FETCH_FAIL,
+  error,
+});
+
+const fetchDomainMutesRequest = () => ({
+  type: SERVER_DOMAIN_MUTES_FETCH_REQUEST,
+});
+
+const fetchDomainMutesSuccess = (isAvailable, mutes) => ({
+  type: SERVER_DOMAIN_MUTES_FETCH_SUCCESS,
+  isAvailable,
+  mutes,
+});
+
+const fetchDomainMutesFail = error => ({
+  type: SERVER_DOMAIN_MUTES_FETCH_FAIL,
   error,
 });

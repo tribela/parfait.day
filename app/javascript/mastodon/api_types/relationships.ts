@@ -10,6 +10,7 @@ export interface ApiRelationshipJSON {
   languages: string[] | null;
   muting_notifications: boolean;
   muting: boolean;
+  domain_muting: boolean;
   note: string;
   notifying: boolean;
   requested_by: boolean;

@@ -1,6 +1,10 @@
 import api, { getLinks } from '../api';
 
+import { muteDomainSuccess, unmuteDomainSuccess } from "./domain_mutes_typed";
 import { openModal } from './modal';
+
+export * from "./domain_mutes_typed";
+
 
 export const DOMAIN_MUTE_REQUEST = 'DOMAIN_MUTE_REQUEST';
 export const DOMAIN_MUTE_SUCCESS = 'DOMAIN_MUTE_SUCCESS';
@@ -33,7 +37,7 @@ export function muteDomain(domain, hideFromHome) {
       const at_domain = '@' + domain;
       const accounts = getState().get('accounts').filter(item => item.get('acct').endsWith(at_domain)).valueSeq().map(item => item.get('id'));
 
-      dispatch(muteDomainSuccess(domain, accounts));
+      dispatch(muteDomainSuccess({domain, accounts, hideFromHome}));
     }).catch(err => {
       dispatch(muteDomainFail(domain, err));
     });
@@ -70,14 +74,6 @@ export function excludeDomainHomeTimelineRequest(domain, excludeHomeTimeline) {
   };
 }
 
-export function muteDomainSuccess(domain, accounts) {
-  return {
-    type: DOMAIN_MUTE_SUCCESS,
-    domain,
-    accounts,
-  };
-}
-
 export function muteDomainFail(domain, error) {
   return {
     type: DOMAIN_MUTE_FAIL,
@@ -111,7 +107,7 @@ export function unmuteDomain(domain) {
     api(getState).delete('/api/v1/domain_mutes', { params: { domain } }).then(() => {
       const at_domain = '@' + domain;
       const accounts = getState().get('accounts').filter(item => item.get('acct').endsWith(at_domain)).valueSeq().map(item => item.get('id'));
-      dispatch(unmuteDomainSuccess(domain, accounts));
+      dispatch(unmuteDomainSuccess({domain, accounts}));
     }).catch(err => {
       dispatch(unmuteDomainFail(domain, err));
     });
@@ -122,14 +118,6 @@ export function unmuteDomainRequest(domain) {
   return {
     type: DOMAIN_UNMUTE_REQUEST,
     domain,
-  };
-}
-
-export function unmuteDomainSuccess(domain, accounts) {
-  return {
-    type: DOMAIN_UNMUTE_SUCCESS,
-    domain,
-    accounts,
   };
 }
 
