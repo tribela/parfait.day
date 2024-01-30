@@ -17,8 +17,28 @@ body {
   line-height: 1;
 }
 
+.account__section-headline,
+.notification__filter-bar {
+  a,
+  button {
+    font-size: 16px;
+  }
+}
+
+.search__popout {
+  font-size: 14px;
+}
+
+.search-results__section__header {
+  font-size: 16px;
+}
+
 .compose-form .autosuggest-input label .autosuggest-textarea__textarea,
 .compose-form .autosuggest-textarea label .autosuggest-textarea__textarea {
+  font-size: 16px;
+}
+
+.account .account__display-name {
   font-size: 16px;
 }
 
