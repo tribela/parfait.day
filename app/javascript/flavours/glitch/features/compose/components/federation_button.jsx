@@ -22,6 +22,8 @@ const messages = defineMessages({
 export const FederationButton = () => {
   const intl = useIntl();
 
+  const showButton = useAppSelector((state) => state.getIn(['local_settings', 'unlock_hidden_feature']));
+
   const isEditing = useAppSelector((state) => state.getIn(['compose', 'id']) !== null);
   const do_not_federate = useAppSelector((state) => state.getIn(['compose', 'advanced_options', 'do_not_federate']));
   const dispatch = useAppDispatch();
@@ -29,6 +31,10 @@ export const FederationButton = () => {
   const handleChange = useCallback((value) => {
     dispatch(changeComposeAdvancedOption('do_not_federate', value === 'local-only'));
   }, [dispatch]);
+
+  if (!showButton) {
+    return null;
+  }
 
   const options = [
     { icon: 'link', iconComponent: ShareIcon, value: 'federated', text: intl.formatMessage(messages.federated_label), meta: intl.formatMessage(messages.federated_meta) },

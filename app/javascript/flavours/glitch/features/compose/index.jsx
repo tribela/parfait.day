@@ -58,28 +58,6 @@ const mapStateToProps = (state, ownProps) => ({
   showNotificationsBadge: state.getIn(['local_settings', 'notifications', 'tab_badge']),
 });
 
-const touchMascotHandler = (() => {
-  let mascotTouchTimestamps = [];
-  let unlocked = false;
-  const handler = (dispatch) => {
-    const timestamp = +new Date();
-    mascotTouchTimestamps.push(timestamp);
-    mascotTouchTimestamps = mascotTouchTimestamps.slice(-10);
-    if (mascotTouchTimestamps.length === 10 && timestamp - mascotTouchTimestamps[0] <= 5000)  {
-      if (!unlocked) {
-        dispatch(changeLocalSetting(['unlock_hidden_feature'], true));
-        dispatch(showAlert('Qdon', 'Unlocked hidden feature!'));
-        unlocked = true;
-      } else {
-        dispatch(showAlert('Qdon', 'You Already have unlocked hidden feature!'));
-      }
-      mascotTouchTimestamps = [];
-    }
-  };
-
-  return handler;
-})();
-
 // ~4% chance you'll end up with an unexpected friend
 // glitch-soc/mastodon repo created_at date: 2017-04-20T21:55:28Z
 const glitchProbability = 1 - 0.0420215528;
@@ -151,6 +129,29 @@ class Compose extends PureComponent {
     this.setState((state) => ({ elefriend: (state.elefriend + 1) % totalElefriends }));
   };
 
+  touchMascotHandler = (() => {
+    let mascotTouchTimestamps = [];
+    let unlocked = false;
+    const handler = () => {
+      const { dispatch } = this.props;
+      const timestamp = +new Date();
+      mascotTouchTimestamps.push(timestamp);
+      mascotTouchTimestamps = mascotTouchTimestamps.slice(-10);
+      if (mascotTouchTimestamps.length === 10 && timestamp - mascotTouchTimestamps[0] <= 5000)  {
+        if (!unlocked) {
+          dispatch(changeLocalSetting(['unlock_hidden_feature'], true));
+          dispatch(showAlert('Qdon', 'Unlocked hidden feature!'));
+          unlocked = true;
+        } else {
+          dispatch(showAlert('Qdon', 'You Already have unlocked hidden feature!'));
+        }
+        mascotTouchTimestamps = [];
+      }
+    };
+
+    return handler;
+  })();
+
   render () {
     const { multiColumn, showSearch, showNotificationsBadge, unreadNotifications, intl } = this.props;
 
@@ -199,7 +200,7 @@ class Compose extends PureComponent {
               <ComposeFormContainer autoFocus={!isMobile(window.innerWidth)} />
 
               {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- this is not a feature but a visual easter egg */}
-              <div className='drawer__inner__mastodon' onClick={this.cycleElefriend} onTouchStart={touchMascotHandler}>
+              <div className='drawer__inner__mastodon' onClick={this.cycleElefriend} onTouchStart={this.touchMascotHandler}>
                 <img alt='' draggable='false' src={mascot || elefriend} />
               </div>
             </div>
