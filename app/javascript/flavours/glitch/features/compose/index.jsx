@@ -11,8 +11,6 @@ import { connect } from 'react-redux';
 
 import spring from 'react-motion/lib/spring';
 
-import { showAlert } from 'flavours/glitch/actions/alerts';
-import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
 import LogoutIcon from '@/material-icons/400-24px/logout.svg?react';
@@ -20,6 +18,8 @@ import ManufacturingIcon from '@/material-icons/400-24px/manufacturing-fill.svg?
 import MenuIcon from '@/material-icons/400-24px/menu.svg?react';
 import NotificationsIcon from '@/material-icons/400-24px/notifications-fill.svg?react';
 import PublicIcon from '@/material-icons/400-24px/public.svg?react';
+import { showAlert } from 'flavours/glitch/actions/alerts';
+import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 import { openModal } from 'flavours/glitch/actions/modal';
 import Column from 'flavours/glitch/components/column';
 import { Icon }  from 'flavours/glitch/components/icon';
