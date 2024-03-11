@@ -38,7 +38,6 @@ class Form::AdminSettings
     noindex
     outgoing_spoilers
     require_invite_text
-    captcha_enabled
     korean_captcha_enabled
     korean_captcha_question
     korean_captcha_answer
