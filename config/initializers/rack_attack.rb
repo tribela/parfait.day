@@ -30,7 +30,7 @@ class Rack::Attack
     end
 
     def authenticated_user_id
-      authenticated_token&.resource_owner_id
+      authenticated_token&.resource_owner_id || session.dig('warden.user.user.key', 0, 0)
     end
 
     def authenticated_token_id
