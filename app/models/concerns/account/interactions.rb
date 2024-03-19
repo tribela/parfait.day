@@ -206,7 +206,7 @@ module Account::Interactions
   end
 
   def unmute_domain!(other_domain)
-    mute = domain_mutes.find_by(domain: other_domain)
+    mute = domain_mutes.find_by(domain: normalized_domain(other_domain))
     mute&.destroy
   end
 
