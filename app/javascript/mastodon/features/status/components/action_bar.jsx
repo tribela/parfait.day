@@ -163,7 +163,7 @@ class ActionBar extends PureComponent {
     const { status, onBlockDomain } = this.props;
     const account = status.get('account');
 
-    onBlockDomain(account.get('acct').split('@')[1]);
+    onBlockDomain(account);
   };
 
   handleUnblockDomain = () => {
