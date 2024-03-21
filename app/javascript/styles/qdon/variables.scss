@@ -3,7 +3,7 @@ $dark-blue: hsl(212deg, 72%, 63%);
 $pink: hsl(304deg, 100%, 80%);
 $grey: #282c37;
 $text-shadow-color: #888;
-$ui-base-color: darken($grey, 5%);
+$ui-base-color: $grey;
 $ui-primary-color: $skyblue;
 $ui-secondary-color: $pink;
 $primary-text-color: #fff;
