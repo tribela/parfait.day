@@ -444,6 +444,10 @@ body.admin {
     padding-left: 4px;
 }
 
+.column-settings h3 {
+  color:black;
+}
+
 .column-settings__section {
   color:black;
   font-weight:bold;
@@ -479,6 +483,17 @@ body.admin {
   line-height:13px;
 }
 
+.app-form__toggle__label {
+
+  strong {
+    color:black;
+  }
+
+  .hint {
+    color:$win95-mid-grey;
+  }
+}
+
 .react-toggle .react-toggle-track {
   border-radius:0px;
   background-color:white;
@@ -495,6 +510,10 @@ body.admin {
 .react-toggle .react-toggle-track-check {
   left:2px;
   transition:unset;
+}
+
+.react-toggle.react-toggle--checked .react-toggle-track-check {
+  display: initial;
 }
 
 .react-toggle .react-toggle-track-check svg path {
@@ -579,6 +598,8 @@ body.admin {
     padding: 8px 0;
     align-self: end;
     @include win95-tab();
+
+    height: 40px;
 
     &.active {
       color: black;
