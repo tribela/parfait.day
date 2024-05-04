@@ -25,6 +25,9 @@ jobs:
         mode:
           - production
           - test
+        flavour:
+          - qdon
+          - brandless
     env:
       RAILS_ENV: ${{ matrix.mode }}
       BUNDLE_WITH: ${{ matrix.mode }}
@@ -36,6 +39,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Apply brandless patch
+        run: git apply .github/brandless.patch
+        if: matrix.flavour == 'brandless'
 
       - name: Set up Ruby environment
         uses: ./.github/actions/setup-ruby
