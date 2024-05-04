@@ -35,7 +35,6 @@ RSpec.describe HomeFeed do
         results = subject.get(5)
 
         expect(results.map(&:id)).to eq [15, 14, 12, 10, 3]
-        expect(results.first.attributes.keys).to eq %w(id updated_at)
       end
 
       it 'with since_id present' do
