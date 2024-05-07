@@ -1,12 +1,12 @@
 #!/bin/bash
 set -euo pipefail
-( git remote add upstream https://github.com/glitch-soc/mastodon &&
-  git fetch upstream
+( git remote add glitch https://github.com/glitch-soc/mastodon &&
+  git fetch glitch
 ) || true
 
-merge_base="$(git merge-base HEAD upstream/main)" || {
-  echo "No merge base found, assuming upstream/main"
-  merge_base=upstream/main
+merge_base="$(git merge-base HEAD glitch/main)" || {
+  echo "No merge base found, assuming glitch/main"
+  merge_base=glitch/main
 }
 
 echo "Checking out assets from $merge_base"
