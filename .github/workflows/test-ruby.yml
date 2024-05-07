@@ -25,7 +25,7 @@ jobs:
         mode:
           - production
           - test
-        flavour:
+        branding:
           - qdon
           - brandless
     env:
@@ -42,7 +42,7 @@ jobs:
 
       - name: Apply brandless patch
         run: git apply .github/brandless.patch
-        if: matrix.flavour == 'brandless'
+        if: matrix.branding == 'brandless'
 
       - name: Set up Ruby environment
         uses: ./.github/actions/setup-ruby
@@ -67,7 +67,7 @@ jobs:
         with:
           path: |-
             ./artifacts.tar.gz
-          name: ${{ github.sha }}
+          name: ${{ github.sha }}-${{ matrix.branding }}
           retention-days: 0
 
   test:
@@ -124,13 +124,16 @@ jobs:
           - '3.1'
           - '3.2'
           - '.ruby-version'
+        branding:
+          - qdon
+          - brandless
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/download-artifact@v4
         with:
           path: './'
-          name: ${{ github.sha }}
+          name: ${{ github.sha }}-${{ matrix.branding }}
 
       - name: Expand archived asset artifacts
         run: |
@@ -148,7 +151,7 @@ jobs:
       - run: bin/rspec
 
       - name: Upload coverage reports to Codecov
-        if: matrix.ruby-version == '.ruby-version'
+        if: matrix.ruby-version == '.ruby-version' && matrix.branding == 'qdon'
         uses: codecov/codecov-action@v4
         with:
           files: coverage/lcov/mastodon.lcov
@@ -206,7 +209,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: './public'
-          name: ${{ github.sha }}
+          name: ${{ github.sha }}-qdon
 
       - name: Set up Ruby environment
         uses: ./.github/actions/setup-ruby
@@ -310,7 +313,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: './public'
-          name: ${{ github.sha }}
+          name: ${{ github.sha }}-qdon
 
       - name: Set up Ruby environment
         uses: ./.github/actions/setup-ruby
