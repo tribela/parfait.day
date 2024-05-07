@@ -158,6 +158,7 @@ Rails.application.configure do
     'Referrer-Policy' => 'same-origin',
   }
 
+  # TODO: Remove once devise-two-factor data migration complete
   config.x.otp_secret = ENV.fetch('OTP_SECRET')
 
   config.x.trusted_metrics = []

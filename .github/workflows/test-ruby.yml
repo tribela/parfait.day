@@ -122,8 +122,8 @@ jobs:
       matrix:
         ruby-version:
           - '3.1'
+          - '3.2'
           - '.ruby-version'
-          - '3.3'
     steps:
       - uses: actions/checkout@v4
 
@@ -197,8 +197,8 @@ jobs:
       matrix:
         ruby-version:
           - '3.1'
+          - '3.2'
           - '.ruby-version'
-          - '3.3'
 
     steps:
       - uses: actions/checkout@v4
@@ -296,8 +296,8 @@ jobs:
       matrix:
         ruby-version:
           - '3.1'
+          - '3.2'
           - '.ruby-version'
-          - '3.3'
         search-image:
           - qdon/elasticsearch-nori:8.8.1
         # include:
