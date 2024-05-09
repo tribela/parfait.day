@@ -36,12 +36,7 @@ class ManifestSerializer < ActiveModel::Serializer
         type: 'image/png',
         purpose: 'any maskable',
       }
-    end + [{
-      src: frontend_asset_url('images/app-icon.svg'),
-      sizes: 'any',
-      type: 'image/svg+xml',
-      purpose: 'any maskable',
-    }]
+    end
   end
 
   def theme_color

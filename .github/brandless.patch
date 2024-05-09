@@ -45,17 +45,7 @@ diff --git a/app/serializers/manifest_serializer.rb b/app/serializers/manifest_s
 index 767535f442..1c1f7d0ad5 100644
 --- a/app/serializers/manifest_serializer.rb
 +++ b/app/serializers/manifest_serializer.rb
-@@ -44,16 +44,11 @@ class ManifestSerializer < ActiveModel::Serializer
-         type: 'image/png',
-         purpose: 'any maskable',
-       }
--    end + [{
--      src: frontend_asset_url('images/app-icon.svg'),
--      sizes: 'any',
--      type: 'image/svg+xml',
--      purpose: 'any maskable',
--    }]
-+    end
+@@ -44,7 +44,7 @@ class ManifestSerializer < ActiveModel::Serializer
    end
 
    def theme_color
