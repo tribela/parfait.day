@@ -10,7 +10,7 @@ class Api::V1::DomainMutesController < Api::BaseController
 
   def show
     @mutes = load_domain_mutes
-    render json: @mutes.map { |domain_mute| domain_mute.as_json(only: %i(domain hide_from_home)) }
+    render json: @mutes.map { |domain_mute| { domain: domain_mute.domain, hide_from_home: domain_mute.hide_from_home } }
   end
 
   def create
