@@ -80,9 +80,7 @@ module Devise
           return pass
         end
 
-        if validate(resource)
-          success!(resource)
-        end
+        success!(resource) if validate(resource)
       end
 
       private

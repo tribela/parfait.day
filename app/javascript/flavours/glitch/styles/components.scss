@@ -4608,6 +4608,10 @@ a.status-card {
     &:hover {
       color: $primary-text-color;
     }
+
+    .icon {
+      transform: rotate(60deg);
+    }
   }
 
   &:disabled {
@@ -4653,6 +4657,10 @@ a.status-card {
 // The notifs drawer with no padding to have more space for the buttons
 .column-header__collapsible-inner.nopad-drawer {
   padding: 0;
+}
+
+.no-reduce-motion .column-header__button .icon {
+  transition: transform 150ms ease-in-out;
 }
 
 .column-header__collapsible {
