@@ -29,7 +29,7 @@ export const fetchServer = () => (dispatch, getState) => {
 
   dispatch(fetchServerRequest());
 
-  api(getState)
+  api()
     .get('/api/v2/instance').then(({ data }) => {
       if (data.contact.account) dispatch(importFetchedAccount(data.contact.account));
       dispatch(fetchServerSuccess(data));
@@ -50,10 +50,10 @@ const fetchServerFail = error => ({
   error,
 });
 
-export const fetchServerTranslationLanguages = () => (dispatch, getState) => {
+export const fetchServerTranslationLanguages = () => (dispatch) => {
   dispatch(fetchServerTranslationLanguagesRequest());
 
-  api(getState)
+  api()
     .get('/api/v1/instance/translation_languages').then(({ data }) => {
       dispatch(fetchServerTranslationLanguagesSuccess(data));
     }).catch(err => dispatch(fetchServerTranslationLanguagesFail(err)));
@@ -80,7 +80,7 @@ export const fetchExtendedDescription = () => (dispatch, getState) => {
 
   dispatch(fetchExtendedDescriptionRequest());
 
-  api(getState)
+  api()
     .get('/api/v1/instance/extended_description')
     .then(({ data }) => dispatch(fetchExtendedDescriptionSuccess(data)))
     .catch(err => dispatch(fetchExtendedDescriptionFail(err)));
@@ -107,7 +107,7 @@ export const fetchDomainBlocks = () => (dispatch, getState) => {
 
   dispatch(fetchDomainBlocksRequest());
 
-  api(getState)
+  api()
     .get('/api/v1/instance/domain_blocks')
     .then(({ data }) => dispatch(fetchDomainBlocksSuccess(true, data)))
     .catch(err => {
