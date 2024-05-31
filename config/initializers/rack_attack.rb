@@ -30,7 +30,7 @@ class Rack::Attack
     end
 
     def authenticated_user_id
-      authenticated_token&.resource_owner_id || session.dig('warden.user.user.key', 0, 0)
+      authenticated_token&.resource_owner_id
     end
 
     def authenticated_token_id
@@ -82,12 +82,8 @@ class Rack::Attack
     req.authenticated_user_id if req.post? && req.path.match?(%r{\A/api/v\d+/media\z}i)
   end
 
-  throttle('throttle_authenticated_media_proxy', limit: 100, period: 10.minutes) do |req|
-    req.authenticated_user_id if req.path.start_with?('/media_proxy')
-  end
-
-  throttle('throttle_unauthenticated_media_proxy', limit: 30, period: 10.minutes) do |req|
-    req.throttleable_remote_ip if req.path.start_with?('/media_proxy') && req.unauthenticated?
+  throttle('throttle_media_proxy', limit: 30, period: 10.minutes) do |req|
+    req.throttleable_remote_ip if req.path.start_with?('/media_proxy')
   end
 
   throttle('throttle_api_sign_up', limit: 5, period: 30.minutes) do |req|
