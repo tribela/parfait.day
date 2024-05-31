@@ -1061,6 +1061,30 @@ code {
   margin-bottom: 30px;
 }
 
+.simple_form .korean-captcha {
+  .hint {
+    font-size: 1.2em;
+    color: $highlight-text-color;
+  }
+
+  .question {
+    color: $primary-text-color;
+    margin-top: 4px;
+    margin-bottom: 15px;
+  }
+
+  .answer {
+    box-sizing: border-box;
+    color: $primary-text-color;
+    background: darken($ui-base-color, 10%);
+    font-size: 16px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $dark-text-color;
+    border-radius: 4px;
+  }
+}
+
 .permissions-list {
   &__item {
     padding: 15px;
