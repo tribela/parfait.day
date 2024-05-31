@@ -289,12 +289,12 @@ class ComposeForm extends ImmutablePureComponent {
           <PollForm />
 
           <div className='compose-form__footer'>
+            <MabinogiClock />
+
             <div className='compose-form__dropdowns'>
               <PrivacyDropdownContainer disabled={this.props.isEditing} />
               <LanguageDropdown />
             </div>
-
-            <MabinogiClock />
 
             <div className='compose-form__actions'>
               <div className='compose-form__buttons'>
