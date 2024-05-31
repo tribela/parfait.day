@@ -7,12 +7,21 @@
   = hidden_field_tag :confirmation_token, params[:confirmation_token]
   = hidden_field_tag :redirect_to_app, params[:redirect_to_app]
 
-  %h1.title= t('auth.captcha_confirmation.title')
-  %p.lead= t('auth.captcha_confirmation.hint_html')
+  - if hcaptcha_enabled?
+    %h1.title= t('auth.captcha_confirmation.title')
+    %p.lead= t('auth.captcha_confirmation.hint_html')
 
-  = render_captcha
+    = render_captcha
 
-  %p.lead= t('auth.captcha_confirmation.help_html', email: mail_to(Setting.site_contact_email, nil))
+    %p.lead= t('auth.captcha_confirmation.help_html', email: mail_to(Setting.site_contact_email, nil))
+
+  - if korean_captcha_enabled?
+    %h1.title= t('auth.korean_captcha_confirmation.title')
+    %p.lead= t('auth.korean_captcha_confirmation.hint_html')
+
+    .field-group.korean-captcha
+      %pre.question= Setting.korean_captcha_question
+      %input.answer{ required: 'true', name: 'korean_captcha_answer' }
 
   .actions
     = button_tag t('challenge.confirm'), class: 'button', type: :submit

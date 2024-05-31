@@ -1,0 +1,28 @@
+$skyblue: hsl(212deg, 100%, 80%);
+$dark-blue: hsl(212deg, 72%, 63%);
+$pink: hsl(304deg, 100%, 80%);
+$grey: #282c37;
+$text-shadow-color: #888;
+$ui-base-color: $grey;
+$ui-primary-color: $skyblue;
+$ui-secondary-color: $pink;
+$primary-text-color: #fff;
+$secondary-text-color: #d9e1e8;
+$ui-highlight-color: darken($pink, 10%);
+
+$white: #fff;
+
+$ui-button-color: $white !default;
+$ui-button-background-color: $dark-blue !default;
+$ui-button-focus-background-color: darken($dark-blue, 15%) !default;
+
+$ui-button-tertiary-color: $dark-blue !default;
+$ui-button-tertiary-border-color: $dark-blue !default;
+$ui-button-tertiary-focus-background-color: darken($dark-blue, 15%) !default;
+$ui-button-tertiary-focus-color: $white !default;
+
+$font-sans-serif: 'mastodon-font-sans-serif', 'qdon-font-sans-serif' !default;
+$font-display: 'mastodon-font-display' !default;
+$font-monospace: 'mastodon-font-monospace' !default;
+
+@import '../mastodon/variables';

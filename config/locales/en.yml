@@ -771,6 +771,15 @@ en:
         all: To everyone
         disabled: To no one
         users: To logged-in local users
+      korean_captcha_enabled:
+        title: Enable Korean captcha
+        desc_html: Signups must be done by solving Korean CAPTCHA
+      korean_captcha_question:
+        title: Question
+        desc_html: Question that only Koreans can solve
+      korean_captcha_answer:
+        title: Answer
+        desc_html: Answer to Korean CAPTCHA
       registrations:
         moderation_recommandation: Please make sure you have an adequate and reactive moderation team before you open registrations to everyone!
         preamble: Control who can create an account on your server.
@@ -1070,6 +1079,9 @@ en:
     dont_have_your_security_key: Don't have your security key?
     forgot_password: Forgot your password?
     invalid_reset_password_token: Password reset token is invalid or expired. Please request a new one.
+    korean_captcha_confirmation:
+      hint_html: To sign up here, You should be a Korean Or at least you have to understand Korean language.
+      title: Are you Korean?
     link_to_otp: Enter a two-factor code from your phone or a recovery code
     link_to_webauth: Use your security key device
     log_in_with: Log in with
@@ -1123,6 +1135,7 @@ en:
       self_destruct: As %{domain} is closing down, you will only get limited access to your account.
       view_strikes: View past strikes against your account
     too_fast: Form submitted too fast, try again.
+    korean_captcha_fail: Answer is wrong
     use_security_key: Use security key
   challenge:
     confirm: Continue
@@ -1376,6 +1389,8 @@ en:
       '43200': 12 hours
       '604800': 1 week
       '86400': 1 day
+      '1209600': 2 weeks
+      '2592000': 30 days
     expires_in_prompt: Never
     generate: Generate invite link
     invalid: This invite is not valid
@@ -1459,6 +1474,7 @@ en:
   move_handler:
     carry_blocks_over_text: This user moved from %{acct}, which you had blocked.
     carry_mutes_over_text: This user moved from %{acct}, which you had muted.
+    carry_follows_over_text: This user moved from %{acct}, which you had followed.
     copy_account_note_text: 'This user moved from %{acct}, here were your previous notes about them:'
   navigation:
     toggle_menu: Toggle menu

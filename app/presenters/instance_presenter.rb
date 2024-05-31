@@ -43,7 +43,7 @@ class InstancePresenter < ActiveModelSerializers::Model
   end
 
   def languages
-    [I18n.default_locale]
+    [ENV.fetch('OVERRIDE_LOCALE') { I18n.default_locale }]
   end
 
   def rules

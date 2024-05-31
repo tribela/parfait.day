@@ -553,7 +553,7 @@ body > [data-popper-placement] {
     align-items: stretch;
 
     &__border {
-      background: url('../images/warning-stripes.svg') repeat-y;
+      background: url('~images/warning-stripes.svg') repeat-y;
       width: 5px;
       flex: 0 0 auto;
 
@@ -1030,9 +1030,90 @@ body > [data-popper-placement] {
 
   .status__content__text {
     display: none;
+  }
 
+  .status__content__text,
+  .e-content {
     &.status__content__text--visible {
       display: block;
+    }
+
+    & > ul,
+    & > ol {
+      margin-bottom: 20px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    h1,
+    h2 {
+      font-weight: 700;
+      font-size: 1.2em;
+    }
+
+    h2 {
+      font-size: 1.1em;
+    }
+
+    h3,
+    h4,
+    h5 {
+      font-weight: 500;
+    }
+
+    blockquote {
+      padding-left: 10px;
+      border-left: 3px solid $darker-text-color;
+      color: $darker-text-color;
+      white-space: normal;
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    b,
+    strong {
+      font-weight: 700;
+    }
+
+    em,
+    i {
+      font-style: italic;
+    }
+
+    sub {
+      font-size: smaller;
+      text-align: sub;
+    }
+
+    sup {
+      font-size: smaller;
+      vertical-align: super;
+    }
+
+    ul,
+    ol {
+      margin-left: 1em;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    ul {
+      list-style-type: disc;
+    }
+
+    ol {
+      list-style-type: decimal;
     }
   }
 }
@@ -2332,7 +2413,7 @@ a.account__display-name {
   .image-loader__preview-canvas {
     max-width: $media-modal-media-max-width;
     max-height: $media-modal-media-max-height;
-    background: url('../images/void.png') repeat;
+    background: url('~images/void.png') repeat;
     object-fit: contain;
   }
 
@@ -7783,7 +7864,7 @@ noscript {
     width: 100px;
     height: 100px;
     transform: translate(-50%, -50%);
-    background: url('../images/reticle.png') no-repeat 0 0;
+    background: url('~images/reticle.png') no-repeat 0 0;
     border-radius: 50%;
     box-shadow: 0 0 0 9999em rgba($base-shadow-color, 0.35);
   }

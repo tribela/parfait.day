@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 import { HotKeys } from 'react-hotkeys';
 
+import { showAlert } from 'mastodon/actions/alerts';
 import { focusApp, unfocusApp, changeLayout } from 'mastodon/actions/app';
 import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'mastodon/actions/markers';
 import { INTRODUCTION_VERSION } from 'mastodon/actions/onboarding';
@@ -58,6 +59,7 @@ import {
   ListTimeline,
   Blocks,
   DomainBlocks,
+  DomainMutes,
   Mutes,
   PinnedStatuses,
   Lists,
@@ -118,6 +120,7 @@ const keyMap = {
   toggleHidden: 'x',
   toggleSensitive: 'h',
   openMedia: 'e',
+  hiddenHappy: 'right down up right right down right right up up down down left right left right',
 };
 
 class SwitchingColumnsArea extends PureComponent {
@@ -235,6 +238,7 @@ class SwitchingColumnsArea extends PureComponent {
             <WrappedRoute path='/follow_requests' component={FollowRequests} content={children} />
             <WrappedRoute path='/blocks' component={Blocks} content={children} />
             <WrappedRoute path='/domain_blocks' component={DomainBlocks} content={children} />
+            <WrappedRoute path='/domain_mutes' component={DomainMutes} content={children} />
             <WrappedRoute path='/followed_tags' component={FollowedTags} content={children} />
             <WrappedRoute path='/mutes' component={Mutes} content={children} />
             <WrappedRoute path='/lists' component={Lists} content={children} />
@@ -548,6 +552,31 @@ class UI extends PureComponent {
     this.props.history.push('/follow_requests');
   };
 
+  handleHiddenCommand = () => {
+    const targetElem = document.querySelector('.columns-area');
+    const orignalStyle = targetElem.style.cssText;
+    const interval = 60 / 142 * 1000; // 142 BPM
+
+    targetElem.style.transition = `all ${interval / 1000 / 2}s linear`;
+
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '回転'}));
+      targetElem.style.transform = 'rotate(-10deg)';
+    }, interval * 0);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '反転'}));
+      targetElem.style.filter = 'invert(100%)';
+    }, interval * 1);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: '一回転'}));
+      targetElem.style.transform = 'rotate(360deg)';
+    }, interval * 2);
+    setTimeout(() => {
+      this.props.dispatch(showAlert({message: 'リセット'}));
+      targetElem.style.cssText = orignalStyle;
+    }, interval * 6);
+  };
+
   render () {
     const { draggingOver } = this.state;
     const { children, isComposing, location, layout } = this.props;
@@ -572,6 +601,7 @@ class UI extends PureComponent {
       goToBlocked: this.handleHotkeyGoToBlocked,
       goToMuted: this.handleHotkeyGoToMuted,
       goToRequests: this.handleHotkeyGoToRequests,
+      hiddenHappy: this.handleHiddenCommand,
     };
 
     return (

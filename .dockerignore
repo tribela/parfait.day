@@ -5,6 +5,9 @@
 .gitattributes
 .gitignore
 .github
+Dockerfile
+*.Dockerfile
+.dockerignore
 public/system
 public/assets
 public/packs

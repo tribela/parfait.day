@@ -28,7 +28,7 @@ class CustomFilter < ApplicationRecord
     account
   ).freeze
 
-  EXPIRATION_DURATIONS = [30.minutes, 1.hour, 6.hours, 12.hours, 1.day, 1.week].freeze
+  EXPIRATION_DURATIONS = [30.minutes, 1.hour, 6.hours, 12.hours, 1.day, 1.week, 2.weeks, 30.days].freeze
 
   include Expireable
   include Redisable

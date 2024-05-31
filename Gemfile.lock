@@ -597,6 +597,7 @@ GEM
       net-smtp
       premailer (~> 1.7, >= 1.7.9)
     private_address_check (0.5.0)
+    prometheus-client (2.1.0)
     propshaft (0.8.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -781,6 +782,14 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
+    sentry-rails (5.9.0)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.9.0)
+    sentry-ruby (5.9.0)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.9.0)
+      sentry-ruby (~> 5.9.0)
+      sidekiq (>= 3.0)
     sidekiq (6.5.12)
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
@@ -997,6 +1006,7 @@ DEPENDENCIES
   pghero
   premailer-rails
   private_address_check (~> 0.5)
+  prometheus-client (~> 2.1)
   propshaft
   public_suffix (~> 5.0)
   puma (~> 6.3)
@@ -1027,6 +1037,9 @@ DEPENDENCIES
   sanitize (~> 6.0)
   scenic (~> 1.7)
   selenium-webdriver
+  sentry-rails (~> 5.9)
+  sentry-ruby (~> 5.9)
+  sentry-sidekiq (~> 5.9)
   sidekiq (~> 6.5)
   sidekiq-bulk (~> 0.2.0)
   sidekiq-scheduler (~> 5.0)

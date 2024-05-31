@@ -11,7 +11,7 @@ permissions:
 jobs:
   download-translations:
     runs-on: ubuntu-latest
-    if: github.repository == 'mastodon/mastodon'
+    if: github.repository == 'glitch-soc/mastodon'
 
     steps:
       - name: Checkout
@@ -28,6 +28,7 @@ jobs:
       - name: crowdin action
         uses: crowdin/github-action@v1
         with:
+          config: crowdin-glitch.yml
           upload_sources: false
           upload_translations: false
           download_translations: true

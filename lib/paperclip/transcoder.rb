@@ -52,7 +52,7 @@ module Paperclip
           @output_options['bufsize'] = bitrate * 5
 
           if high_vfr?(metadata)
-            @output_options['vsync'] = 'vfr'
+            # @output_options['vsync'] = 'vfr'
             @output_options['r'] = @vfr_threshold
           end
         end

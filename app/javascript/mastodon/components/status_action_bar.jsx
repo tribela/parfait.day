@@ -64,6 +64,8 @@ const messages = defineMessages({
   hide: { id: 'status.hide', defaultMessage: 'Hide post' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Block domain {domain}' },
   unblockDomain: { id: 'account.unblock_domain', defaultMessage: 'Unblock domain {domain}' },
+  muteDomain: { id: 'account.mute_domain', defaultMessage: 'Mute domain {domain}' },
+  unmuteDomain: { id: 'account.unmute_domain', defaultMessage: 'Unmute domain {domain}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   filter: { id: 'status.filter', defaultMessage: 'Filter this post' },
@@ -91,6 +93,8 @@ class StatusActionBar extends ImmutablePureComponent {
     onUnblock: PropTypes.func,
     onBlockDomain: PropTypes.func,
     onUnblockDomain: PropTypes.func,
+    onMuteDomain: PropTypes.func,
+    onUnmuteDomain: PropTypes.func,
     onReport: PropTypes.func,
     onEmbed: PropTypes.func,
     onMuteConversation: PropTypes.func,
@@ -216,6 +220,20 @@ class StatusActionBar extends ImmutablePureComponent {
     onUnblockDomain(account.get('acct').split('@')[1]);
   };
 
+  handleMuteDomain = () => {
+    const { status, onMuteDomain } = this.props;
+    const account = status.get('account');
+
+    onMuteDomain(account.get('acct').split('@')[1]);
+  };
+
+  handleUnmuteDomain = () => {
+    const { status, onUnmuteDomain } = this.props;
+    const account = status.get('account');
+
+    onUnmuteDomain(account.get('acct').split('@')[1]);
+  };
+
   handleOpen = () => {
     this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/${this.props.status.get('id')}`);
   };
@@ -328,6 +346,12 @@ class StatusActionBar extends ImmutablePureComponent {
             menu.push({ text: intl.formatMessage(messages.unblockDomain, { domain }), action: this.handleUnblockDomain });
           } else {
             menu.push({ text: intl.formatMessage(messages.blockDomain, { domain }), action: this.handleBlockDomain, dangerous: true });
+          }
+
+          if (relationship && relationship.get('domain_muting')) {
+            menu.push({ text: intl.formatMessage(messages.unmuteDomain, { domain }), action: this.handleUnmuteDomain });
+          } else {
+            menu.push({ text: intl.formatMessage(messages.muteDomain, { domain }), action: this.handleMuteDomain, dangerous: true });
           }
         }
 

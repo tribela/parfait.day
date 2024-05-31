@@ -64,7 +64,7 @@ class Account < ApplicationRecord
   )
 
   BACKGROUND_REFRESH_INTERVAL = 1.week.freeze
-  DEFAULT_FIELDS_SIZE = 4
+  DEFAULT_FIELDS_SIZE = (ENV['MAX_PROFILE_FIELDS'] || 4).to_i
   INSTANCE_ACTOR_ID = -99
 
   USERNAME_RE   = /[a-z0-9_]+([a-z0-9_.-]+[a-z0-9_]+)?/i
@@ -72,8 +72,8 @@ class Account < ApplicationRecord
   URL_PREFIX_RE = %r{\Ahttp(s?)://[^/]+}
   USERNAME_ONLY_RE = /\A#{USERNAME_RE}\z/i
   USERNAME_LENGTH_LIMIT = 30
-  DISPLAY_NAME_LENGTH_LIMIT = 30
-  NOTE_LENGTH_LIMIT = 500
+  DISPLAY_NAME_LENGTH_LIMIT = (ENV['MAX_DISPLAY_NAME_CHARS'] || 30).to_i
+  NOTE_LENGTH_LIMIT = (ENV['MAX_BIO_CHARS'] || 500).to_i
 
   include Attachmentable # Load prior to Avatar & Header concerns
 
@@ -201,6 +201,12 @@ class Account < ApplicationRecord
 
   def acct
     local? ? username : "#{username}@#{domain}"
+  end
+
+  def chosen_languages
+    return if user&.chosen_languages.nil?
+
+    user.chosen_languages.map { |l| l == 'und' ? nil : l }
   end
 
   def pretty_acct
@@ -412,6 +418,10 @@ class Account < ApplicationRecord
 
   def excluded_from_timeline_domains
     Rails.cache.fetch("exclude_domains_for:#{id}") { domain_blocks.pluck(:domain) }
+  end
+
+  def muted_from_timeline_domains
+    Rails.cache.fetch("mute_domains_for:#{id}") { domain_mutes.pluck(:domain) }
   end
 
   def preferred_inbox_url

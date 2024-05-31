@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   # have alternative format representations requiring separate controllers
   web_app_paths = %w(
     /getting-started
+    /getting-started-misc
     /keyboard-shortcuts
     /home
     /public
@@ -39,6 +40,7 @@ Rails.application.routes.draw do
     /follow_requests
     /blocks
     /domain_blocks
+    /domain_mutes
     /mutes
     /followed_tags
     /statuses/(*any)
@@ -55,6 +57,8 @@ Rails.application.routes.draw do
     mount Sidekiq::Web, at: 'sidekiq', as: :sidekiq
     mount PgHero::Engine, at: 'pghero', as: :pghero
   end
+
+  get 'metrics', to: 'metrics#show', default: { format: 'text' }
 
   use_doorkeeper do
     controllers authorizations: 'oauth/authorizations',

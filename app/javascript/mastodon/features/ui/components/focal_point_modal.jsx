@@ -72,9 +72,17 @@ const mapDispatchToProps = (dispatch, { id }) => ({
 
 });
 
-const removeExtraLineBreaks = str => str.replace(/\n\n/g, '******')
-  .replace(/\n/g, ' ')
-  .replace(/\*\*\*\*\*\*/g, '\n\n');
+const removeExtraLineBreaks = str => {
+  str = str.replace(/\n\n/g, '******');
+  try {
+    str = str.replace(new RegExp('(?<=[가-힣]) (?=[가-힣])', 'g'), '');
+  } catch {
+    // Safari will fall
+  }
+  return str.replace(/\n/g, ' ')
+    .replace(/\*\*\*\*\*\*/g, '\n\n');
+};
+
 
 class ImageLoader extends PureComponent {
 
@@ -245,9 +253,9 @@ class FocalPointModal extends ImmutablePureComponent {
 
       return (async () => {
         await worker.load();
-        await worker.loadLanguage('eng');
-        await worker.initialize('eng');
-        const { data: { text } } = await worker.recognize(media_url);
+        await worker.loadLanguage('eng+kor');
+        await worker.initialize('eng+kor');
+        const { data: { text } } = await worker.recognize(media_url, 'eng+kor');
         this.setState({ detecting: false });
         this.props.onChangeDescription(removeExtraLineBreaks(text));
         await worker.terminate();

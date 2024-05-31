@@ -28,7 +28,8 @@ RSpec.describe AccountRelationshipsPresenter do
           blocking: default_map,
           muting: default_map,
           requested: default_map,
-          domain_blocking: { accounts[0].id => nil }
+          domain_blocking: { accounts[0].id => nil },
+          domain_muting: { accounts[0].id => nil }
         )
       end
     end
@@ -54,7 +55,8 @@ RSpec.describe AccountRelationshipsPresenter do
           blocking: default_map,
           muting: default_map,
           requested: default_map,
-          domain_blocking: { accounts[0].id => nil }
+          domain_blocking: { accounts[0].id => nil },
+          domain_muting: { accounts[0].id => nil }
         )
       end
     end
@@ -112,6 +114,14 @@ RSpec.describe AccountRelationshipsPresenter do
 
       it 'sets @domain_blocking merged with default_map and options[:domain_blocking_map]' do
         expect(presenter.domain_blocking).to eq({ accounts[0].id => nil }.merge(options[:domain_blocking_map]))
+      end
+    end
+
+    context 'when options[:domain_muting_map] is set' do
+      let(:options) { { domain_muting_map: { 8 => true } } }
+
+      it 'sets @domain_muting merged with default_map and options[:domain_muting_map]' do
+        expect(presenter.domain_muting).to eq({ accounts[0].id => nil }.merge(options[:domain_muting_map]))
       end
     end
   end

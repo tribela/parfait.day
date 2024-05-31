@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import Base from 'mastodon/components/modal_root';
 import {
+  DomainMuteModal,
   MuteModal,
   BlockModal,
   DomainBlockModal,
@@ -40,6 +41,7 @@ export const MODAL_COMPONENTS = {
   'IMAGE': () => Promise.resolve({ default: ImageModal }),
   'BOOST': () => Promise.resolve({ default: BoostModal }),
   'CONFIRM': () => Promise.resolve({ default: ConfirmationModal }),
+  'DOMAIN_MUTE': DomainMuteModal,
   'MUTE': MuteModal,
   'BLOCK': BlockModal,
   'DOMAIN_BLOCK': DomainBlockModal,

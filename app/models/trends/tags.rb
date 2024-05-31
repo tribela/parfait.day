@@ -69,6 +69,8 @@ class Trends::Tags < Trends::Base
                 ((observed - expected)**2) / expected
               end
 
+      score *= @korean_multiply_factor if /[가-힣]/.match?(tag.name)
+
       if score > max_score
         max_score = score
         max_time  = at_time

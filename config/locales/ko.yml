@@ -759,6 +759,15 @@ ko:
         all: 모두에게
         disabled: 아무에게도 안 함
         users: 로그인 한 사용자에게
+      korean_captcha_enabled:
+        title: 한국인 캡차 활성화
+        desc_html: 한국인만 풀 수 있는 캡차를 풀어야 가입이 됩니다
+      korean_captcha_question:
+        title: 질문
+        desc_html: 한국인만 풀 수 있는 질문을 설정하세요
+      korean_captcha_answer:
+        title: 정답
+        desc_html: 한국인만 풀 수 있는 질문에 대한 정답입니다
       registrations:
         moderation_recommandation: 모두에게 가입을 열기 전에 적절하고 반응이 빠른 중재 팀을 데리고 있는지 확인해 주세요!
         preamble: 누가 이 서버에 계정을 만들 수 있는지 제어합니다.
@@ -1054,6 +1063,9 @@ ko:
     dont_have_your_security_key: 보안 키가 없습니까?
     forgot_password: 암호를 잊었나요?
     invalid_reset_password_token: 암호 리셋 토큰이 올바르지 못하거나 기간이 만료되었습니다. 다시 요청해주세요.
+    korean_captcha_confirmation:
+      hint_html: 이 곳에 가입하시려면 한국인이거나 한국어를 할 줄 알아야 합니다.
+      title: 한국인이신가요?
     link_to_otp: 휴대폰의 2차 코드 혹은 복구 키를 입력해 주세요
     link_to_webauth: 보안 키 장치 사용
     log_in_with: 다음으로 로그인
@@ -1107,6 +1119,7 @@ ko:
       self_destruct: "%{domain} 도메인 폐쇄가 진행중이기 때문에, 계정에는 제한된 접근만 할 수 있습니다."
       view_strikes: 내 계정에 대한 과거 중재 기록 보기
     too_fast: 너무 빠르게 양식이 제출되었습니다, 다시 시도하세요.
+    korean_captcha_fail: 답이 틀렸습니다.
     use_security_key: 보안 키 사용
   challenge:
     confirm: 계속
@@ -1347,8 +1360,10 @@ ko:
     delete: 비활성화
     expired: 만료됨
     expires_in:
+      '1209600': 2 주
       '1800': 30 분
       '21600': 6 시간
+      '2592000': 30 일
       '3600': 1 시간
       '43200': 12 시간
       '604800': 1 주
@@ -1433,8 +1448,9 @@ ko:
   moderation:
     title: 중재
   move_handler:
-    carry_blocks_over_text: 이 사용자는 예전에 차단한 %{acct}에서 이주 했습니다.
-    carry_mutes_over_text: 이 사용자는 예전에 뮤트한 %{acct}에서 이주 했습니다.
+    carry_blocks_over_text: 이 사용자는 당신이 차단한 %{acct}로부터 이주 했습니다.
+    carry_mutes_over_text: 이 사용자는 당신이 뮤트한 %{acct}로부터 이주 했습니다.
+    carry_follows_over_text: 이 사용자는 당신이 팔로우한 %{acct}로부터 이주 했습니다.
     copy_account_note_text: '이 사용자는 %{acct}로부터 이동하였습니다. 당신의 이전 노트는 이렇습니다:'
   navigation:
     toggle_menu: 토글 메뉴
@@ -1740,6 +1756,7 @@ ko:
     contrast: 마스토돈 (고대비)
     default: 마스토돈 (어두움)
     mastodon-light: 마스토돈 (밝음)
+    qdon: 큐돈
     system: 자동 선택 (시스템 테마 이용)
     parfait: 파르페
     nao_cat: 나오와 고양이

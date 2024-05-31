@@ -45,6 +45,8 @@ class FeedManager
       filter_from_list?(status, receiver) || filter_from_home?(status, receiver.account_id, build_crutches(receiver.account_id, [status]), :list)
     when :mentions
       filter_from_mentions?(status, receiver.id)
+    when :direct
+      filter_from_direct?(status, receiver.id)
     when :tags
       filter_from_tags?(status, receiver.id, build_crutches(receiver.id, [status]))
     else
@@ -99,6 +101,29 @@ class FeedManager
     return false unless remove_from_feed(:list, list.id, status, aggregate_reblogs: list.account.user&.aggregates_reblogs?)
 
     redis.publish("timeline:list:#{list.id}", Oj.dump(event: :delete, payload: status.id.to_s)) unless update
+    true
+  end
+
+  # Add a status to a linear direct message feed and send a streaming API update
+  # @param [Account] account
+  # @param [Status] status
+  # @return [Boolean]
+  def push_to_direct(account, status, update: false)
+    return false unless add_to_feed(:direct, account.id, status)
+
+    trim(:direct, account.id)
+    PushUpdateWorker.perform_async(account.id, status.id, "timeline:direct:#{account.id}") unless update
+    true
+  end
+
+  # Remove a status from a linear direct message feed and send a streaming API update
+  # @param [List] list
+  # @param [Status] status
+  # @return [Boolean]
+  def unpush_from_direct(account, status, update: false)
+    return false unless remove_from_feed(:direct, account.id, status)
+
+    redis.publish("timeline:direct:#{account.id}", Oj.dump(event: :delete, payload: status.id.to_s)) unless update
     true
   end
 
@@ -287,6 +312,31 @@ class FeedManager
     end
   end
 
+  # Populate direct feed of account from scratch
+  # @param [Account] account
+  # @return [void]
+  def populate_direct_feed(account)
+    added  = 0
+    limit  = FeedManager::MAX_ITEMS / 2
+    max_id = nil
+
+    loop do
+      statuses = Status.as_direct_timeline(account, limit, max_id)
+
+      break if statuses.empty?
+
+      statuses.each do |status|
+        next if filter_from_direct?(status, account)
+
+        added += 1 if add_to_feed(:direct, account.id, status)
+      end
+
+      break unless added.zero?
+
+      max_id = statuses.last.id
+    end
+  end
+
   # Completely clear multiple feeds at once
   # @param [Symbol] type
   # @param [Array<Integer>] ids
@@ -389,6 +439,10 @@ class FeedManager
     return true if check_for_blocks.any? { |target_account_id| crutches[:blocking][target_account_id] || crutches[:muting][target_account_id] }
     return true if crutches[:blocked_by][status.account_id]
 
+    filter_from_home_inner(status, receiver_id, crutches)
+  end
+
+  def filter_from_home_inner(status, receiver_id, crutches)
     if status.reply? && !status.in_reply_to_account_id.nil?                                                                      # Filter out if it's a reply
       should_filter   = !crutches[:following][status.in_reply_to_account_id]                                                     # and I'm not following the person it's a reply to
       should_filter &&= receiver_id != status.in_reply_to_account_id                                                             # and it's not a reply to me
@@ -399,6 +453,7 @@ class FeedManager
       should_filter   = crutches[:hiding_reblogs][status.account_id]                                                             # if the reblogger's reblogs are suppressed
       should_filter ||= crutches[:blocked_by][status.reblog.account_id]                                                          # or if the author of the reblogged status is blocking me
       should_filter ||= crutches[:domain_blocking][status.reblog.account.domain]                                                 # or the author's domain is blocked
+      should_filter ||= crutches[:domain_muting_home][status.reblog.account.domain] unless crutches[:following][status.reblog.account_id] # or the author's domain is muted and I'm not following them
 
       return !!should_filter
     end
@@ -424,6 +479,16 @@ class FeedManager
     should_filter ||= status.account.silenced? && !Follow.exists?(account_id: receiver_id, target_account_id: status.account_id) # Filter if the account is silenced and I'm not following them
 
     should_filter
+  end
+
+  # Check if status should not be added to the linear direct message feed
+  # @param [Status] status
+  # @param [Integer] receiver_id
+  # @return [Boolean]
+  def filter_from_direct?(status, receiver_id)
+    return false if receiver_id == status.account_id
+
+    filter_from_mentions?(status, receiver_id)
   end
 
   # Check if status should not be added to the list feed
@@ -578,6 +643,7 @@ class FeedManager
     crutches[:muting]               = Mute.where(account_id: receiver_id, target_account_id: check_for_blocks).pluck(:target_account_id).index_with(true)
     crutches[:domain_blocking]      = AccountDomainBlock.where(account_id: receiver_id, domain: statuses.flat_map { |s| [s.account.domain, s.reblog&.account&.domain] }.compact).pluck(:domain).index_with(true)
     crutches[:blocked_by]           = Block.where(target_account_id: receiver_id, account_id: statuses.map { |s| [s.account_id, s.reblog&.account_id] }.flatten.compact).pluck(:account_id).index_with(true)
+    crutches[:domain_muting_home]   = AccountDomainMute.where(hide_from_home: true, account_id: receiver_id, domain: statuses.flat_map { |s| [s.account.domain, s.reblog&.account&.domain] }.compact).pluck(:domain).index_with(true)
     crutches[:exclusive_list_users] = ListAccount.where(list: lists, account_id: statuses.map(&:account_id)).pluck(:account_id).index_with(true)
 
     crutches

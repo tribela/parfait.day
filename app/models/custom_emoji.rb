@@ -24,7 +24,8 @@
 class CustomEmoji < ApplicationRecord
   include Attachmentable
 
-  LIMIT = 256.kilobytes
+  LOCAL_LIMIT = (ENV['MAX_EMOJI_SIZE'] || 256.kilobytes).to_i
+  LIMIT       = [LOCAL_LIMIT, (ENV['MAX_REMOTE_EMOJI_SIZE'] || 256.kilobytes).to_i].max
 
   SHORTCODE_RE_FRAGMENT = '[a-zA-Z0-9_]{2,}'
 
@@ -43,8 +44,11 @@ class CustomEmoji < ApplicationRecord
 
   normalizes :domain, with: ->(domain) { domain.downcase }
 
-  validates_attachment :image, content_type: { content_type: IMAGE_MIME_TYPES }, presence: true, size: { less_than: LIMIT }
+  validates_attachment :image, content_type: { content_type: IMAGE_MIME_TYPES }, presence: true
+  validates_attachment_size :image, less_than: LIMIT, unless: :local?
+  validates_attachment_size :image, less_than: LOCAL_LIMIT, if: :local?
   validates :shortcode, uniqueness: { scope: :domain }, format: { with: SHORTCODE_ONLY_RE }, length: { minimum: 2 }
+  validate :check_image_ratio
 
   scope :local, -> { where(domain: nil) }
   scope :remote, -> { where.not(domain: nil) }
@@ -94,5 +98,14 @@ class CustomEmoji < ApplicationRecord
 
   def remove_entity_cache
     Rails.cache.delete(EntityCache.instance.to_key(:emoji, shortcode, domain))
+  end
+
+  def check_image_ratio
+    return if image.blank? || !/image.*/.match?(image.content_type) || image.queued_for_write[:original].blank?
+
+    width, height = FastImage.size(image.queued_for_write[:original].path)
+    ratio = width.to_f / height
+
+    errors.add(:image, :invalid_image_ratio) if ratio >= 2 || ratio <= 0.5
   end
 end

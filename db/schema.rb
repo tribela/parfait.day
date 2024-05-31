@@ -51,6 +51,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_041528) do
     t.index ["account_id", "domain"], name: "index_account_domain_blocks_on_account_id_and_domain", unique: true
   end
 
+  create_table "account_domain_mutes", force: :cascade do |t|
+    t.string "domain"
+    t.bigint "account_id"
+    t.boolean "hide_from_home", default: false, null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["account_id", "domain"], name: "index_account_domain_mutes_on_account_id_and_domain", unique: true
+  end
+
   create_table "account_migrations", force: :cascade do |t|
     t.bigint "account_id"
     t.string "acct", default: "", null: false
@@ -1025,6 +1034,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_041528) do
     t.text "media_descriptions", array: true
     t.string "poll_options", array: true
     t.boolean "sensitive"
+    t.string "content_type"
     t.index ["account_id"], name: "index_status_edits_on_account_id"
     t.index ["status_id"], name: "index_status_edits_on_status_id"
   end
@@ -1082,6 +1092,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_041528) do
     t.datetime "edited_at", precision: nil
     t.boolean "trendable"
     t.bigint "ordered_media_attachment_ids", array: true
+    t.boolean "local_only"
+    t.string "content_type"
     t.index ["account_id", "id", "visibility", "updated_at"], name: "index_statuses_20190820", order: { id: :desc }, where: "(deleted_at IS NULL)"
     t.index ["account_id"], name: "index_statuses_on_account_id"
     t.index ["deleted_at"], name: "index_statuses_on_deleted_at", where: "(deleted_at IS NOT NULL)"

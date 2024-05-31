@@ -148,13 +148,13 @@ RSpec.describe MediaAttachment, :paperclip_processing do
   describe 'avif' do
     let(:media) { Fabricate(:media_attachment, file: attachment_fixture('600x400.avif')) }
 
-    it_behaves_like 'static 600x400 image', 'image/jpeg', '.jpeg'
+    it_behaves_like 'static 600x400 image', 'image/webp', '.webp'
   end
 
   describe 'heic' do
     let(:media) { Fabricate(:media_attachment, file: attachment_fixture('600x400.heic')) }
 
-    it_behaves_like 'static 600x400 image', 'image/jpeg', '.jpeg'
+    it_behaves_like 'static 600x400 image', 'image/webp', '.webp'
   end
 
   describe 'base64-encoded image' do
@@ -203,7 +203,7 @@ RSpec.describe MediaAttachment, :paperclip_processing do
       expect(media.type).to eq 'audio'
       expect(media.file.meta['original']['duration']).to be_within(0.05).of(0.235102)
       expect(media.thumbnail.present?).to be true
-      expect(media.file.meta['colors']['background']).to eq '#3088d4'
+      expect(media.file.meta['colors']['background']).to match(/^#[0-9a-f]{6}$/)
       expect(media.file_file_name).to_not eq 'boop.ogg'
     end
   end

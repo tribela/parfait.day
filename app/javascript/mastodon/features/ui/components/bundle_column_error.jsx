@@ -140,7 +140,7 @@ class BundleColumnError extends PureComponent {
     return (
       <Column bindToDocument={!multiColumn}>
         <div className='error-column'>
-          <GIF src='/oops.gif' staticSrc='/oops.png' className='error-column__image' />
+          <GIF src='gyudon.png' staticSrc='/spilled_gyudon.png' className='error-column__image' />
 
           <div className='error-column__message'>
             <h1>{title}</h1>

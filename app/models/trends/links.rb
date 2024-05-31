@@ -6,10 +6,10 @@ class Trends::Links < Trends::Base
   BATCH_SIZE = 100
 
   self.default_options = {
-    threshold: 5,
-    review_threshold: 3,
+    threshold: 3,
+    review_threshold: 2,
     max_score_cooldown: 2.days.freeze,
-    max_score_halflife: 8.hours.freeze,
+    max_score_halflife: 24.hours.freeze,
     decay_threshold: 1,
   }
 
@@ -131,6 +131,8 @@ class Trends::Links < Trends::Base
               else
                 ((observed - expected)**2) / expected
               end
+
+      score *= @korean_multiply_factor if /[가-힣]/.match?(preview_card.title) || preview_card.language == 'ko'
 
       if score > max_score
         max_score = score

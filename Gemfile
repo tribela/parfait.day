@@ -206,7 +206,7 @@ group :development, :test do
   # Profiling tools
   gem 'memory_profiler', require: false
   gem 'ruby-prof', require: false
-  gem 'stackprof', require: false
+  # gem 'stackprof', require: false
   gem 'test-prof'
 
   # RSpec runner for rails
@@ -226,5 +226,12 @@ gem 'net-http', '~> 0.4.0'
 gem 'rubyzip', '~> 2.3'
 
 gem 'hcaptcha', '~> 7.1'
+
+gem 'prometheus-client', '~> 2.1'
+
+gem 'sentry-rails', '~> 5.9'
+gem 'sentry-ruby', '~> 5.9'
+gem 'sentry-sidekiq', '~> 5.9'
+gem 'stackprof'
 
 gem 'mail', '~> 2.8'

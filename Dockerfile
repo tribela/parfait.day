@@ -58,7 +58,7 @@ ENV \
   RAILS_ENV="production" \
 # Add Ruby and Mastodon installation to the PATH
   DEBIAN_FRONTEND="noninteractive" \
-  PATH="${PATH}:/opt/ruby/bin:/opt/mastodon/bin" \
+  PATH="/opt/mastodon/bin/wrappers:${PATH}:/opt/ruby/bin:/opt/mastodon/bin" \
 # Optimize jemalloc 5.x performance
   MALLOC_CONF="narenas:2,background_thread:true,thp:never,dirty_decay_ms:1000,muzzy_decay_ms:0"
 
@@ -205,6 +205,7 @@ ARG TARGETPLATFORM
 
 RUN \
 # Use Ruby on Rails to create Mastodon assets
+  ASSET_BUILD_TIME_COMPRESSION=false \
   ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY=precompile_placeholder \
   ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT=precompile_placeholder \
   ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY=precompile_placeholder \

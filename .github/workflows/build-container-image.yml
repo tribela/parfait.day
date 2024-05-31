@@ -21,6 +21,8 @@ on:
         type: string
       labels:
         type: string
+      is_brandless:
+        type: boolean
       file_to_build:
         type: string
 
@@ -30,6 +32,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Apply brandless patch
+        run: |
+          git fetch --unshallow
+          git remote add upstream https://github.com/glitch-soc/mastodon
+          git fetch upstream main
+          ./.github/brandless.sh
+        if: ${{ inputs.is_brandless }}
 
       - uses: docker/setup-qemu-action@v3
         if: contains(inputs.platforms, 'linux/arm64') && !inputs.use_native_arm64_builder
@@ -51,18 +61,18 @@ jobs:
           endpoint: tcp://localhost:1234
           platforms: linux/amd64
           append: |
-            - endpoint: tcp://${{ vars.DOCKER_BUILDER_HETZNER_ARM64_01_HOST }}:13865
+            - endpoint: tcp://${{ vars.DOCKER_BUILDER_ARM64_01_HOST }}:13865
               platforms: linux/arm64
               name: mastodon-docker-builder-arm64-01
               driver-opts:
                 - servername=mastodon-docker-builder-arm64-01
         env:
-          BUILDER_NODE_1_AUTH_TLS_CACERT: ${{ secrets.DOCKER_BUILDER_HETZNER_ARM64_01_CACERT }}
-          BUILDER_NODE_1_AUTH_TLS_CERT: ${{ secrets.DOCKER_BUILDER_HETZNER_ARM64_01_CERT }}
-          BUILDER_NODE_1_AUTH_TLS_KEY: ${{ secrets.DOCKER_BUILDER_HETZNER_ARM64_01_KEY }}
+          BUILDER_NODE_1_AUTH_TLS_CACERT: ${{ secrets.DOCKER_BUILDER_ARM64_01_CACERT }}
+          BUILDER_NODE_1_AUTH_TLS_CERT: ${{ secrets.DOCKER_BUILDER_ARM64_01_CERT }}
+          BUILDER_NODE_1_AUTH_TLS_KEY: ${{ secrets.DOCKER_BUILDER_ARM64_01_KEY }}
 
       - name: Log in to Docker Hub
-        if: contains(inputs.push_to_images, 'tootsuite')
+        if: contains(inputs.push_to_images, 'qdon/')
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}

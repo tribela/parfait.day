@@ -556,6 +556,22 @@ body,
   }
 }
 
+.flavour-screen {
+  display: block;
+  margin: 10px auto;
+  max-width: 100%;
+}
+
+.flavour-description {
+  display: block;
+  font-size: 16px;
+  margin: 10px 0;
+
+  & > p {
+    margin: 10px 0;
+  }
+}
+
 .report-accounts {
   display: flex;
   flex-wrap: wrap;
@@ -1396,8 +1412,8 @@ a.sparkline {
     inset-inline-start: 10px;
     border-radius: 4px;
     background:
-      url('../images/warning-stripes.svg') repeat-y left,
-      url('../images/warning-stripes.svg') repeat-y right,
+      url('~images/warning-stripes.svg') repeat-y left,
+      url('~images/warning-stripes.svg') repeat-y right,
       var(--background-color);
   }
 

@@ -2,7 +2,7 @@
 
 module SettingsHelper
   def filterable_languages
-    LanguagesHelper.sorted_locale_keys(LanguagesHelper::SUPPORTED_LOCALES.keys)
+    ['und'] + LanguagesHelper.sorted_locale_keys(LanguagesHelper::SUPPORTED_LOCALES.keys)
   end
 
   def ui_languages

@@ -1,0 +1,8 @@
+/* We have vanilla thread now */
+.status.status--in-thread {
+  .status__action-bar,
+  .status__content {
+    // We don't need birdsite padding here
+    padding-left: 0;
+  }
+}

@@ -2,7 +2,7 @@
 
 class AccountRelationshipsPresenter
   attr_reader :following, :followed_by, :blocking, :blocked_by,
-              :muting, :requested, :requested_by, :domain_blocking,
+              :muting, :requested, :requested_by, :domain_blocking, :domain_muting,
               :endorsed, :account_note
 
   def initialize(accounts, current_account_id, **options)
@@ -21,6 +21,7 @@ class AccountRelationshipsPresenter
     @account_note    = cached[:account_note].merge(Account.account_note_map(@uncached_account_ids, @current_account_id))
 
     @domain_blocking = domain_blocking_map
+    @domain_muting = domain_muting_map
 
     cache_uncached!
 
@@ -32,6 +33,7 @@ class AccountRelationshipsPresenter
     @requested.merge!(options[:requested_map] || {})
     @requested_by.merge!(options[:requested_by_map] || {})
     @domain_blocking.merge!(options[:domain_blocking_map] || {})
+    @domain_muting.merge!(options[:domain_muting_map] || {})
     @endorsed.merge!(options[:endorsed_map] || {})
     @account_note.merge!(options[:account_note_map] || {})
   end
@@ -61,6 +63,31 @@ class AccountRelationshipsPresenter
 
     # Return formatted value
     @accounts.each_with_object({}) { |account, h| h[account.id] = blocks_by_domain[account.domain] }
+  end
+
+  def domain_muting_map
+    target_domains = @accounts.pluck(:domain).compact.uniq
+    mutes_by_domain = {}
+
+    # Fetch from cache
+    cache_keys = target_domains.map { |domain| domain_mute_cache_key(domain) }
+    Rails.cache.read_multi(*cache_keys).each do |key, muting|
+      mutes_by_domain[key.last] = muting
+    end
+
+    uncached_domains = target_domains - mutes_by_domain.keys
+
+    # Read uncached values from database
+    AccountDomainMute.where(account_id: @current_account_id, domain: uncached_domains).pluck(:domain).each do |domain|
+      mutes_by_domain[domain] = true
+    end
+
+    # Write database reads to cache
+    to_cache = uncached_domains.to_h { |domain| [domain_mute_cache_key(domain), mutes_by_domain[domain]] }
+    Rails.cache.write_multi(to_cache, expires_in: 1.day)
+
+    # Return formatted value
+    @accounts.each_with_object({}) { |account, h| h[account.id] = mutes_by_domain[account.domain] }
   end
 
   def cached
@@ -111,6 +138,10 @@ class AccountRelationshipsPresenter
 
   def domain_cache_key(domain)
     ['exclude_domains', @current_account_id, domain]
+  end
+
+  def domain_mute_cache_key(domain)
+    ['hide_domains', @current_account_id, domain]
   end
 
   def relationship_cache_key(account_id)

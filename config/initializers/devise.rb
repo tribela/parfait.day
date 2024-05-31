@@ -10,6 +10,7 @@ Warden::Manager.after_set_user except: :fetch do |user, warden|
     value: session_id,
     expires: 1.year.from_now,
     httponly: true,
+    domain: :all,
     same_site: :lax,
   }
 end

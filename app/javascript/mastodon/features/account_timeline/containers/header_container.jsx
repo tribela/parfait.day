@@ -18,6 +18,7 @@ import {
   directCompose,
 } from '../../../actions/compose';
 import { initDomainBlockModal, unblockDomain } from '../../../actions/domain_blocks';
+import { initDomainMuteModal, unmuteDomain } from '../../../actions/domain_mutes';
 import { openModal } from '../../../actions/modal';
 import { initMuteModal } from '../../../actions/mutes';
 import { initReport } from '../../../actions/reports';
@@ -137,6 +138,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onUnblockDomain (domain) {
     dispatch(unblockDomain(domain));
+  },
+
+  onMuteDomain (domain) {
+    dispatch(initDomainMuteModal(domain));
+  },
+
+  onUnmuteDomain (domain) {
+    dispatch(unmuteDomain(domain));
   },
 
   onAddToList (account) {

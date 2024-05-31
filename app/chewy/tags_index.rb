@@ -6,7 +6,7 @@ class TagsIndex < Chewy::Index
   settings index: index_preset(refresh_interval: '30s'), analysis: {
     analyzer: {
       content: {
-        tokenizer: 'keyword',
+        tokenizer: 'ngram',
         filter: %w(
           word_delimiter_graph
           lowercase
@@ -26,6 +26,11 @@ class TagsIndex < Chewy::Index
     },
 
     tokenizer: {
+      ngram: {
+        type: 'ngram',
+        min_gram: 2,
+        max_gram: 3,
+      },
       edge_ngram: {
         type: 'edge_ngram',
         min_gram: 2,

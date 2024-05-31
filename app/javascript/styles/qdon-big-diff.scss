@@ -1,0 +1,98 @@
+body {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.button {
+  font-size: 16px;
+}
+
+.column-header {
+  font-size: 18px;
+}
+
+.column-header,
+.drawer__header,
+.column-back-button {
+  line-height: 1;
+}
+
+.account__section-headline,
+.notification__filter-bar {
+  a,
+  button {
+    font-size: 16px;
+  }
+}
+
+.search__popout {
+  font-size: 14px;
+}
+
+.search-results__section__header {
+  font-size: 16px;
+}
+
+.compose-form .autosuggest-textarea__textarea {
+  font-size: 16px;
+}
+
+.account .account__display-name {
+  font-size: 16px;
+}
+
+.status__info {
+  .status__display-name {
+    font-size: 16px;
+  }
+}
+
+.status__content {
+  font-size: 18px;
+  line-height: 26px;
+}
+
+.status__content__spoiler-link {
+  font-size: 12px;
+}
+
+.status__relative-time {
+  font-size: 16px;
+}
+
+.status {
+  .notification__message {
+    margin-top: -5px;
+  }
+}
+
+.poll {
+  font-size: 16px;
+}
+
+.column-link__icon {
+  font-size: 20px;
+}
+
+.actions-modal ul li:not(:empty) a {
+  font-size: 16px;
+}
+
+.block-modal__container,
+.confirmation-modal__container,
+.mute-modal__container,
+.report-moal__target {
+  font-size: 18px;
+}
+
+.confirmation-modal__do_not_ask_again {
+  font-size: 16px;
+}
+
+.admin-wrapper {
+  .content {
+    h4 {
+      font-size: 14px;
+    }
+  }
+}

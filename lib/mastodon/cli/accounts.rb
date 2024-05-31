@@ -409,6 +409,37 @@ module Mastodon::CLI
       say("OK, unfollowed target from #{processed} accounts", :green)
     end
 
+    option :days, type: :numeric, default: 365
+    option :concurrency, type: :numeric, default: 5, aliases: [:c]
+    option :verbose, type: :boolean, aliases: [:v]
+    option :dry_run, type: :boolean, default: false
+    desc 'unfollow_old', 'Unfollow remote account that followed only by inactive accounts'
+    def unfollow_old
+      dry_run  = options[:dry_run] ? '(DRY RUN)' : ''
+
+      remote_accs_to_unfollow =
+        Account
+        .remote
+        .where(id: Follow.select(:target_account_id))
+        .where.not(
+          id: Follow.where(
+            account_id: User.confirmed.where('current_sign_in_at > ?', options[:days].days.ago).select(:account_id)
+          ).select(:target_account_id)
+        )
+
+      processed, = parallelize_with_progress(remote_accs_to_unfollow) do |account|
+        say("Unfollowing #{account.acct} #{dry_run}", :green) if options[:verbose]
+
+        account.followers.local.each do |follower|
+          UnfollowService.new.call(follower, account) unless options[:dry_run]
+        end
+
+        1
+      end
+
+      say("OK, unfollowed #{processed} accounts #{dry_run}", :green)
+    end
+
     option :follows, type: :boolean, default: false
     option :followers, type: :boolean, default: false
     desc 'reset-relationships USERNAME', 'Reset all follows and/or followers for a user'

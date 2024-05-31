@@ -37,6 +37,7 @@ namespace :api, format: false do
     end
 
     namespace :timelines do
+      resource :direct, only: :show, controller: :direct
       resource :home, only: :show, controller: :home
       resource :public, only: :show, controller: :public
       resources :tag, only: :show
@@ -142,6 +143,7 @@ namespace :api, format: false do
     end
 
     resource :domain_blocks, only: [:show, :create, :destroy]
+    resource :domain_mutes, only: [:show, :create, :destroy]
 
     resource :directory, only: [:show]
 
@@ -163,9 +165,10 @@ namespace :api, format: false do
       resource :policy, only: [:show, :update]
     end
 
-    resources :notifications, only: [:index, :show] do
+    resources :notifications, only: [:index, :show, :destroy] do
       collection do
         post :clear
+        delete :destroy_multiple
       end
 
       member do

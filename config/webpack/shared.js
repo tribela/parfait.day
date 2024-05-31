@@ -9,26 +9,36 @@ const extname = require('path-complete-extname');
 const webpack = require('webpack');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
 
-const { env, settings, themes, output } = require('./configuration');
+const { env, settings, flavours, output } = require('./configuration');
 const rules = require('./rules');
 
 const extensionGlob = `**/*{${settings.extensions.join(',')}}*`;
-const entryPath = join(settings.source_path, settings.source_entry_path);
-const packPaths = sync(join(entryPath, extensionGlob));
+
+function reduceFlavourPacks(data, into = {}) {
+  const packPaths = sync(join(data.pack_directory, extensionGlob));
+
+  packPaths.forEach((entry) => {
+    const namespace = relative(join(data.pack_directory), dirname(entry));
+    into[`flavours/${data.name}/${join(namespace, basename(entry, extname(entry)))}`] = resolve(entry);
+  });
+
+  for (const skinName in data.skin) {
+    const skin = data.skin[skinName];
+    if (!skin) continue;
+
+    into[`skins/${data.name}/${skinName}`] = resolve(skin);
+  }
+
+  return into;
+}
+
+const entries = Object.assign(
+  Object.values(flavours).reduce((map, data) => reduceFlavourPacks(data, map), {}),
+);
+
 
 module.exports = {
-  entry: Object.assign(
-    packPaths.reduce((map, entry) => {
-      const localMap = map;
-      const namespace = relative(join(entryPath), dirname(entry));
-      localMap[join(namespace, basename(entry, extname(entry)))] = resolve(entry);
-      return localMap;
-    }, {}),
-    Object.keys(themes).reduce((themePaths, name) => {
-      themePaths[name] = resolve(join(settings.source_path, themes[name]));
-      return themePaths;
-    }, {}),
-  ),
+  entry: entries,
 
   output: {
     filename: 'js/[name]-[chunkhash].js',
@@ -50,7 +60,9 @@ module.exports = {
         vendors: false,
         common: {
           name: 'common',
-          chunks: 'all',
+          chunks (chunk) {
+            return !(chunk.name in entries);
+          },
           minChunks: 2,
           minSize: 0,
           test: /^(?!.*[\\/]node_modules[\\/]react-intl[\\/]).+$/,

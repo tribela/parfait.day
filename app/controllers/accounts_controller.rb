@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
   end
 
   def default_statuses
-    @account.statuses.distributable_visibility
+    @account.statuses.not_local_only.distributable_visibility
   end
 
   def only_media_scope

@@ -36,6 +36,11 @@
                 wrapper: :with_label
 
   .fields-group
+    = f.input :korean_captcha_enabled, as: :boolean, wrapper: :with_label, label: t('admin.settings.korean_captcha_enabled.title'), hint: t('admin.settings.korean_captcha_enabled.desc_html')
+    = f.input :korean_captcha_question, as: :text, wrapper: :with_block_label, label: t('admin.settings.korean_captcha_question.title'), hint: t('admin.settings.korean_captcha_question.desc_html')
+    = f.input :korean_captcha_answer, as: :string, wrapper: :with_label, label: t('admin.settings.korean_captcha_answer.title'), hint: t('admin.settings.korean_captcha_answer.desc_html')
+
+  .fields-group
     = f.input :closed_registrations_message,
               as: :text,
               input_html: { rows: 2 },

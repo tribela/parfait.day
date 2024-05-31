@@ -40,6 +40,14 @@ module ApplicationHelper
     Setting.registrations_mode == 'none'
   end
 
+  def hcaptcha_enabled?
+    ENV['HCAPTCHA_SECRET_KEY'].present? && ENV['HCAPTCHA_SITE_KEY'].present? && Setting.captcha_enabled
+  end
+
+  def korean_captcha_enabled?
+    Setting.korean_captcha_enabled
+  end
+
   def available_sign_up_path
     if closed_registrations? || omniauth_only?
       'https://joinmastodon.org/#getting-started'
@@ -161,7 +169,8 @@ module ApplicationHelper
 
   def body_classes
     output = body_class_string.split
-    output << "theme-#{current_theme.parameterize}"
+    output << "flavour-#{current_flavour.parameterize}"
+    output << "skin-#{current_skin.parameterize}"
     output << 'system-font' if current_account&.user&.setting_system_font_ui
     output << (current_account&.user&.setting_reduce_motion ? 'reduce-motion' : 'no-reduce-motion')
     output << 'rtl' if locale_direction == 'rtl'
@@ -254,6 +263,25 @@ module ApplicationHelper
 
   def app_icon_path(size = '48')
     instance_presenter.app_icon&.file&.url(size)
+  end
+
+  # glitch-soc addition to handle the multiple flavors
+  def preload_locale_pack
+    supported_locales = Themes.instance.flavour(current_flavour)['locales']
+    preload_pack_asset "locales/#{current_flavour}/#{I18n.locale}-json.js" if supported_locales.include?(I18n.locale.to_s)
+  end
+
+  def flavoured_javascript_pack_tag(pack_name, **options)
+    javascript_pack_tag("flavours/#{current_flavour}/#{pack_name}", **options)
+  end
+
+  def flavoured_stylesheet_pack_tag(pack_name, **options)
+    stylesheet_pack_tag("flavours/#{current_flavour}/#{pack_name}", **options)
+  end
+
+  def preload_signed_in_js_packs
+    preload_files = Themes.instance.flavour(current_flavour)&.fetch('signed_in_preload', nil) || []
+    safe_join(preload_files.map { |entry| preload_pack_asset entry })
   end
 
   private

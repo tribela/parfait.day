@@ -9,6 +9,7 @@ import {
   mentionCompose,
   directCompose,
 } from '../../../actions/compose';
+import { initDomainMuteModal } from '../../../actions/domain_mutes';
 import {
   reblog,
   favourite,
@@ -163,6 +164,13 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onMute (account) {
     dispatch(initMuteModal(account));
+  },
+
+  onMuteDomain () {
+    const domain = this.props.account.get('acct').split('@')[1];
+
+    if (!domain) return;
+    dispatch(initDomainMuteModal(domain));
   },
 
   onMuteConversation (status) {

@@ -39,10 +39,11 @@ class MediaAttachment < ApplicationRecord
 
   MAX_DESCRIPTION_LENGTH = 1_500
 
-  IMAGE_LIMIT = 16.megabytes
-  VIDEO_LIMIT = 99.megabytes
+  IMAGE_LIMIT = (ENV['MAX_IMAGE_SIZE'] || 16.megabytes).to_i
+  VIDEO_LIMIT = (ENV['MAX_VIDEO_SIZE'] || 99.megabytes).to_i
 
   MAX_VIDEO_MATRIX_LIMIT = 8_294_400 # 3840x2160px
+  MAX_VIDEO_INPUT_MATRIX_LIMIT = (ENV['MAX_VIDEO_INPUT_MATRIX_LIMIT'] || MAX_VIDEO_MATRIX_LIMIT).to_i
   MAX_VIDEO_FRAME_RATE   = 120
   MAX_VIDEO_FRAMES       = 36_000 # Approx. 5 minutes at 120 fps
 
@@ -72,25 +73,51 @@ class MediaAttachment < ApplicationRecord
     original: {
       pixels: 8_294_400, # 3840x2160px
       file_geometry_parser: FastGeometryParser,
+      quality: 90,
     }.freeze,
 
     small: {
       pixels: 230_400, # 640x360px
       file_geometry_parser: FastGeometryParser,
       blurhash: BLURHASH_OPTIONS,
+      format: 'webp',
     }.freeze,
   }.freeze
 
+  IMAGE_STYLES_REMOTE = IMAGE_STYLES.deep_merge({
+    original: {
+      format: 'webp',
+      quality: nil,
+    }.freeze,
+    small: {
+      format: 'webp',
+    }.freeze,
+  }).freeze
+
+  IMAGE_STYLES_REMOTE_LOSSLESS = IMAGE_STYLES_REMOTE.deep_merge({
+    original: {
+      convert_options: '-define webp:lossless=true',
+    }.freeze,
+  }).freeze
+
   IMAGE_CONVERTED_STYLES = {
     original: {
-      format: 'jpeg',
-      content_type: 'image/jpeg',
+      format: 'webp',
+      content_type: 'image/webp',
     }.merge(IMAGE_STYLES[:original]).freeze,
 
     small: {
-      format: 'jpeg',
+      format: 'webp',
     }.merge(IMAGE_STYLES[:small]).freeze,
   }.freeze
+
+  VIDEO_FILTER = begin
+    if MAX_VIDEO_INPUT_MATRIX_LIMIT <= MAX_VIDEO_MATRIX_LIMIT
+      'crop=floor(iw/2)*2:floor(ih/2)*2' # h264 requires width and height to be even. Crop instead of scale to avoid blurring
+    else
+      "scale='trunc(min(#{MAX_VIDEO_MATRIX_LIMIT}, iw*ih) / ih / 2)*2:-2'"
+    end
+  end
 
   VIDEO_FORMAT = {
     format: 'mp4',
@@ -102,7 +129,7 @@ class MediaAttachment < ApplicationRecord
         'preset' => 'veryfast',
         'movflags' => 'faststart', # Move metadata to start of file so playback can begin before download finishes
         'pix_fmt' => 'yuv420p', # Ensure color space for cross-browser compatibility
-        'vf' => 'crop=floor(iw/2)*2:floor(ih/2)*2', # h264 requires width and height to be even. Crop instead of scale to avoid blurring
+        'vf' => VIDEO_FILTER,
         'c:v' => 'h264',
         'c:a' => 'aac',
         'b:a' => '192k',
@@ -171,7 +198,7 @@ class MediaAttachment < ApplicationRecord
   DEFAULT_STYLES = [:original].freeze
 
   GLOBAL_CONVERT_OPTIONS = {
-    all: '-quality 90 +profile "!icc,*" +set date:modify +set date:create +set date:timestamp -define jpeg:dct-method=float',
+    all: '+profile "!icc,*" +set date:modify +set date:create +set date:timestamp -define jpeg:dct-method=float',
   }.freeze
 
   belongs_to :account,          inverse_of: :media_attachments, optional: true
@@ -298,7 +325,15 @@ class MediaAttachment < ApplicationRecord
       elsif IMAGE_CONVERTIBLE_MIME_TYPES.include?(attachment.instance.file_content_type)
         IMAGE_CONVERTED_STYLES
       elsif IMAGE_MIME_TYPES.include?(attachment.instance.file_content_type)
-        IMAGE_STYLES
+        if attachment.instance.remote_url.present?
+          if attachment.instance.file_content_type == 'image/jpeg'
+            IMAGE_STYLES_REMOTE
+          else
+            IMAGE_STYLES_REMOTE_LOSSLESS
+          end
+        else
+          IMAGE_STYLES
+        end
       elsif VIDEO_MIME_TYPES.include?(attachment.instance.file_content_type)
         VIDEO_STYLES
       else
@@ -349,7 +384,7 @@ class MediaAttachment < ApplicationRecord
     return unless movie.valid?
 
     raise Mastodon::StreamValidationError, 'Video has no video stream' if movie.width.nil? || movie.frame_rate.nil?
-    raise Mastodon::DimensionsValidationError, "#{movie.width}x#{movie.height} videos are not supported" if movie.width * movie.height > MAX_VIDEO_MATRIX_LIMIT
+    raise Mastodon::DimensionsValidationError, "#{movie.width}x#{movie.height} videos are not supported" if movie.width * movie.height > MAX_VIDEO_INPUT_MATRIX_LIMIT
     raise Mastodon::DimensionsValidationError, "#{movie.frame_rate.floor}fps videos are not supported" if movie.frame_rate.floor > MAX_VIDEO_FRAME_RATE
   end
 

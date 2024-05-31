@@ -1,3 +1,19 @@
+# Mastodon Glitch Edition
+
+[![Ruby Testing](https://github.com/glitch-soc/mastodon/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/glitch-soc/mastodon/actions/workflows/test-ruby.yml)
+[![Crowdin](https://badges.crowdin.net/glitch-soc/localized.svg)][glitch-crowdin]
+
+[glitch-crowdin]: https://crowdin.com/project/glitch-soc
+
+So here's the deal: we all work on this code, and anyone who uses that does so absolutely at their own risk. can you dig it?
+
+- You can view documentation for this project at [glitch-soc.github.io/docs/](https://glitch-soc.github.io/docs/).
+- And contributing guidelines are available [here](CONTRIBUTING.md) and [here](https://glitch-soc.github.io/docs/contributing/).
+
+Mastodon Glitch Edition is a fork of [Mastodon](https://github.com/mastodon/mastodon). Upstream's README file is reproduced below.
+
+---
+
 <h1><picture>
   <source media="(prefers-color-scheme: dark)" srcset="./lib/assets/wordmark.dark.png?raw=true">
   <source media="(prefers-color-scheme: light)" srcset="./lib/assets/wordmark.light.png?raw=true">

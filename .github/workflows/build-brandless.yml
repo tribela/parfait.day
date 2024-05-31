@@ -1,0 +1,47 @@
+name: Build brandless container release images
+on:
+  push:
+    branches:
+      - 'qdon-glitch'
+      - 'qdon-glitch-beta'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-image:
+    uses: ./.github/workflows/build-container-image.yml
+    with:
+      file_to_build: Dockerfile
+      platforms: linux/amd64,linux/arm64
+      use_native_arm64_builder: true
+      is_brandless: true
+      push_to_images: |
+        ghcr.io/${{ github.repository_owner }}/mastodon
+        qdon/glitch
+      cache: false
+      tags: |
+        type=raw,value=brandless,enable={{is_default_branch}}
+        type=raw,value=brandless-beta,enable=${{ github.ref == format('refs/heads/{0}', 'qdon-glitch-beta') }}
+    secrets: inherit
+
+  build-image-streaming:
+    uses: ./.github/workflows/build-container-image.yml
+    with:
+      file_to_build: streaming/Dockerfile
+      platforms: linux/amd64,linux/arm64
+      use_native_arm64_builder: true
+      push_to_images: |
+        ghcr.io/${{ github.repository_owner }}/mastodon-streaming
+        qdon/glitch-streaming
+      # Do not use cache when building releases, so apt update is always ran and the release always contain the latest packages
+      cache: false
+      # Only tag with latest when ran against the latest stable branch
+      # This needs to be updated after each minor version release
+      flavor: |
+        latest=${{ startsWith(github.ref, 'refs/tags/v4.3.') }}
+      tags: |
+        type=raw,value=brandless,enable={{is_default_branch}}
+        type=raw,value=brandless-beta,enable=${{ github.ref == format('refs/heads/{0}', 'qdon-glitch-beta') }}
+    secrets: inherit

@@ -15,6 +15,7 @@ class Trends::Base
   # @option options [ActiveSupport::Duration] :max_score_halflife How quickly a peak score decays
   def initialize(options = {})
     @options = self.class.default_options.merge(options)
+    @korean_multiply_factor = ENV.fetch('KOREAN_TRENDS_FACTOR', 1).to_f
   end
 
   def register(_status)

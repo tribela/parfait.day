@@ -110,7 +110,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def process_status_params
     @status_parser = ActivityPub::Parser::StatusParser.new(@json, followers_collection: @account.followers_url, object: @object)
 
-    attachment_ids = process_attachments.take(Status::MEDIA_ATTACHMENTS_LIMIT).map(&:id)
+    attachment_ids = process_attachments.take(Status::REMOTE_MEDIA_ATTACHMENTS_LIMIT).map(&:id)
 
     @params = {
       uri: @status_parser.uri,
@@ -157,7 +157,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       # If there is at least one silent mention, then the status can be considered
       # as a limited-audience status, and not strictly a direct message, but only
       # if we considered a direct message in the first place
-      @params[:visibility] = :limited if @params[:visibility] == :direct
+      @params[:visibility] = :limited if @params[:visibility] == :direct && !@object['directMessage']
     end
 
     # Accounts that are tagged but are not in the audience are not
@@ -169,7 +169,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     return if @status.mentions.find_by(account_id: @options[:delivered_to_account_id])
 
     @status.mentions.create(account: delivered_to_account, silent: true)
-    @status.update(visibility: :limited) if @status.direct_visibility?
+    @status.update(visibility: :limited) if @status.direct_visibility? && !@object['directMessage']
 
     return unless delivered_to_account.following?(@account)
 
@@ -260,7 +260,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     as_array(@object['attachment']).each do |attachment|
       media_attachment_parser = ActivityPub::Parser::MediaAttachmentParser.new(attachment)
 
-      next if media_attachment_parser.remote_url.blank? || media_attachments.size >= Status::MEDIA_ATTACHMENTS_LIMIT
+      next if media_attachment_parser.remote_url.blank? || media_attachments.size >= Status::REMOTE_MEDIA_ATTACHMENTS_LIMIT
 
       begin
         media_attachment = MediaAttachment.create(

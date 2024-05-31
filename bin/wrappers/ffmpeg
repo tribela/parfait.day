@@ -1,0 +1,34 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ "${FFMPEG_DISABLE:-false}" == "true" ]]; then
+  echo "FFMPEG_DISABLE is set to true, exiting"
+  exit 1
+fi
+
+EXECNAME="$(basename "$0")"
+
+BINARY="$(which -a "$EXECNAME" | grep -vE "^$0$" | head -1)"
+
+if [ -z "$BINARY" ]; then
+    echo "ERROR: $EXECNAME not found in PATH" >&2
+    exit 1
+fi
+
+NICE=${FFMPEG_NICE:-NONE}
+IONICE_CLASS=${FFMPEG_IONICE_CLASS:-NONE}
+IONICE_CLASSDATA=${FFMPEG_IONICE_CLASSDATA:-NONE}
+
+if [[ $NICE != "NONE" ]]; then
+  renice "$NICE" $$ >/dev/null
+fi
+
+if [[ $IONICE_CLASS != "NONE" ]]; then
+  if [[ $IONICE_CLASSDATA != "NONE" ]]; then
+    ionice -c "$IONICE_CLASS" -n "$IONICE_CLASSDATA" -p $$ >/dev/null
+  else
+    ionice -c "$IONICE_CLASS" -p $$ >/dev/null
+  fi
+fi
+
+exec "$BINARY" "$@"

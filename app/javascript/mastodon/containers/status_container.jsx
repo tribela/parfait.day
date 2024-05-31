@@ -18,6 +18,10 @@ import {
   unblockDomain,
 } from '../actions/domain_blocks';
 import {
+  initDomainMuteModal,
+  unmuteDomain,
+} from '../actions/domain_mutes';
+import {
   initAddFilter,
 } from '../actions/filters';
 import {
@@ -258,6 +262,14 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
 
   onUnblockDomain (domain) {
     dispatch(unblockDomain(domain));
+  },
+
+  onMuteDomain (domain) {
+    dispatch(initDomainMuteModal(domain));
+  },
+
+  onUnmuteDomain (domain) {
+    dispatch(unmuteDomain(domain));
   },
 
   deployPictureInPicture (status, type, mediaProps) {

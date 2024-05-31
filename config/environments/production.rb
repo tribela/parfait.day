@@ -152,11 +152,15 @@ Rails.application.configure do
     'X-Frame-Options' => 'DENY',
     'X-Content-Type-Options' => 'nosniff',
     'X-XSS-Protection' => '0',
+    'X-Clacks-Overhead' => 'GNU Byun Huisu',
     'Referrer-Policy' => 'same-origin',
   }
 
   # TODO: Remove once devise-two-factor data migration complete
   config.x.otp_secret = ENV.fetch('OTP_SECRET')
+
+  config.x.trusted_metrics = []
+  config.x.trusted_metrics = ENV['TRUSTED_METRICS_IP'].split.map { |item| IPAddr.new(item) } if ENV['TRUSTED_METRICS_IP'].present?
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
