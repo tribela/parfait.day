@@ -94,7 +94,7 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
 
   # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new(STDOUT)
+  config.logger = ActiveSupport::Logger.new($stdout)
                                        .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
                                        .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
@@ -157,7 +157,11 @@ Rails.application.configure do
   }
 
   # TODO: Remove once devise-two-factor data migration complete
-  config.x.otp_secret = ENV.fetch('OTP_SECRET')
+  config.x.otp_secret = if ENV['SECRET_KEY_BASE_DUMMY']
+                          SecureRandom.hex(64)
+                        else
+                          ENV.fetch('OTP_SECRET')
+                        end
 
   config.x.trusted_metrics = []
   config.x.trusted_metrics = ENV['TRUSTED_METRICS_IP'].split.map { |item| IPAddr.new(item) } if ENV['TRUSTED_METRICS_IP'].present?
