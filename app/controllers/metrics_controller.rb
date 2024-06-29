@@ -96,24 +96,10 @@ class MetricsController < ApplicationController
 
   def media_size
     Rails.cache.fetch('metrics/media_size', expires_in: 5.minutes) do
-      {
-        { type: 'media_attachments', by: 'remote' } => MediaAttachment.where(account: Account.remote).sum(
-          Arel.sql('COALESCE(file_file_size, 0) + COALESCE(thumbnail_file_size, 0)')
-        ),
-        { type: 'media_attachments', by: 'local' } => MediaAttachment.where(account: Account.local).sum(
-          Arel.sql('COALESCE(file_file_size, 0) + COALESCE(thumbnail_file_size, 0)')
-        ),
-        { type: 'custom_emojis', by: 'remote' } => CustomEmoji.remote.sum(:image_file_size),
-        { type: 'custom_emojis', by: 'local' } => CustomEmoji.local.sum(:image_file_size),
-        { type: 'avatars', by: 'remote' } => Account.remote.sum(:avatar_file_size),
-        { type: 'avatars', by: 'local' } => Account.local.sum(:avatar_file_size),
-        { type: 'headers', by: 'remote' } => Account.remote.sum(:header_file_size),
-        { type: 'headers', by: 'local' } => Account.local.sum(:header_file_size),
-        { type: 'preview_cards', by: 'local' } => PreviewCard.sum(:image_file_size),
-        { type: 'backups', by: 'local' } => Backup.sum(:dump_file_size),
-        { type: 'imports', by: 'local' } => Import.sum(:data_file_size),
-        { type: 'settings', by: 'local' } => SiteUpload.sum(:file_file_size),
-      }
+      MediaMetric.refresh
+      MediaMetric.all.to_h do |metric|
+        [{ type: metric.category, by: metric.local ? 'local' : 'remote' }, metric.file_size || 0]
+      end
     end
   end
 end
