@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_29_162608) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_01_161429) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1553,4 +1553,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_29_162608) do
               true AS local
              FROM site_uploads) t0;
   SQL
+  add_index "media_metrics", ["category", "local"], name: "index_media_metrics_on_category_and_local", unique: true
+
 end
