@@ -216,7 +216,7 @@ RSpec.describe MediaAttachment, :paperclip_processing do
 
     def expected_background_color
       # The libvips and ImageMagick implementations produce different results
-      Rails.configuration.x.use_vips ? '#268cd9' : '#3088d4'
+      Rails.configuration.x.use_vips ? '#268cd9' : '#3088d3'
     end
   end
 
