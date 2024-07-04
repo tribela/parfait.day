@@ -43,7 +43,6 @@ namespace :branding do
 
     # rsvg_convert = Terrapin::CommandLine.new('rsvg-convert', '-w :size -h :size --keep-aspect-ratio :input -o :output')
     png_convert = Terrapin::CommandLine.new('convert', ':input -resize :size :output')
-    convert = Terrapin::CommandLine.new('convert', ':input :output', environment: { 'MAGICK_CONFIGURE_PATH' => nil })
 
     favicon_sizes      = [16, 32, 48]
     apple_icon_sizes   = [57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024]
@@ -56,8 +55,6 @@ namespace :branding do
       favicons << output_path
       png_convert.run(size: size, input: favicon_source, output: output_path)
     end
-
-    convert.run(input: favicons, output: Rails.public_path.join('favicon.ico'))
 
     apple_icon_sizes.each do |size|
       png_convert.run(size: size, input: app_icon_source, output: output_dest.join("apple-touch-icon-#{size}x#{size}.png"))
