@@ -736,6 +736,17 @@ body.admin {
   color:black;
   font-weight:bold;
 }
+
+.hashtag-bar a {
+  background: $win95-bg;
+  color: black;
+  @include win95-outset();
+
+  &:hover {
+    background: $win95-bg;
+  }
+}
+
 .account__avatar,
 .account__avatar-overlay-base,
 .account__header__avatar,
