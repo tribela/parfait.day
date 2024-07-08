@@ -1758,7 +1758,7 @@ ko:
     default: 마스토돈 (어두움)
     mastodon-light: 마스토돈 (밝음)
     qdon: 큐돈
-    system: 자동 선택 (시스템 테마 이용)
+    system: 자동 (시스템 테마 사용)
   time:
     formats:
       default: "%Y-%m-%d %H:%M"
