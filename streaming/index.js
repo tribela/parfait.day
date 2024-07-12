@@ -1119,7 +1119,7 @@ const startServer = async () => {
 
   /**
    * @param {http.IncomingMessage} req
-   * @param {WebSocket} ws
+   * @param {import('ws').WebSocket} ws
    * @param {string[]} streamName
    * @returns {function(string, string): void}
    */
@@ -1350,7 +1350,7 @@ const startServer = async () => {
 
   /**
    * @typedef WebSocketSession
-   * @property {WebSocket & { isAlive: boolean}} websocket
+   * @property {import('ws').WebSocket & { isAlive: boolean}} websocket
    * @property {http.IncomingMessage & ResolvedAccount} request
    * @property {import('pino').Logger} logger
    * @property {Object.<string, { channelName: string, listener: SubscriptionListener, stopHeartbeat: function(): void }>} subscriptions
@@ -1476,7 +1476,7 @@ const startServer = async () => {
   };
 
   /**
-   * @param {WebSocket & { isAlive: boolean }} ws
+   * @param {import('ws').WebSocket & { isAlive: boolean }} ws
    * @param {http.IncomingMessage & ResolvedAccount} req
    * @param {import('pino').Logger} log
    */

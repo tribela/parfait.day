@@ -1447,6 +1447,8 @@ body > [data-popper-placement] {
   min-height: 54px;
   border-bottom: 1px solid var(--background-border-color);
   cursor: auto;
+  opacity: 1;
+  animation: fade 150ms linear;
 
   @keyframes fade {
     0% {
@@ -1457,9 +1459,6 @@ body > [data-popper-placement] {
       opacity: 1;
     }
   }
-
-  opacity: 1;
-  animation: fade 150ms linear;
 
   .media-gallery,
   .video-player,
@@ -4932,8 +4931,10 @@ a.status-card {
     &__menu {
       @include search-popout;
 
-      padding: 0;
-      background: $ui-secondary-color;
+      & {
+        padding: 0;
+        background: $ui-secondary-color;
+      }
     }
 
     &__menu-list {
