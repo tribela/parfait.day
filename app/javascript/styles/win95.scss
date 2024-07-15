@@ -736,6 +736,17 @@ body.admin {
   color:black;
   font-weight:bold;
 }
+
+.hashtag-bar a {
+  background: $win95-bg;
+  color: black;
+  @include win95-outset();
+
+  &:hover {
+    background: $win95-bg;
+  }
+}
+
 .account__avatar,
 .account__avatar-overlay-base,
 .account__header__avatar,
@@ -2532,14 +2543,13 @@ body {
     background: $win95-tooltip-yellow;
     border: 1px solid black;
     padding: 4px;
+    margin-bottom: 24px;
 
     h1, h1 small {
       color:black;
       text-shadow: unset;
       text-overflow: unset;
     }
-
-    margin-bottom: 24px;
 
     &:after {
       content: "";
