@@ -203,11 +203,11 @@ export function expandDomainMutesFail(error) {
 
 export function initDomainMuteModal(domain) {
   return dispatch => {
-    dispatch({
-      type: DOMAIN_MUTES_INIT_MODAL,
-      domain,
-    });
-
-    dispatch(openModal({ modalType: 'DOMAIN_MUTE' }));
+    dispatch(openModal({
+      modalType: 'DOMAIN_MUTE',
+      modalProps: {
+        domain,
+      },
+    }));
   };
 }
