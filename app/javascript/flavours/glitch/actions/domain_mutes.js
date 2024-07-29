@@ -26,7 +26,6 @@ export const DOMAIN_MUTES_EXPAND_SUCCESS = 'DOMAIN_MUTES_EXPAND_SUCCESS';
 export const DOMAIN_MUTES_EXPAND_FAIL    = 'DOMAIN_MUTES_EXPAND_FAIL';
 
 export const DOMAIN_MUTES_INIT_MODAL = 'DOMAIN_MUTES_INIT_MODAL';
-export const DOMAIN_MUTES_TOGGLE_HIDE_FROM_HOME = 'DOMAIN_MUTES_TOGGLE_HIDE_FROM_HOME';
 
 export function muteDomain(domain, hideFromHome) {
   return (dispatch, getState) => {
@@ -210,11 +209,5 @@ export function initDomainMuteModal(domain) {
     });
 
     dispatch(openModal({ modalType: 'DOMAIN_MUTE' }));
-  };
-}
-
-export function toggleHideFromHome() {
-  return dispatch => {
-    dispatch({ type: DOMAIN_MUTES_TOGGLE_HIDE_FROM_HOME });
   };
 }
