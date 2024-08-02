@@ -1,7 +1,11 @@
+import { boostModal, favouriteModal } from 'flavours/glitch/initial_state';
+
 import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
+import { unreblog, reblog } from './interactions_typed';
+import { openModal } from './modal';
 
 export const REBLOGS_EXPAND_REQUEST = 'REBLOGS_EXPAND_REQUEST';
 export const REBLOGS_EXPAND_SUCCESS = 'REBLOGS_EXPAND_SUCCESS';
@@ -443,74 +447,60 @@ export function unpinFail(status, error) {
   };
 }
 
-export const addReaction = (statusId, name, url) => (dispatch, getState) => {
-  const status = getState().get('statuses').get(statusId);
-  let alreadyAdded = false;
-  if (status) {
-    const reaction = status.get('reactions').find(x => x.get('name') === name);
-    if (reaction && reaction.get('me')) {
-      alreadyAdded = true;
+function toggleReblogWithoutConfirmation(status, privacy) {
+  return (dispatch) => {
+    if (status.get('reblogged')) {
+      dispatch(unreblog({ statusId: status.get('id') }));
+    } else {
+      dispatch(reblog({ statusId: status.get('id'), privacy }));
     }
-  }
-  if (!alreadyAdded) {
-    dispatch(addReactionRequest(statusId, name, url));
-  }
+  };
+}
 
-  // encodeURIComponent is required for the Keycap Number Sign emoji, see:
-  // <https://github.com/glitch-soc/mastodon/pull/1980#issuecomment-1345538932>
-  api(getState).post(`/api/v1/statuses/${statusId}/react/${encodeURIComponent(name)}`).then(() => {
-    dispatch(addReactionSuccess(statusId, name));
-  }).catch(err => {
-    if (!alreadyAdded) {
-      dispatch(addReactionFail(statusId, name, err));
+export function toggleReblog(statusId, skipModal = false) {
+  return (dispatch, getState) => {
+    const state = getState();
+    let status = state.statuses.get(statusId);
+
+    if (!status)
+      return;
+
+    // The reblog modal expects a pre-filled account in status
+    // TODO: fix this by having the reblog modal get a statusId and do the work itself
+    status = status.set('account', state.accounts.get(status.get('account')));
+
+    const missing_description_setting = state.getIn(['local_settings', 'confirm_boost_missing_media_description']);
+    const missing_description = status.get('media_attachments').some(item => !item.get('description'));
+    if (missing_description_setting && missing_description && !status.get('reblogged')) {
+      dispatch(openModal({ modalType: 'BOOST', modalProps: { status, onReblog: (status, privacy) => dispatch(toggleReblogWithoutConfirmation(status, privacy)), missingMediaDescription: true } }));
+    } else if (boostModal && !skipModal) {
+      dispatch(openModal({ modalType: 'BOOST', modalProps: { status, onReblog: (status, privacy) => dispatch(toggleReblogWithoutConfirmation(status, privacy)) } }));
+    } else {
+      dispatch(toggleReblogWithoutConfirmation(status));
     }
-  });
-};
+  };
+}
 
-export const addReactionRequest = (statusId, name, url) => ({
-  type: REACTION_ADD_REQUEST,
-  id: statusId,
-  name,
-  url,
-});
+export function toggleFavourite(statusId, skipModal = false) {
+  return (dispatch, getState) => {
+    const state = getState();
+    let status = state.statuses.get(statusId);
 
-export const addReactionSuccess = (statusId, name) => ({
-  type: REACTION_ADD_SUCCESS,
-  id: statusId,
-  name,
-});
+    if (!status)
+      return;
 
-export const addReactionFail = (statusId, name, error) => ({
-  type: REACTION_ADD_FAIL,
-  id: statusId,
-  name,
-  error,
-});
+    // The favourite modal expects a pre-filled account in status
+    // TODO: fix this by having the reblog modal get a statusId and do the work itself
+    status = status.set('account', state.accounts.get(status.get('account')));
 
-export const removeReaction = (statusId, name) => (dispatch, getState) => {
-  dispatch(removeReactionRequest(statusId, name));
-
-  api(getState).post(`/api/v1/statuses/${statusId}/unreact/${encodeURIComponent(name)}`).then(() => {
-    dispatch(removeReactionSuccess(statusId, name));
-  }).catch(err => {
-    dispatch(removeReactionFail(statusId, name, err));
-  });
-};
-
-export const removeReactionRequest = (statusId, name) => ({
-  type: REACTION_REMOVE_REQUEST,
-  id: statusId,
-  name,
-});
-
-export const removeReactionSuccess = (statusId, name) => ({
-  type: REACTION_REMOVE_SUCCESS,
-  id: statusId,
-  name,
-});
-
-export const removeReactionFail = (statusId, name) => ({
-  type: REACTION_REMOVE_FAIL,
-  id: statusId,
-  name,
-});
+    if (status.get('favourited')) {
+      dispatch(unfavourite(status));
+    } else {
+      if (favouriteModal && !skipModal) {
+        dispatch(openModal({ modalType: 'FAVOURITE', modalProps: { status, onFavourite: (status) => dispatch(favourite(status)) } }));
+      } else {
+        dispatch(favourite(status));
+      }
+    }
+  };
+}

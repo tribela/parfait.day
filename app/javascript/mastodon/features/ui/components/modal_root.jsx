@@ -27,7 +27,16 @@ import ActionsModal from './actions_modal';
 import AudioModal from './audio_modal';
 import { BoostModal } from './boost_modal';
 import BundleModalError from './bundle_modal_error';
-import ConfirmationModal from './confirmation_modal';
+import {
+  ConfirmationModal,
+  ConfirmDeleteStatusModal,
+  ConfirmDeleteListModal,
+  ConfirmReplyModal,
+  ConfirmEditStatusModal,
+  ConfirmUnfollowModal,
+  ConfirmClearNotificationsModal,
+  ConfirmLogOutModal,
+} from './confirmation_modals';
 import FocalPointModal from './focal_point_modal';
 import ImageModal from './image_modal';
 import MediaModal from './media_modal';
@@ -41,6 +50,13 @@ export const MODAL_COMPONENTS = {
   'IMAGE': () => Promise.resolve({ default: ImageModal }),
   'BOOST': () => Promise.resolve({ default: BoostModal }),
   'CONFIRM': () => Promise.resolve({ default: ConfirmationModal }),
+  'CONFIRM_DELETE_STATUS': () => Promise.resolve({ default: ConfirmDeleteStatusModal }),
+  'CONFIRM_DELETE_LIST': () => Promise.resolve({ default: ConfirmDeleteListModal }),
+  'CONFIRM_REPLY': () => Promise.resolve({ default: ConfirmReplyModal }),
+  'CONFIRM_EDIT_STATUS': () => Promise.resolve({ default: ConfirmEditStatusModal }),
+  'CONFIRM_UNFOLLOW': () => Promise.resolve({ default: ConfirmUnfollowModal }),
+  'CONFIRM_CLEAR_NOTIFICATIONS': () => Promise.resolve({ default: ConfirmClearNotificationsModal }),
+  'CONFIRM_LOG_OUT': () => Promise.resolve({ default: ConfirmLogOutModal }),
   'DOMAIN_MUTE': DomainMuteModal,
   'MUTE': MuteModal,
   'BLOCK': BlockModal,
