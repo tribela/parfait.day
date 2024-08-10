@@ -214,12 +214,6 @@ html {
   border-top-color: lighten($ui-base-color, 8%);
 }
 
-.column-header__collapsible-inner {
-  background: darken($ui-base-color, 4%);
-  border: 1px solid var(--background-border-color);
-  border-bottom: 0;
-}
-
 .column-settings__hashtags .column-select__option {
   color: $white;
 }
@@ -298,12 +292,6 @@ html {
 .directory__tag > div {
   background: $white;
   border: 1px solid var(--background-border-color);
-
-  @media screen and (max-width: $no-gap-breakpoint) {
-    border-left: 0;
-    border-right: 0;
-    border-top: 0;
-  }
 }
 
 .picture-in-picture-placeholder {
@@ -317,10 +305,6 @@ html {
   &:active,
   &:focus {
     background: $ui-base-color;
-  }
-
-  @media screen and (max-width: $no-gap-breakpoint) {
-    border: 0;
   }
 }
 
@@ -506,11 +490,11 @@ html {
 
 .compose-form .autosuggest-textarea__textarea,
 .compose-form__highlightable,
+.autosuggest-textarea__suggestions,
 .search__input,
 .search__popout,
 .emoji-mart-search input,
 .language-dropdown__dropdown .emoji-mart-search input,
-// .strike-card,
 .poll__option input[type='text'] {
   background: darken($ui-base-color, 10%);
 }
@@ -566,4 +550,12 @@ a.sparkline {
   &:active {
     background: darken($ui-base-color, 10%);
   }
+}
+
+.setting-text {
+  background: darken($ui-base-color, 10%);
+}
+
+.report-dialog-modal__textarea {
+  background: darken($ui-base-color, 10%);
 }
