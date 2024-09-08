@@ -75,7 +75,7 @@ class MetricsController < ApplicationController
   end
 
   def redis_size
-    RedisConfiguration.with do |redis|
+    RedisConnection.with do |redis|
       if redis.is_a?(Redis::Namespace)
         redis.redis.info
       else
