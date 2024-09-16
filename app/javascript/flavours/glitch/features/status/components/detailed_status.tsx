@@ -189,7 +189,7 @@ export const DetailedStatus: React.FC<{
     if (
       status
         .get('media_attachments')
-        .some(
+        .every(
           (item: Immutable.Map<string, any>) => item.get('type') === 'unknown',
         )
     ) {
