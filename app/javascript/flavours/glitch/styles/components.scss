@@ -4108,7 +4108,7 @@ input.glitch-setting-text {
   }
 
   &__wrapper {
-    background: $white;
+    background: $ui-base-color;
     border: 1px solid var(--background-border-color);
     margin-bottom: 10px;
     border-radius: 4px;
@@ -10761,6 +10761,7 @@ noscript {
       scroll-padding: 16px;
       scroll-behavior: smooth;
       overflow-x: scroll;
+      scrollbar-width: none;
 
       &__card {
         background: var(--background-color);
