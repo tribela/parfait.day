@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ActivityPub::Activity::EmojiReact < ActivityPub::Activity
-  CUSTOM_EMOJI_REGEX = /^:[^:]+:$/
-
   def perform
     original_status = status_from_uri(object_uri)
     name = @json['content']
@@ -10,7 +8,7 @@ class ActivityPub::Activity::EmojiReact < ActivityPub::Activity
               !original_status.account.local? ||
               delete_arrived_first?(@json['id'])
 
-    if CUSTOM_EMOJI_REGEX.match?(name)
+    if /^:.*:$/.match?(name)
       name.delete! ':'
       custom_emoji = process_emoji_tags(name, @json['tag'])
 

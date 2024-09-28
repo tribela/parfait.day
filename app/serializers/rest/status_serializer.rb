@@ -160,7 +160,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   end
 
   def reactions
-    object.reactions(current_user&.account&.id)
+    object.reactions(current_user&.account)
   end
 
   private
