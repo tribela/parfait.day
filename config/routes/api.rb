@@ -162,6 +162,12 @@ namespace :api, format: false do
 
     namespace :notifications do
       resources :requests, only: [:index, :show] do
+        collection do
+          post :accept, to: 'requests#accept_bulk'
+          post :dismiss, to: 'requests#dismiss_bulk'
+          get :merged, to: 'requests#merged?'
+        end
+
         member do
           post :accept
           post :dismiss
@@ -175,6 +181,7 @@ namespace :api, format: false do
       collection do
         post :clear
         delete :destroy_multiple
+        get :unread_count
       end
 
       member do
@@ -317,6 +324,21 @@ namespace :api, format: false do
     end
   end
 
+  concern :grouped_notifications do
+    resources :notifications, param: :group_key, only: [:index, :show] do
+      collection do
+        post :clear
+        get :unread_count
+      end
+
+      member do
+        post :dismiss
+      end
+
+      resources :accounts, only: [:index], module: :notifications
+    end
+  end
+
   namespace :v2 do
     get '/search', to: 'search#index', as: :search
 
@@ -338,18 +360,16 @@ namespace :api, format: false do
     namespace :admin do
       resources :accounts, only: [:index]
     end
+
+    namespace :notifications do
+      resource :policy, only: [:show, :update]
+    end
+
+    concerns :grouped_notifications
   end
 
-  namespace :v2_alpha do
-    resources :notifications, only: [:index, :show] do
-      collection do
-        post :clear
-      end
-
-      member do
-        post :dismiss
-      end
-    end
+  namespace :v2_alpha, module: 'v2' do
+    concerns :grouped_notifications
   end
 
   namespace :web do
