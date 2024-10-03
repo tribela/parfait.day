@@ -21,6 +21,7 @@ import { Permalink } from 'flavours/glitch/components/permalink';
 import PictureInPicturePlaceholder from 'flavours/glitch/components/picture_in_picture_placeholder';
 import { useAppHistory } from 'flavours/glitch/components/router';
 import { VisibilityIcon } from 'flavours/glitch/components/visibility_icon';
+import PollContainer from 'flavours/glitch/containers/poll_container';
 import { useIdentity } from 'flavours/glitch/identity_context';
 import { useAppSelector } from 'flavours/glitch/store';
 
@@ -29,6 +30,7 @@ import { DisplayName } from '../../../components/display_name';
 import MediaGallery from '../../../components/media_gallery';
 import StatusContent from '../../../components/status_content';
 import StatusReactions from '../../../components/status_reactions';
+import { visibleReactions } from '../../../initial_state';
 import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import Video from '../../video';
@@ -408,13 +410,15 @@ export const DetailedStatus: React.FC<{
           {...(statusContentProps as any)}
         />
 
-        <StatusReactions
-          statusId={status.get('id')}
-          reactions={status.get('reactions')}
-          addReaction={onReactionAdd}
-          removeReaction={onReactionRemove}
-          canReact={signedIn}
-        />
+        {visibleReactions && visibleReactions > 0 && (
+          <StatusReactions
+            statusId={status.get('id')}
+            reactions={status.get('reactions')}
+            addReaction={onReactionAdd}
+            removeReaction={onReactionRemove}
+            canReact={signedIn}
+          />
+        )}
 
         <div className='detailed-status__meta'>
           <div className='detailed-status__meta__line'>

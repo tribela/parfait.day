@@ -327,6 +327,8 @@ class EmojiPickerDropdown extends PureComponent {
     onPickEmoji: PropTypes.func.isRequired,
     onSkinTone: PropTypes.func.isRequired,
     skinTone: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    icon: PropTypes.node,
     disabled: PropTypes.bool,
   };
 

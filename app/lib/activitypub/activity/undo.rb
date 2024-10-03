@@ -112,7 +112,7 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
     if @account.favourited?(status)
       favourite = status.favourites.where(account: @account).first
       favourite&.destroy
-    elsif @object['_misskey_reaction'].present?
+    elsif @object['content'].present? || @object['_misskey_reaction'].present?
       undo_emoji_react
     else
       delete_later!(object_uri)
@@ -127,7 +127,7 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
 
     return if status.nil? || !status.account.local?
 
-    if /^:.*:$/.match?(name)
+    if CUSTOM_EMOJI_REGEX.match?(name)
       name.delete! ':'
       custom_emoji = process_emoji_tags(name, @object['tag'])
 
