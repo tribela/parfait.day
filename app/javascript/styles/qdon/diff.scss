@@ -1,3 +1,9 @@
+:root {
+  --rich-text-container-color: hsla(212deg, 80%, 60%, 100%);
+  --rich-text-text-color: hsla(304deg, 100%, 80%, 100%);
+  --rich-text-decorations-color: hsla(212deg, 90%, 80%, 100%);
+}
+
 // Colourise mention
 a.status-link {
   color: $qdon-mention-color;
