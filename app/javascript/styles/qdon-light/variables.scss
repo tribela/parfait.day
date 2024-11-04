@@ -68,3 +68,9 @@ $account-background-color: $white !default;
 }
 
 $emojis-requiring-inversion: 'chains';
+
+body {
+  --rich-text-container-color: #efefef;
+  --rich-text-text-color: #181818;
+  --rich-text-decorations-color: hsla(212deg, 100%, 65%, 100%);
+}
