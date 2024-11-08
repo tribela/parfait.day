@@ -1922,6 +1922,14 @@ body > [data-popper-placement] {
     margin-bottom: 16px;
   }
 
+  .content-warning {
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
   .logo {
     width: 40px;
     height: 40px;
@@ -2924,6 +2932,7 @@ a.account__display-name {
       flex: 0 1 auto;
       display: flex;
       flex-direction: column;
+      contain: inline-size layout paint style;
 
       @media screen and (min-width: $no-gap-breakpoint) {
         max-width: 600px;
@@ -4220,6 +4229,7 @@ input.glitch-setting-text {
   overflow: hidden;
   border: 1px solid var(--background-border-color);
   border-radius: 8px;
+  contain: inline-size layout paint style;
 
   &.bottomless {
     border-radius: 8px 8px 0 0;
@@ -6258,6 +6268,7 @@ a.status-card {
   pointer-events: auto;
   user-select: text;
   display: flex;
+  max-width: 100vw;
 
   @media screen and (width <= $mobile-breakpoint) {
     margin-top: auto;
