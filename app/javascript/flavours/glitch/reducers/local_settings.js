@@ -35,7 +35,7 @@ const initialState = ImmutableMap({
       reblogs          : false,
       replies          : false,
       media            : false,
-      height           : 400,
+      height           : 800,
     }),
     backgrounds : ImmutableMap({
       user_backgrounds : false,

@@ -29,3 +29,9 @@ $font-display: 'mastodon-font-display' !default;
 $font-monospace: 'mastodon-font-monospace' !default;
 
 @import '../mastodon/variables';
+
+body {
+  --rich-text-container-color: #181818;
+  --rich-text-text-color: #efefef;
+  --rich-text-decorations-color: hsla(212deg, 90%, 80%, 100%);
+}

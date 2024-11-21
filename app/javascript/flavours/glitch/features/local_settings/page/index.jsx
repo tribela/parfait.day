@@ -407,7 +407,7 @@ class LocalSettingsPage extends PureComponent {
             settings={settings}
             item={['collapsed', 'auto', 'height']}
             id='mastodon-settings--collapsed-auto-height'
-            placeholder='400'
+            placeholder='800'
             onChange={onChange}
             dependsOn={[['collapsed', 'enabled']]}
             dependsOnNot={[['collapsed', 'auto', 'all']]}
